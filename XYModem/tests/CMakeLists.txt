@@ -1,0 +1,37 @@
+file(GLOB TEST_FILES *.cpp *.h)
+
+add_executable(unitTest MACOSX_BUNDLE ${TEST_FILES})
+
+target_include_directories(
+  unitTest
+  PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include/XYModem)
+target_link_libraries(unitTest XYModem)
+
+if(NOT GTest_FOUND)
+  find_package("GTest")
+endif()
+
+if(TARGET GTest::GTest)
+  include_directories(${SPDLOG_INCLUDE_DIRS})
+  target_link_libraries(unitTest GTest::GTest)
+endif()
+
+if(NOT fmt_FOUND)
+  find_package("GTest")
+endif()
+
+if(TARGET fmt::fmt)
+  include_directories(${SPDLOG_INCLUDE_DIRS})
+  target_link_libraries(unitTest fmt::fmt)
+endif()
+
+target_compile_options(
+  unitTest PRIVATE $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Debug>>: /MTd /W4 /WX /Od>
+                 $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Release>>: /MT  /W4 /WX /O2>
+                 $<$<AND:$<CXX_COMPILER_ID:AppleClang>,$<CONFIG:Debug>>:
+                 -O0>
+                 $<$<AND:$<CXX_COMPILER_ID:AppleClang>,$<CONFIG:Release>>:
+                 -O3> $<$<CXX_COMPILER_ID:AppleClang>: -Werror -Wall -Wextra -pedantic -Wold-style-cast -Wshadow -Wctor-dtor-privacy>)
+
+include(GoogleTest)
+gtest_discover_tests(unitTest)
