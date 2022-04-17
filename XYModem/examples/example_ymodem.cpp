@@ -27,35 +27,37 @@ int main (int argc, [[maybe_unused]] char* argv[])
                              readTimeoutMultiplier,
                              writeTimeoutConstant,
                              writeTimeoutMultiplier);
-    SerialHandler serialHandler (serialDevice);
 
-    YModem ymodem (serialHandler, logType (), 2);
-    std::vector<ghc::filesystem::path> files;
+    auto serialHandler = std::make_shared<SerialHandler>(serialDevice);
+    auto logger = std::make_shared<Spdlogger>();
+    YModemSender ymodem (serialHandler, logger);
+
+    std::vector<std::shared_ptr<File>> files;
     bool withHex = false;
     std::string lastParam;
 
     cliParser.setCommands({
-        {"-h", [](std::string_view){
-           spdlog::info("This program allows you to send one or more files "
+        {"-h", [&logger](std::string_view){
+           logger->info("This program allows you to send one or more files "
                          "using the YModem file transfer protocol.\n Options "
-                         ":\n    -h : get help \n    -f \"filepath1\"  -id "
-                         "\"VID/PID of the device\""
+                         ":\n    -h : get help \n    -f \"filepath1\"  -port "
+                         "\"serial port of the device\""
                          "\"filepath2\" ... : send one or more files \n");}},
-        {"-f", [&files](std::string_view value){
-                spdlog::info (value);
-                files.emplace_back (value.data());
+        {"-f", [&files, &logger](std::string_view value){
+                logger->info (value);
+                files.emplace_back (std::make_shared<DesktopFile>(value.data()));
         }},
         {"--hex", [&withHex](std::string_view){withHex = true;}},
-        {"-port", [&serialDevice](std::string_view val){
-              spdlog::info ("Available devices");
+        {"-port", [&serialDevice, &logger](std::string_view val){
+              logger->info ("Available devices");
               const auto availablePorts = serial::list_ports ();
               const auto serialPort =
                   std::find_if (availablePorts.begin (),
                                 availablePorts.end (),
-                                [&val] (auto& device) {
-                                    spdlog::info (device.description);
-                                    spdlog::info (device.port);
-                                    spdlog::info (device.hardware_id);
+                                [&val, &logger] (auto& device) {
+                                    logger->info (device.description);
+                                    logger->info (device.port);
+                                    logger->info (device.hardware_id);
                                     return device.port == val;
                                 });
 
@@ -66,7 +68,7 @@ int main (int argc, [[maybe_unused]] char* argv[])
               }
               else
               {
-                  spdlog::error ("Unable to find the requested device");
+                  logger->error ("Unable to find the requested device");
               }
         }}
     });
@@ -83,24 +85,24 @@ int main (int argc, [[maybe_unused]] char* argv[])
     }
     catch (serial::IOException& e)
     {
-        spdlog::warn (e.what ());
+        logger->warn (e.what ());
         assert (false);
     }
     catch (XYModemExceptions::Timeout const& e)
     {
-        spdlog::warn (e.what ());
+        logger->warn (e.what ());
     }
     catch (XYModemExceptions::CouldNotOpenFile const& e)
     {
-        spdlog::warn (e.what ());
+        logger->warn (e.what ());
     }
     catch (XYModemExceptions::TransmissionAborted const& e)
     {
-        spdlog::warn (e.what ());
+        logger->warn (e.what ());
     }
     catch (std::exception const& e)
     {
-        spdlog::warn (e.what ());
+        logger->warn (e.what ());
         assert (false);
     }
 }

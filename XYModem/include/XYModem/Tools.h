@@ -4,7 +4,8 @@
 
 namespace tools
 {
-    template <int size> inline std::string dispByteArray (std::array<uint8_t, size> data)
+    template<int size>
+    inline std::string dispByteArray (std::array<uint8_t, size> data)
     {
         return fmt::format("{:#04x}", fmt::join(data,","));
     }
@@ -83,5 +84,4 @@ namespace tools
         }
         --numPacket;
     }
-
-}; // namespace tools
+} // namespace tools

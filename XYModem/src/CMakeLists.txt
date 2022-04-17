@@ -1,7 +1,6 @@
-set(HEADER_LIST "XYModem.h" "XYModemConst.h" "Devices/DeviceHandler.h"
-                "Devices/SerialHandler.h" "FileTransferProtocol.h")
-set(SRC_LIST "XYModem.cpp" "FileTransferProtocol.cpp"
-             "Devices/DeviceHandler.cpp" "Devices/SerialHandler.cpp")
+set(HEADER_LIST "XYModem.h" "XYModemConst.h" "Senders/YModemSender.h" "Senders/XModemSender.h" "Devices/DeviceHandler.h"
+                "Devices/SerialHandler.h" "FileTransferProtocol.h" "Files/File.h" "Files/DesktopFile.h" "Loggers/Logger.h" "Loggers/Spdlogger.h")
+set(SRC_LIST "Devices/DeviceHandler.cpp" "Devices/SerialHandler.cpp" "Files/File.cpp" "Files/DesktopFile.cpp" "Loggers/Logger.cpp" "Loggers/Spdlogger.cpp" "FileTransferProtocol.cpp" "Senders/YModemSender.cpp" "Senders/XModemSender.cpp")
 list(TRANSFORM HEADER_LIST
      PREPEND "${CMAKE_CURRENT_LIST_DIR}/../include/XYModem/")
 list(TRANSFORM SRC_LIST PREPEND "${CMAKE_CURRENT_LIST_DIR}/")

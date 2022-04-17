@@ -25,11 +25,11 @@ public:
     void readAll () override;
 
     /** NOTE ON BUFFERS : buffers must be handled really carefully with serial.
-     * Reading bytes one by one from the device buffer did not seemed to gave
+     * Reading bytes one by one from the device buffer did not seem to gave
      * the actual buffer content, it is better to empty the buffer entirely each
      * time you access it. Flushing the device output/input buffer is apparently
      * bugged on Windows, flushInputBuffer() does the same by reading the entire
-     * device input buffer. Flushing is done BEFORE writing to the device : when
+     * device input buffer. Flushing is done before writing to the device : when
      * done "immediately" after, the device feedback could have already been
      * received in the buffer and thus flushed.
      */
