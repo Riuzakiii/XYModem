@@ -1,3 +1,4 @@
+#include "crc_cpp.h"
 #include "gtest/gtest.h"
 #include "fmt/core.h"
 #include "fmt/ranges.h"
@@ -34,4 +35,18 @@ TEST (TestTools, TestDecreasePacketNum)
 
     EXPECT_EQ (test1, 255);
     EXPECT_EQ (test2, 42);
+}
+
+TEST(TestTools, TestCRC16)
+{
+    packetData data {0x05, 0xFF, 0xA5, 0xA6};
+    crc_cpp::crc16_xmodem crc;
+
+    for (auto c : data)
+    {
+        crc.update (c);
+    }
+
+
+    EXPECT_EQ(tools::compute_crc16xmodem(data), crc.final());
 }
