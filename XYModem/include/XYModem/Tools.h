@@ -10,31 +10,36 @@ namespace tools
 
     [[nodiscard]] inline uint16_t compute_crc16xmodem (packetData const& data)
     {
-        unsigned int crc16ccitt = 0x1021;
+        uint16_t crc16ccitt = 0x1021;
         uint16_t remainder = 0;
-        uint8_t pop = 0;
 
-        for(int i = 0; i < (data.size() * 8 + 16); ++i)
+        for(int i = 0; i < (data.size() + 2); ++i)
         {
-            pop = (remainder >> 15) & 1U;
-            remainder <<=1;
-            
-            if(i >= data.size() * 8)
+            uint8_t controlByte = (remainder >> 8) & 0xff;
+            uint16_t sum = 0;
+
+            for (int j = 0; j < 8; ++j)
             {
-                remainder += 0 & 1U;
+                if ((controlByte >> (7 - j) & 1U) == 1U)
+                {
+                    controlByte ^= (crc16ccitt >> (8 + j + 1));
+                    sum ^= (crc16ccitt << (8 - j - 1));
+                }
+            }
+            remainder <<= 8;
+            
+            if (i < data.size())
+            {
+                remainder |= (data[i] & 0xff);
             }
             else
             {
-                remainder += (data[i/8] >> (7 - i%8)) & 1U; 
+                remainder |= remainder + (0x00 & 0xff);
             }
-            
-            if(pop)
-            {
-                remainder ^= crc16ccitt;
-            }
+            remainder ^= sum;
         }
 
-        return remainder;
+        return static_cast<uint16_t>(remainder);
     }
 
     inline void increasePacketNum (uint8_t& numPacket)
