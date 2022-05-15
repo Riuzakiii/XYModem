@@ -1,3 +1,5 @@
+#include <random>
+#include <algorithm>
 #include "crc_cpp.h"
 #include "gtest/gtest.h"
 #include "fmt/core.h"
@@ -37,16 +39,31 @@ TEST (TestTools, TestDecreasePacketNum)
     EXPECT_EQ (test2, 42);
 }
 
+packetData generateRandomPacket()
+{
+    packetData data;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distrib(0, 255);
+    std::generate(data.begin(), data.end(), [&distrib, &gen] {return static_cast<uint8_t>(distrib(gen)); });
+
+    return data;
+}
+
 TEST(TestTools, TestCRC16)
 {
-    packetData data {0x05, 0xFF, 0xA5, 0xA6};
-    crc_cpp::crc16_xmodem crc;
+    constexpr auto tries = 10;
 
-    for (auto c : data)
+    for (int i = 0; i < tries; ++i)
     {
-        crc.update (c);
+        auto data = generateRandomPacket();
+        crc_cpp::crc16_xmodem crc;
+        for (auto c : data)
+        {
+            crc.update(c);
+        }
+
+        EXPECT_EQ(tools::compute_crc16xmodem(data), crc.final());
     }
-
-
-    EXPECT_EQ(tools::compute_crc16xmodem(data), crc.final());
 }
