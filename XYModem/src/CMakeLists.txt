@@ -19,7 +19,7 @@ endif(APPLE)
 target_include_directories(XYModem
                            PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include/XYModem)
 
-target_link_libraries(XYModem PUBLIC CONAN_PKG::serial CONAN_PKG::crc_cpp CONAN_PKG::spdlog CONAN_PKG::ghc-filesystem CONAN_PKG::gtest)
+target_link_libraries(XYModem PUBLIC CONAN_PKG::serial CONAN_PKG::spdlog CONAN_PKG::ghc-filesystem CONAN_PKG::gtest)
 
 target_compile_options(
   XYModem
