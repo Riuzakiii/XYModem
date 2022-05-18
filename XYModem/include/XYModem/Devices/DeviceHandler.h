@@ -12,6 +12,7 @@ namespace xymodem
 struct DeviceHandler
 {
 public:
+    virtual ~DeviceHandler() = default;
     /** Displays the content of the buffer
      */
     std::string showBuffer ();

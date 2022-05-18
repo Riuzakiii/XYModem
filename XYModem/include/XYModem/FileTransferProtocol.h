@@ -83,6 +83,7 @@ public:
     FileTransferProtocol (std::shared_ptr<DeviceHandler> device,
                           const unsigned int& currentState,
                           std::shared_ptr<Logger> logger = std::make_shared<Logger>());
+    virtual ~FileTransferProtocol() = default;
 
 protected:
 

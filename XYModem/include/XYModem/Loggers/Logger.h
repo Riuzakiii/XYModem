@@ -21,6 +21,7 @@ public:
     };
 
     Logger() = default;
+    virtual ~Logger() = default;
     virtual void logMessage(std::string_view message, LogLevel level = LogLevel::info) const;
     virtual void debug(std::string_view message) const;
     virtual void warn(std::string_view message) const;

@@ -9,6 +9,7 @@ class File
 {
 public:
     File() = default;
+    virtual ~File() = default;
 
     /** Read the next blockSize bytes from the data file
      * @param blockSizeBytes Block size in bytes
