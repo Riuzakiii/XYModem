@@ -10,13 +10,15 @@ find_program (
          )
 
 if(APPLE)
+  include(${CMAKE_CURRENT_LIST_DIR}/.cmake/xcode.cmake)
+  get_xcode_version_for_apple_clang(APPLE_CLANG_VERSION)
   execute_process(
     COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
-            --build=missing -s build_type=Release
+            --build=missing -s build_type=Release -s compiler.version=${APPLE_CLANG_VERSION}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
   execute_process(
     COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
-            --build=missing -s build_type=Debug
+            --build=missing -s build_type=Debug -s compiler.version=${APPLE_CLANG_VERSION}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 elseif(WIN32)
   if("${CMAKE_GENERATOR}" STREQUAL "Visual Studio 16 2019")
