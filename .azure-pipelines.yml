@@ -8,14 +8,76 @@ jobs:
   - job: Pomodoro
     strategy:
       matrix:
-        ubuntu_debug:
+        # ubuntu_22_04_debug_gcc_9:
+        #   imageName: 'ubuntu-22.04'
+        #   generator: Unix Makefiles
+        #   build_configuration: 'Debug'
+        #   gcc_version: 9
+        # ubuntu_22_04_release_gcc_9:
+        #   imageName: 'ubuntu-22.04'
+        #   generator: Unix Makefiles
+        #   build_configuration: 'Release'
+        #   gcc_version: 9
+        ubuntu_22_04_debug_gcc_10:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Debug'
+          gcc_version: 10
+        ubuntu_22_04_release_gcc_10:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Release'
+          gcc_version: 10
+        ubuntu_22_04_debug_gcc_11:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Debug'
+          gcc_version: 11
+        ubuntu_22_04_release_gcc_11:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Release'
+          gcc_version: 11
+        # ubuntu_20_04_debug_gcc_9:
+        #   imageName: 'ubuntu-20.04'
+        #   generator: Unix Makefiles
+        #   build_configuration: 'Debug'
+        #   gcc_version: 9
+        # ubuntu_20_04_release_gcc_9:
+        #   imageName: 'ubuntu-20.04'
+        #   generator: Unix Makefiles
+        #   build_configuration: 'Release'
+        #   gcc_version: 9
+        ubuntu_20_04_debug_gcc_10:
+          imageName: 'ubuntu-20.04'
+          generator: Unix Makefiles
+          build_configuration: 'Debug'
+          gcc_version: 10
+        ubuntu_20_04_release_gcc_10:
+          imageName: 'ubuntu-20.04'
+          generator: Unix Makefiles
+          build_configuration: 'Release'
+          gcc_version: 10
+        # ubuntu_18_04_debug_gcc_9:
+        #   imageName: 'ubuntu-18.04'
+        #   generator: Unix Makefiles
+        #   build_configuration: 'Debug'
+        #   gcc_version: 9
+        # ubuntu_18_04_release_gcc_9:
+        #   imageName: 'ubuntu-18.04'
+        #   generator: Unix Makefiles
+        #   build_configuration: 'Release'
+        #   gcc_version: 9
+        ubuntu_18_04_debug_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-        ubuntu_release:
+          gcc_version: 10
+        ubuntu_18_04_release_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
+          gcc_version: 10
         mac_debug:
           imageName: 'macOS-10.15'
           generator: Xcode
@@ -36,8 +98,9 @@ jobs:
         vmImage: $(imageName)
     steps:
     - script: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 1
+        ls /usr/bin/gcc*
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$(gcc_version) 1
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$(gcc_version) 1
       displayName: 'Setup the correct version of gcc'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
