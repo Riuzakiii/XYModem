@@ -94,6 +94,14 @@ jobs:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Release'
+        windows_2022_debug:
+          imageName: 'windows-2022'
+          generator: Visual Studio 17 2022
+          build_configuration: 'Debug'
+        windows_2022_release:
+          imageName: 'windows-2022'
+          generator: Visual Studio 17 2022
+          build_configuration: 'Release'
     pool:
         vmImage: $(imageName)
     steps:
