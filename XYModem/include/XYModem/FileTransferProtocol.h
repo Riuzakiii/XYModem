@@ -1,17 +1,14 @@
 #pragma once
 #include "gtest/gtest_prod.h"
-#include "ghc/filesystem.hpp" //Workaround, when filesystem is more widely used just change ghc::filesystem for std::filesystem
-#include "spdlog/spdlog.h"
-#include "spdlog/logger.h"
-#include "spdlog/sinks/basic_file_sink.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
 #include <string>
 #include <functional>
 #include <memory>
 #include <string_view>
+#include <tuple>
+#include <unordered_map>
+#include "Files/File.h"
 #include "Devices/DeviceHandler.h"
-
-using logType = spdlog::filename_t;
+#include "Loggers/Logger.h"
 
 namespace xymodem
 {
@@ -83,27 +80,12 @@ public:
      * critical), 6(off)
      */
 
-    FileTransferProtocol (DeviceHandler& device,
+    FileTransferProtocol (std::shared_ptr<DeviceHandler> device,
                           const unsigned int& currentState,
-                          const logType pathToLogFile = logType (),
-                          const int logLevel = 2);
-    FileTransferProtocol (DeviceHandler& device,
-                          const unsigned int& currentState,
-                          std::shared_ptr<spdlog::logger> logger);
+                          std::shared_ptr<Logger> logger = std::make_shared<Logger>());
+    virtual ~FileTransferProtocol() = default;
 
 protected:
-    /** Set filepath, filename, filesize.
-     * @param fileAbsolutePath Absolute path to the file sent to the device
-     */
-    void setFileInfos (const ghc::filesystem::path& fileAbsolutePath);
-
-    /** Read the next blockSize bytes from the data file
-     * @param file The file from which to read the block
-     * @param file Block size in bytes
-     * @return The bytes read from the file in a std::string
-     */
-    [[nodiscard]] static std::string
-    getNextFileBlock (std::ifstream& file, const std::intmax_t blockSize);
 
     /** Make a transition in the XModem state machine. From a given
      * signal(character) and the current state, gives the next state.
@@ -135,30 +117,20 @@ protected:
      */
     virtual void executeState (const unsigned int currentState, bool logHex);
 
-    std::shared_ptr<spdlog::logger> logger = spdlog::default_logger ();
-    DeviceHandler& deviceHandler;
+    std::shared_ptr<DeviceHandler> deviceHandler;
+    std::shared_ptr<Logger> logger;
     unsigned int currentState;
     std::function<void (float)> updateCallback = [] (float) {};
     std::function<bool ()> yieldCallback = [] () { return false; };
     GuardConditions guards;
     bool isTransmissionFinished = false;
     bool transmissionShouldFinish = false;
-    
-    ghc::filesystem::ifstream dataFile;
-    struct FileInfos
-    {
-        ghc::filesystem::path filePath;
-        std::string fileName;
-        std::intmax_t fileSize = 0;
-        std::intmax_t lastModificationDate = 0;
-    } fileInfos;
 
     static constexpr int currentStatePtr = 0;
     static constexpr int nextStatePtr = 1;
     static constexpr int guardsTestsPtr = 3;
     static constexpr int characterReceivedPtr = 2;
 private:
-    void initialiseLogger (const logType pathToLogFile, const int logLevel);
     FRIEND_TEST (TestXYModemHelper, TestSetFileInfos);
 };
 } // namespace

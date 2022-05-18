@@ -12,16 +12,16 @@ class TestXYModemHelper : public ::testing::Test
 {
 public:
     TestXYModemHelper ()
-        : deviceHandler (serialDevice),
+        : deviceHandler (std::make_shared<SerialHandler>(serialDevice)),
           xModem (deviceHandler),
           yModem (deviceHandler)
     {
     }
 
     serial::Serial serialDevice;
-    SerialHandler deviceHandler;
-    XModem xModem;
-    YModem yModem;
+    std::shared_ptr<SerialHandler> deviceHandler;
+    XModemSender xModem;
+    YModemSender yModem;
 };
 
 TEST_F (TestXYModemHelper, TestMakeDataPacket)
@@ -50,16 +50,16 @@ TEST_F (TestXYModemHelper, TestMakeDataPacket)
 
 TEST_F (TestXYModemHelper, TestFlushLocalBuffer)
 {
-    deviceHandler.inputBuffer.emplace_back (static_cast<uint8_t> (0xff));
-    deviceHandler.inputBuffer.emplace_back (static_cast<uint8_t> (0xff));
-    deviceHandler.flushLocalBuffer ();
-    EXPECT_EQ (deviceHandler.inputBuffer.empty (), true);
+    deviceHandler->inputBuffer.emplace_back (static_cast<uint8_t> (0xff));
+    deviceHandler->inputBuffer.emplace_back (static_cast<uint8_t> (0xff));
+    deviceHandler->flushLocalBuffer ();
+    EXPECT_EQ (deviceHandler->inputBuffer.empty (), true);
 }
 
 TEST_F (TestXYModemHelper, TestReadNextByte)
 {
-    deviceHandler.inputBuffer.emplace_back (static_cast<uint8_t> (0xa5));
-    EXPECT_EQ (deviceHandler.readNextByte (), 0xa5);
+    deviceHandler->inputBuffer.emplace_back (static_cast<uint8_t> (0xa5));
+    EXPECT_EQ (deviceHandler->readNextByte (), 0xa5);
 }
 
 TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
