@@ -28,13 +28,15 @@ execute_process(
           --build=missing -s build_type=Release -s compiler.runtime=MT
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 else()
+  include(${CMAKE_CURRENT_LIST_DIR}/.cmake/gcc.cmake)
+  get_current_gcc_version(GCC_VERSION)
   execute_process(
     COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/linux_profile
-            --build=missing -s build_type=Debug
+            --build=missing -s build_type=Debug -s compiler.version=${GCC_VERSION}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
   execute_process(
     COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/linux_profile
-            --build=missing -s build_type=Release
+            --build=missing -s build_type=Release -s compiler.version=${GCC_VERSION}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 endif()
 
