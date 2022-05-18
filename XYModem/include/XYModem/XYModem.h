@@ -12,7 +12,6 @@
 #include <exception>
 #include <utility>
 #include "spdlog/spdlog.h"
-#include "crc_cpp.h"
 //#include <filesystem> Unfortunately only supported on most recent OS versions
 #include "ghc/filesystem.hpp" //Workaround, when filesystem is more widely used just change ghc::filesystem for std::filesystem
 #include "XYModemConst.h"

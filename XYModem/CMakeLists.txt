@@ -40,7 +40,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/setupDependencies.cmake)
 
 add_subdirectory(tests)
 add_subdirectory(src)
-
 if(XYMODEM_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
