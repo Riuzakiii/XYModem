@@ -86,11 +86,11 @@ jobs:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
-        windows_debug:
+        windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Debug'
-        windows_release:
+        windows_2019_release:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Release'
