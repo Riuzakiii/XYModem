@@ -9,5 +9,4 @@ ghc-filesystem/1.4.0
 utfcpp/3.2.1 
 
 [generators]
-cmake_find_package_multi
-cmake_paths
+cmake_multi
