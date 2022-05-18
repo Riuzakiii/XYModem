@@ -29,11 +29,7 @@ int main (int argc, [[maybe_unused]] char* argv[])
                              writeTimeoutMultiplier);
     SerialHandler serialHandler (serialDevice);
 
-#ifdef _WIN32
-    YModem ymodem (serialHandler, L"", 2);
-#else
-    YModem ymodem (serialHandler, "", 2);
-#endif
+    YModem ymodem (serialHandler, logType (), 2);
     std::vector<ghc::filesystem::path> files;
     bool withHex = false;
     std::string lastParam;

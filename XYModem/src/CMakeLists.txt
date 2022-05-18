@@ -7,7 +7,7 @@ list(TRANSFORM HEADER_LIST
 list(TRANSFORM SRC_LIST PREPEND "${CMAKE_CURRENT_LIST_DIR}/")
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(XYModem ${SRC_LIST} ${HEADER_LIST})
+add_library(XYModem STATIC ${SRC_LIST} ${HEADER_LIST})
 
 if(APPLE)
   # Fixes strange linker error, which seems to happen from time to time
@@ -19,41 +19,7 @@ endif(APPLE)
 target_include_directories(XYModem
                            PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include/XYModem)
 
-if(NOT GTest_FOUND)
-  find_package("GTest")
-endif()
-if(NOT spdlog_FOUND)
-  find_package("spdlog")
-endif()
-if(NOT benchmark_FOUND)
-  find_package("benchmark")
-endif()
-if(NOT serial_FOUND)
-  find_package("serial")
-endif()
-if(NOT crc_cpp_FOUND)
-  find_package("crc_cpp")
-endif()
-if(NOT ghcFilesystem_FOUND)
-  find_package("ghcFilesystem")
-endif()
-
-if(TARGET serial::serial)
-  target_link_libraries(XYModem serial::serial)
-endif()
-if(TARGET crc_cpp::crc_cpp)
-  target_link_libraries(XYModem crc_cpp::crc_cpp)
-endif()
-if(TARGET spdlog::spdlog)
-  target_link_libraries(XYModem spdlog::spdlog)
-endif()
-if(TARGET ghcFilesystem::ghcFilesystem)
-  target_link_libraries(XYModem ghcFilesystem::ghcFilesystem)
-endif()
-if(TARGET GTest::GTest)
-  include_directories(${SPDLOG_INCLUDE_DIRS})
-  target_link_libraries(XYModem GTest::GTest)
-endif()
+target_link_libraries(XYModem PUBLIC CONAN_PKG::serial CONAN_PKG::crc_cpp CONAN_PKG::spdlog CONAN_PKG::ghc-filesystem CONAN_PKG::gtest)
 
 target_compile_options(
   XYModem
