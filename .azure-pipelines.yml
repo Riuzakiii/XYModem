@@ -86,6 +86,22 @@ jobs:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
+        mac_11_debug:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+        mac_11_release:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+        mac_12_debug:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Debug'
+        mac_12_release:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Release'
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
