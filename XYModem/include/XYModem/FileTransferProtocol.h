@@ -11,11 +11,7 @@
 #include <string_view>
 #include "Devices/DeviceHandler.h"
 
-#ifdef _WIN32
-using logType = std::wstring_view;
-#else
-using logType = std::string_view;
-#endif
+using logType = spdlog::filename_t;
 
 namespace xymodem
 {
