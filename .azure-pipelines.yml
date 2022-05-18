@@ -78,11 +78,11 @@ jobs:
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 10
-        mac_debug:
+        mac_10_15_debug:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
-        mac_release:
+        mac_10_15_release:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
