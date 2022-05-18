@@ -1,0 +1,60 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-2019'
+
+jobs:
+  - job: Pomodoro
+    strategy:
+      matrix:
+        ubuntu_debug:
+          imageName: 'ubuntu-18.04'
+          generator: Unix Makefiles
+          build_configuration: 'Debug'
+        ubuntu_release:
+          imageName: 'ubuntu-18.04'
+          generator: Unix Makefiles
+          build_configuration: 'Release'
+        mac_debug:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+        mac_release:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+        windows_debug:
+          imageName: 'windows-2019'
+          generator: Visual Studio 16 2019
+          build_configuration: 'Debug'
+        windows_release:
+          imageName: 'windows-2019'
+          generator: Visual Studio 16 2019
+          build_configuration: 'Release'
+    pool:
+        vmImage: $(imageName)
+    steps:
+    - script: |
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 1
+      displayName: 'Setup the correct version of gcc'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        pip3 install setuptools
+        pip3 install -r requirements.txt
+      displayName: 'Installs dependencies'
+    - script: |
+        cd XYModem
+        mkdir -p build
+        cd build
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration)
+      displayName: 'Generates the Solution of the Project'
+    - script: |
+        cd XYModem/build
+        cmake --build . --config $(build_configuration)
+      displayName: 'Compiles the solution in $(build_configuration) Configuration'
+    - script: |
+        cd XYModem/build
+        ctest -C $(build_configuration) -T Test --output-on-failure
+      displayName: 'Runs the tests in $(build_configuration) configuration'
