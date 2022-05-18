@@ -12,10 +12,12 @@ jobs:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
+          gcc_version: 10
         ubuntu_release:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
+          gcc_version: 10
         mac_debug:
           imageName: 'macOS-10.15'
           generator: Xcode
@@ -36,8 +38,8 @@ jobs:
         vmImage: $(imageName)
     steps:
     - script: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 1
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$(gcc_version) 1
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$(gcc_version) 1
       displayName: 'Setup the correct version of gcc'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
