@@ -1,0 +1,13 @@
+
+function(get_xcode_version_for_apple_clang output_variable)
+    if(${XCODE_VERSION} VERSION_EQUAL 13.3.1)
+        set(APPLE_CLANG_VERSION 13.1)        
+    elseif(${XCODE_VERSION} VERSION_EQUAL 13.2.1)
+        set(APPLE_CLANG_VERSION 13.0)        
+    elseif(${XCODE_VERSION} VERSION_EQUAL 12.4)
+        set(APPLE_CLANG_VERSION 12.0)        
+    else()
+    message(FATAL_ERROR "Error: Version of Xcode not supported! - XCODE_VERSION: ${XCODE_VERSION}")
+    endif()
+    set (${output_variable} ${APPLE_CLANG_VERSION} PARENT_SCOPE)
+endfunction()
