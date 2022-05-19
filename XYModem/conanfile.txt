@@ -2,7 +2,7 @@
 gtest/1.10.0
 fmt/8.0.1
 spdlog/1.9.2
-benchmark/1.5.3
+benchmark/1.5.5
 serial/1.2.1
 crc_cpp/1.0.1
 ghc-filesystem/1.4.0

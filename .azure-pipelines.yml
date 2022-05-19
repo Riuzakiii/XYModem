@@ -78,30 +78,246 @@ jobs:
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 10
-        mac_10_15_debug:
+        mac_10_15_debug_xcode_10_3:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
-        mac_10_15_release:
+          xcode_version: 10.3
+        mac_10_15_release_xcode_10_3:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
-        mac_11_debug:
+          xcode_version: 10.3
+        mac_10_15_debug_xcode_11_2_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 11.2.1
+        mac_10_15_release_xcode_11_2_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 11.2.1
+        mac_10_15_debug_xcode_11_3_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 11.3.1
+        mac_10_15_release_xcode_11_3_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 11.3.1
+        mac_10_15_debug_xcode_11_4_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 11.4.1
+        mac_10_15_release_xcode_11_4_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 11.4.1
+        mac_10_15_debug_xcode_11_5:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 11.5
+        mac_10_15_release_xcode_11_5:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 11.5
+        mac_10_15_debug_xcode_11_6:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 11.6
+        mac_10_15_release_xcode_11_6:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 11.6
+        mac_10_15_debug_xcode_11_7:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 11.7
+        mac_10_15_release_xcode_11_7:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 11.7
+        mac_10_15_debug_xcode_12_0_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.0.1
+        mac_10_15_release_xcode_12_0_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.0.1
+        mac_10_15_debug_xcode_12_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.1
+        mac_10_15_release_xcode_12_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.1
+        mac_10_15_debug_xcode_12_1_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.1.1
+        mac_10_15_release_xcode_12_1_1:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.1.1
+        mac_10_15_debug_xcode_12_2:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.2
+        mac_10_15_release_xcode_12_2:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.2
+        mac_10_15_debug_xcode_12_3:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.3
+        mac_10_15_release_xcode_12_3:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.3
+        mac_10_15_debug_xcode_12_4:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.4
+        mac_10_15_release_xcode_12_4:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.4
+        mac_11_debug_xcode_11_7:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
-        mac_11_release:
+          xcode_version: 11.7
+        mac_11_release_xcode_11_7:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
-        mac_12_debug:
+          xcode_version: 11.7
+        mac_11_debug_xcode_12_4:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.4
+        mac_11_release_xcode_12_4:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.4
+        mac_11_debug_xcode_12_5_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 12.5.1
+        mac_11_release_xcode_12_5_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 12.5.1
+        mac_11_debug_xcode_13_0:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.0
+        mac_11_release_xcode_13_0:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.0
+        mac_11_debug_xcode_13_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.1
+        mac_11_release_xcode_13_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.1
+        mac_11_debug_xcode_13_2:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.2
+        mac_11_release_xcode_13_2:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.2
+        mac_11_debug_xcode_13_2_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.2.1
+        mac_11_release_xcode_13_2_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.2.1
+        mac_12_debug_xcode_13_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Debug'
-        mac_12_release:
+          xcode_version: 13.1
+        mac_12_release_xcode_13_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Release'
+          xcode_version: 13.1
+        mac_12_debug_xcode_13_2_1:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.2.1
+        mac_12_release_xcode_13_2_1:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.2.1
+        mac_12_debug_xcode_13_3_1:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.3.1
+        mac_12_release_xcode_13_3_1:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.3.1
+        mac_12_debug_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.4
+        mac_12_release_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.4
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
@@ -127,6 +343,10 @@ jobs:
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$(gcc_version) 1
       displayName: 'Setup the correct version of gcc'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        sudo xcode-select -s /Applications/Xcode_$(xcode_version).app
+      displayName: 'Setup the correct version of Xcode'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
         pip3 install setuptools
         pip3 install -r requirements.txt
