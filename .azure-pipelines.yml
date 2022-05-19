@@ -5,7 +5,7 @@ pool:
   vmImage: 'windows-2019'
 
 jobs:
-  - job: Pomodoro
+  - job: XYModem
     strategy:
       matrix:
         # ubuntu_22_04_debug_gcc_9:
