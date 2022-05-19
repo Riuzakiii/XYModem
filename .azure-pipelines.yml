@@ -13,329 +13,397 @@ jobs:
         #   generator: Unix Makefiles
         #   build_configuration: 'Debug'
         #   gcc_version: 9
+        #   run_on_draft_pr: false
         # ubuntu_22_04_release_gcc_9:
         #   imageName: 'ubuntu-22.04'
         #   generator: Unix Makefiles
         #   build_configuration: 'Release'
         #   gcc_version: 9
+        #   run_on_draft_pr: false
         ubuntu_22_04_debug_gcc_10:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
           gcc_version: 10
+          run_on_draft_pr: false
         ubuntu_22_04_release_gcc_10:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 10
+          run_on_draft_pr: false
         ubuntu_22_04_debug_gcc_11:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
           gcc_version: 11
+          run_on_draft_pr: false
         ubuntu_22_04_release_gcc_11:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 11
+          run_on_draft_pr: false
         # ubuntu_20_04_debug_gcc_9:
         #   imageName: 'ubuntu-20.04'
         #   generator: Unix Makefiles
         #   build_configuration: 'Debug'
         #   gcc_version: 9
+        #   run_on_draft_pr: false
         # ubuntu_20_04_release_gcc_9:
         #   imageName: 'ubuntu-20.04'
         #   generator: Unix Makefiles
         #   build_configuration: 'Release'
         #   gcc_version: 9
+        #   run_on_draft_pr: false
         ubuntu_20_04_debug_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
           gcc_version: 10
+          run_on_draft_pr: false
         ubuntu_20_04_release_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 10
+          run_on_draft_pr: false
         # ubuntu_18_04_debug_gcc_9:
         #   imageName: 'ubuntu-18.04'
         #   generator: Unix Makefiles
         #   build_configuration: 'Debug'
         #   gcc_version: 9
+        #   run_on_draft_pr: false
         # ubuntu_18_04_release_gcc_9:
         #   imageName: 'ubuntu-18.04'
         #   generator: Unix Makefiles
         #   build_configuration: 'Release'
         #   gcc_version: 9
+        #   run_on_draft_pr: false
         ubuntu_18_04_debug_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
           gcc_version: 10
+          run_on_draft_pr: false
         ubuntu_18_04_release_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 10
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_10_3:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 10.3
+          run_on_draft_pr: false
         mac_10_15_release_xcode_10_3:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 10.3
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_11_2_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 11.2.1
+          run_on_draft_pr: false
         mac_10_15_release_xcode_11_2_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 11.2.1
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_11_3_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 11.3.1
+          run_on_draft_pr: false
         mac_10_15_release_xcode_11_3_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 11.3.1
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_11_4_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 11.4.1
+          run_on_draft_pr: false
         mac_10_15_release_xcode_11_4_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 11.4.1
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_11_5:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 11.5
+          run_on_draft_pr: false
         mac_10_15_release_xcode_11_5:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 11.5
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_11_6:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 11.6
+          run_on_draft_pr: false
         mac_10_15_release_xcode_11_6:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 11.6
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_11_7:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 11.7
+          run_on_draft_pr: false
         mac_10_15_release_xcode_11_7:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 11.7
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_12_0_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.0.1
+          run_on_draft_pr: false
         mac_10_15_release_xcode_12_0_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.0.1
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_12_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.1
+          run_on_draft_pr: false
         mac_10_15_release_xcode_12_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.1
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_12_1_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.1.1
+          run_on_draft_pr: false
         mac_10_15_release_xcode_12_1_1:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.1.1
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_12_2:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.2
+          run_on_draft_pr: false
         mac_10_15_release_xcode_12_2:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.2
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_12_3:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.3
+          run_on_draft_pr: false
         mac_10_15_release_xcode_12_3:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.3
+          run_on_draft_pr: false
         mac_10_15_debug_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.4
+          run_on_draft_pr: false
         mac_10_15_release_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.4
+          run_on_draft_pr: false
         mac_11_debug_xcode_11_7:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 11.7
+          run_on_draft_pr: false
         mac_11_release_xcode_11_7:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 11.7
+          run_on_draft_pr: false
         mac_11_debug_xcode_12_4:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.4
+          run_on_draft_pr: false
         mac_11_release_xcode_12_4:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.4
+          run_on_draft_pr: false
         mac_11_debug_xcode_12_5_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.5.1
+          run_on_draft_pr: false
         mac_11_release_xcode_12_5_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.5.1
+          run_on_draft_pr: false
         mac_11_debug_xcode_13_0:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.0
+          run_on_draft_pr: false
         mac_11_release_xcode_13_0:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.0
+          run_on_draft_pr: false
         mac_11_debug_xcode_13_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.1
+          run_on_draft_pr: false
         mac_11_release_xcode_13_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.1
+          run_on_draft_pr: false
         mac_11_debug_xcode_13_2:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.2
+          run_on_draft_pr: false
         mac_11_release_xcode_13_2:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.2
+          run_on_draft_pr: false
         mac_11_debug_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.2.1
+          run_on_draft_pr: false
         mac_11_release_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.2.1
+          run_on_draft_pr: false
         mac_12_debug_xcode_13_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.1
+          run_on_draft_pr: false
         mac_12_release_xcode_13_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.1
+          run_on_draft_pr: false
         mac_12_debug_xcode_13_2_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.2.1
+          run_on_draft_pr: false
         mac_12_release_xcode_13_2_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.2.1
+          run_on_draft_pr: false
         mac_12_debug_xcode_13_3_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.3.1
+          run_on_draft_pr: false
         mac_12_release_xcode_13_3_1:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.3.1
+          run_on_draft_pr: false
         mac_12_debug_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.4
+          run_on_draft_pr: false
         mac_12_release_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.4
+          run_on_draft_pr: false
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Debug'
+          run_on_draft_pr: false
         windows_2019_release:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Release'
+          run_on_draft_pr: false
         windows_2022_debug:
           imageName: 'windows-2022'
           generator: Visual Studio 17 2022
           build_configuration: 'Debug'
+          run_on_draft_pr: false
         windows_2022_release:
           imageName: 'windows-2022'
           generator: Visual Studio 17 2022
           build_configuration: 'Release'
+          run_on_draft_pr: false
     pool:
         vmImage: $(imageName)
+    pr:
+      drafts: $(run_on_draft_pr)
     steps:
     - script: |
         ls /usr/bin/gcc*
