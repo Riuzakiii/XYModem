@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="476.00354mm"
+   height="115.84784mm"
+   viewBox="0 0 476.00354 115.84784"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="D:\Thiébaud\Documents\Développement\XYModem\logo.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:snap-page="true"
+     inkscape:zoom="0.32026164"
+     inkscape:cx="562.04046"
+     inkscape:cy="-79.622399"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="2391"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     fit-margin-top="20"
+     lock-margins="true"
+     fit-margin-left="20"
+     fit-margin-right="20"
+     fit-margin-bottom="20">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4819"
+       originx="-81.17208"
+       originy="-102.07608" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <linearGradient
+       id="2">
+      <stop
+         id="F"
+         stop-color="#eee" />
+      <stop
+         offset="1"
+         id="G"
+         stop-color="#d2d2d2" />
+    </linearGradient>
+    <linearGradient
+       id="3">
+      <stop
+         id="H" />
+      <stop
+         offset="1"
+         id="I"
+         stop-opacity="0.536" />
+    </linearGradient>
+    <linearGradient
+       id="4">
+      <stop
+         id="J" />
+      <stop
+         offset="1"
+         id="K"
+         stop-color="#ddd"
+         stop-opacity="0" />
+    </linearGradient>
+    <filter
+       id="5"
+       x="-0.14513263"
+       width="1.2902653"
+       y="-0.17041424"
+       height="1.3408285">
+      <feGaussianBlur
+         stdDeviation="1.81881"
+         id="L" />
+    </filter>
+    <filter
+       id="6"
+       x="-0.069831289"
+       y="-0.052595388"
+       width="1.1396626"
+       height="1.1051908">
+      <feGaussianBlur
+         stdDeviation="2.58594"
+         id="M" />
+    </filter>
+    <radialGradient
+       xlink:href="#2"
+       r="44.419998"
+       cy="100.32"
+       cx="81.790001"
+       gradientTransform="matrix(2.0026052,-1.5970314,1.7773333,2.2286954,-279.23554,23.703826)"
+       gradientUnits="userSpaceOnUse"
+       id="7" />
+    <radialGradient
+       xlink:href="#3"
+       r="18.278999"
+       cy="22.254"
+       cx="89.510002"
+       gradientTransform="matrix(1,0,0,0.97467889,0,0.43910718)"
+       gradientUnits="userSpaceOnUse"
+       id="8" />
+    <linearGradient
+       xlink:href="#4"
+       y2="25.1"
+       x2="86.82"
+       y1="14.793"
+       x1="98.330002"
+       gradientTransform="matrix(0.96714879,0,0,0.96714879,0.45622123,-0.08680339)"
+       gradientUnits="userSpaceOnUse"
+       id="9" />
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-81.172078,-102.07608)">
+    <g
+       id="g23073"
+       transform="translate(-5.7729987,16.361652)"
+       style="fill:#666666">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:89.5455px;line-height:1.25;font-family:sans-serif;direction:ltr;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.466382"
+         x="112.17857"
+         y="170.15413"
+         id="text1287"
+         transform="scale(0.9478054,1.0550689)"><tspan
+           sodipodi:role="line"
+           id="tspan1285"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:89.5455px;font-family:'Antique Olive Roman';-inkscape-font-specification:'Antique Olive Roman, ';direction:ltr;fill:#666666;stroke-width:0.466382"
+           x="112.17857"
+           y="170.15413">XYM   dem</tspan></text>
+      <g
+         id="g17699"
+         transform="matrix(0.19705922,0,0,0.19788468,278.65748,194.93039)"
+         style="fill:#666666">
+        <g
+           id="g17631"
+           style="fill:#666666" />
+        <g
+           id="g17633"
+           style="fill:#666666" />
+        <g
+           id="g17635"
+           style="fill:#666666" />
+        <g
+           id="g17637"
+           style="fill:#666666" />
+        <g
+           id="g17639"
+           style="fill:#666666" />
+        <g
+           id="g17641"
+           style="fill:#666666" />
+        <g
+           id="g17643"
+           style="fill:#666666" />
+        <g
+           id="g17645"
+           style="fill:#666666" />
+        <g
+           id="g17647"
+           style="fill:#666666" />
+        <g
+           id="g17649"
+           style="fill:#666666" />
+        <g
+           id="g17651"
+           style="fill:#666666" />
+        <g
+           id="g17653"
+           style="fill:#666666" />
+        <g
+           id="g17655"
+           style="fill:#666666" />
+        <g
+           id="g17657"
+           style="fill:#666666" />
+        <g
+           id="g17659"
+           style="fill:#666666" />
+        <g
+           id="g21609"
+           transform="matrix(1.3456179,0,0,1.390434,-874.37735,-363.77249)"
+           style="fill:#666666">
+          <g
+             id="g17599"
+             transform="translate(461.28902,-298.96049)"
+             style="fill:#666666">
+            <g
+               id="g17597"
+               style="fill:#666666">
+              <path
+                 d="m 343.1,352.367 -34.125,-34.125 c -0.785,-0.794 -1.732,-1.417 -2.782,-1.852 -2.082,-0.862 -4.437,-0.862 -6.519,0 -1.05,0.435 -1.988,1.058 -2.782,1.852 l -34.125,34.125 c -3.336,3.337 -3.336,8.73 0,12.066 3.337,3.337 8.73,3.336 12.066,0 L 294.4,344.866 v 98.867 c 0,4.71 3.814,8.533 8.533,8.533 4.719,0 8.533,-3.823 8.533,-8.533 v -98.867 l 19.567,19.567 c 1.664,1.664 3.849,2.5 6.033,2.5 2.185,0 4.369,-0.836 6.033,-2.5 3.337,-3.336 3.337,-8.73 0.001,-12.066 z"
+                 id="path17595"
+                 style="fill:#666666" />
+            </g>
+          </g>
+          <g
+             id="g17605"
+             transform="translate(461.28902,-298.96049)"
+             style="fill:#666666">
+            <g
+               id="g17603"
+               style="fill:#666666">
+              <path
+                 d="m 428.433,403.567 c -3.337,-3.337 -8.73,-3.337 -12.066,0 L 396.8,423.134 v -98.867 c 0,-4.71 -3.814,-8.533 -8.533,-8.533 -4.719,0 -8.533,3.823 -8.533,8.533 v 98.867 l -19.567,-19.567 c -3.337,-3.337 -8.73,-3.337 -12.066,0 -3.337,3.336 -3.337,8.73 0,12.066 l 34.125,34.125 c 0.785,0.794 1.732,1.417 2.782,1.852 1.041,0.427 2.15,0.657 3.26,0.657 1.109,0 2.219,-0.23 3.26,-0.657 1.05,-0.435 1.988,-1.058 2.782,-1.852 l 34.125,-34.125 c 3.335,-3.336 3.335,-8.73 -0.002,-12.066 z"
+                 id="path17601"
+                 style="fill:#666666" />
+            </g>
+          </g>
+          <g
+             id="g17611"
+             transform="translate(461.28902,-298.96049)"
+             style="fill:#666666">
+            <g
+               id="g17609"
+               style="fill:#666666">
+              <path
+                 d="m 345.6,256 c -70.579,0 -128,57.421 -128,128 0,70.579 57.421,128 128,128 70.579,0 128,-57.421 128,-128 0,-70.579 -57.421,-128 -128,-128 z m 0,238.933 c -61.167,0 -110.933,-49.766 -110.933,-110.933 0,-61.167 49.766,-110.933 110.933,-110.933 61.167,0 110.933,49.766 110.933,110.933 0,61.167 -49.766,110.933 -110.933,110.933 z"
+                 id="path17607"
+                 style="fill:#666666" />
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
