@@ -4,12 +4,12 @@
 namespace xymodem
 {
 
-Spdlogger::Spdlogger(LogLevel logLevel, const logType pathToLogFile)
+Spdlogger::Spdlogger(LogLevel logLevel, const logType& pathToLogFile)
 {
     initialiseLogger(pathToLogFile, logLevel);
 }
 
-void Spdlogger::initialiseLogger (const logType pathToLogFile, const LogLevel logLevel)
+void Spdlogger::initialiseLogger (const logType& pathToLogFile, const LogLevel logLevel)
 {
     try
     {

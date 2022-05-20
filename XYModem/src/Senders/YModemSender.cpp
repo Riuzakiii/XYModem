@@ -4,7 +4,7 @@
 
 namespace xymodem
 {
-YModemSender::YModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger)
+YModemSender::YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger)
     : FileTransferProtocol (
           deviceHandler_, waitingStart, logger),
       xModem (deviceHandler_, logger)

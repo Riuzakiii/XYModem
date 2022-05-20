@@ -61,7 +61,7 @@ void GuardConditions::dec (std::string_view guardName)
 FileTransferProtocol::FileTransferProtocol (std::shared_ptr<DeviceHandler> deviceHandler_,
                                             const unsigned int& currentState_,
                                             std::shared_ptr<Logger> logger)
-    : deviceHandler (deviceHandler_), logger(logger), currentState (currentState_)
+    : deviceHandler (std::move(deviceHandler_)), logger(std::move(logger)), currentState (currentState_)
 {
 }
 
