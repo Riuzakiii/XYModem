@@ -8,4 +8,5 @@ find_program (
     REQUIRED
    )
 
-set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} -warnings-as-errors=clang-analyzer-*)
+set(CLANG_TIDY_CHECKS clang-analyzer-*,performance-*)
+set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} --checks=${CLANG_TIDY_CHECKS} --warnings-as-errors=${CLANG_TIDY_CHECKS})
