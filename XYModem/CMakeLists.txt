@@ -8,6 +8,12 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET
     CACHE STRING "Minimum OS X deployment version")
 
 set(WITH_STATIC_ANALYSIS OFF CACHE BOOL "Runs clang-tidy on this project")
+set(USES_CLANG_COMPILER OFF CACHE BOOL "Indicates if we want to compile with clang (Linux only)")
+
+if(UNIX AND NOT APPLE AND ${USES_CLANG_COMPILER})
+  include(${CMAKE_CURRENT_LIST_DIR}/.cmake/clang.cmake)
+  set_clang_as_main_compiler()
+endif()
 
 set(GLOBAL_APP_NAME "XYModem") 
 project(${GLOBAL_APP_NAME})

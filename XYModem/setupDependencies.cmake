@@ -38,15 +38,23 @@ elseif(WIN32)
             --build=missing -s build_type=Release -s compiler.version=${VISUAL_STUDIO_COMPILER_VERSION} -s compiler.runtime=MT
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 else()
-  include(${CMAKE_CURRENT_LIST_DIR}/.cmake/gcc.cmake)
-  get_current_gcc_version(GCC_VERSION)
+  if(${USES_CLANG_COMPILER})
+    set(CONAN_PROFILE linux_clang_profile)
+    get_current_clang_version(COMPILER_VERSION)
+  else()
+    set(CONAN_PROFILE linux_gcc_profile)
+
+    include(${CMAKE_CURRENT_LIST_DIR}/.cmake/gcc.cmake)
+    get_current_gcc_version(COMPILER_VERSION)
+  endif()
+
   execute_process(
-    COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/linux_profile
-            --build=missing -s build_type=Debug -s compiler.version=${GCC_VERSION}
+    COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/${CONAN_PROFILE}
+            --build=missing -s build_type=Debug -s compiler.version=${COMPILER_VERSION}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
   execute_process(
-    COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/linux_profile
-            --build=missing -s build_type=Release -s compiler.version=${GCC_VERSION}
+    COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/${CONAN_PROFILE}
+            --build=missing -s build_type=Release -s compiler.version=${COMPILER_VERSION}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 endif()
 
