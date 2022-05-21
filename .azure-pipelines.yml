@@ -129,3 +129,44 @@ jobs:
         cd XYModem/build
         ctest -C $(build_configuration) -T Test --output-on-failure
       displayName: 'Runs the tests in $(build_configuration) configuration'
+  - job: Static_Analysis
+    strategy:
+      matrix:
+        debug:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Debug'
+          gcc_version: 11
+        release:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Release'
+          gcc_version: 11
+    pool:
+        vmImage: $(imageName)
+    steps:
+    - script: |
+        ls /usr/bin/gcc*
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$(gcc_version) 1
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$(gcc_version) 1
+      displayName: 'Setup the correct version of gcc'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        sudo apt-get install clang-tidy
+        clang-tidy --version
+      displayName: 'Installs the latest version of clang-tidy'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        pip3 install setuptools
+        pip3 install -r requirements.txt
+      displayName: 'Installs dependencies'
+    - script: |
+        cd XYModem
+        mkdir -p build
+        cd build
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DWITH_STATIC_ANALYSIS=ON
+      displayName: 'Generates the Solution of the Project with the static analysis tools set up'
+    - script: |
+        cd XYModem/build
+        cmake --build . --config $(build_configuration)
+      displayName: 'Compiles the solution in $(build_configuration) configuration while running the static analysis tools'

@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_DEPLOYMENT_TARGET
     "10.12"
     CACHE STRING "Minimum OS X deployment version")
+
+set(WITH_STATIC_ANALYSIS OFF CACHE BOOL "Runs clang-tidy on this project")
+
 set(GLOBAL_APP_NAME "XYModem") 
 project(${GLOBAL_APP_NAME})
 
@@ -32,6 +35,10 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
   option(XYMODEM_BUILD_EXAMPLES "Build examples" ON)
 else()
   option(XYMODEM_BUILD_EXAMPLES "Build examples" OFF)
+endif()
+
+if(${WITH_STATIC_ANALYSIS})
+  include (${CMAKE_CURRENT_LIST_DIR}/.cmake/clangTidy.cmake)
 endif()
 
 enable_testing()

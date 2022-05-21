@@ -7,7 +7,7 @@ namespace xymodem
  */
 XModemSender::XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger)
     : FileTransferProtocol (
-          deviceHandler_, waitingStart, logger)
+          std::move(deviceHandler_), waitingStart, std::move(logger))
 {
     guards.addGuards ({{retries, 0}, {packetsLeft, 0}});
 };

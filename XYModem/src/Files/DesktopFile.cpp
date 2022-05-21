@@ -15,9 +15,9 @@ DesktopFile::DesktopFile(const ghc::filesystem::path& filePath) : filePath(fileP
 
 DesktopFile::~DesktopFile()
 {
-    if(isOpened())
+    if(DesktopFile::isOpened())
     {
-        close();
+        DesktopFile::close();
     }
 }
 
