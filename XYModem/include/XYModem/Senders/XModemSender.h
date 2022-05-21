@@ -19,6 +19,7 @@ namespace xymodem
  * @todo end of File
  * @todo setFileInfos
  */
+template<int payloadSize = xyModemConst::payloadSize1K>
 class XModemSender : private FileTransferProtocol
 {
 public:
@@ -57,14 +58,14 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    Packet makeDataPacket (const std::string& data,
+    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> makeDataPacket (const std::string& data,
                            const uint8_t& packetNum,
                            const bool logHex = false);
 
     /** Write packet to the device
      * @param packet The packet to send to the device
      */
-    void writePacket (Packet packet);
+    void writePacket (std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet);
 
     virtual void executeState (const unsigned int currentState,
                                bool logHex) override;
@@ -132,4 +133,5 @@ private:
     FRIEND_TEST (XModemTest, TestRetryingPacketButCAN);
     FRIEND_TEST (XModemTest, TestRetryingEOTButCAN);
 };
+
 }

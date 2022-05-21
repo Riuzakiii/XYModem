@@ -40,7 +40,8 @@ namespace tools
     * The CRC is the remainder in this division. A Look-up table speeds up the computation,
     * trading memory for speed (an array is computed at compile time, should be a bit more than 512 bytes).
     */
-    [[nodiscard]] inline uint16_t compute_crc16xmodem (packetData const& data)
+    template<int payloadSize = xyModemConst::payloadSize1K>
+    [[nodiscard]] inline uint16_t compute_crc16xmodem (std::array<uint8_t, payloadSize> const& data)
     {
         constexpr uint16_t crc16ccitt = 0x1021;
         constexpr auto table = crc16lookup(crc16ccitt);

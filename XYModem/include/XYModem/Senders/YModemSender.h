@@ -25,6 +25,7 @@ namespace xymodem
  * @see XModem
  * @see FileTransferProtocol
  */
+template<int payloadSize = xyModemConst::payloadSize1K>
 class YModemSender : private FileTransferProtocol
 {
 public:
@@ -65,7 +66,7 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    Packet makeHeaderPacket (const std::string& _fileName,
+    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> makeHeaderPacket (const std::string& _fileName,
                              const int64& _fileSize,
                              const int64& _lastModificationDate,
                              const bool logHex = false);
@@ -73,19 +74,19 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    Packet makeLastPacket (const bool logHex = false);
+    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> makeLastPacket (const bool logHex = false);
 
     /** Write packet to the device
      * @param packet The packet to send to the device
      */
-    void writePacket (Packet packet);
+    void writePacket (std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet);
 
     virtual void executeState (const unsigned int currentState,
                                bool logHex) override;
     void executeSendHeader (bool logHex);
 
 
-    XModemSender xModem;
+    XModemSender<> xModem;
     std::vector<std::shared_ptr<File>> files;
     
     // YModem state machine constants
@@ -128,4 +129,5 @@ private:
     FRIEND_TEST (YModemTest, TestRetryingHeaderButCAN);
     FRIEND_TEST (YModemTest, TestXModemTransmissionButCAN);
 };
+
 }

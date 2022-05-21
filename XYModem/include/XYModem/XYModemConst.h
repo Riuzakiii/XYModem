@@ -54,14 +54,11 @@ namespace xyModemConst
     0x43; // also found as "C" in the documentation.
 [[maybe_unused]] constexpr auto fileNameSep = 0x00;
 [[maybe_unused]] constexpr auto headerFieldsSep = 0x20;
-[[maybe_unused]] constexpr auto packetDataSize = 1024;
+[[maybe_unused]] constexpr auto payloadSize1K = 1024;
+[[maybe_unused]] constexpr auto payloadSize128 = 128;
 [[maybe_unused]] constexpr auto packetHeaderSize = 3;
 [[maybe_unused]] constexpr auto packetCRCSize = 2;
-[[maybe_unused]] constexpr auto packetTotalSize =
-    packetHeaderSize + packetDataSize + packetCRCSize;
+[[maybe_unused]] constexpr auto totalExtraSize = packetHeaderSize + packetCRCSize;
 [[maybe_unused]] constexpr auto timeout = 30s;
 [[maybe_unused]] constexpr auto maxRetries = 10;
 } // namespace xyModemConst
-
-using Packet = std::array<uint8_t, xyModemConst::packetTotalSize>;
-using packetData = std::array<uint8_t, xyModemConst::packetDataSize>;

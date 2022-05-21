@@ -20,16 +20,16 @@ public:
 
     serial::Serial serialDevice;
     std::shared_ptr<SerialHandler> deviceHandler;
-    XModemSender xModem;
-    YModemSender yModem;
+    XModemSender<> xModem;
+    YModemSender<> yModem;
 };
 
 TEST_F (TestXYModemHelper, TestMakeDataPacket)
 {
     std::string expectedData;
-    for (int i = 0; i < xyModemConst::packetDataSize; ++i)
+    for (int i = 0; i < xyModemConst::payloadSize1K; ++i)
     {
-        if (i == (xyModemConst::packetDataSize - 1))
+        if (i == (xyModemConst::payloadSize1K - 1))
         {
             expectedData += "0xff";
         }
@@ -44,7 +44,7 @@ TEST_F (TestXYModemHelper, TestMakeDataPacket)
     const auto dataPacket = xModem.makeDataPacket (data, 5, false);
     std::string id = "0x02,0x05,0xfa";
     std::string crc = "0xc0,0x84";
-    EXPECT_EQ (tools::dispByteArray<xyModemConst::packetTotalSize> (dataPacket),
+    EXPECT_EQ (tools::dispByteArray(dataPacket),
                fmt::format ("{:s},{:s},{:s}", id, expectedData, crc));
 }
 
@@ -68,11 +68,11 @@ TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
     std::string id = "0x02,0x00,0xff";
     std::string header = "0x74,0x65,0x73,0x74,0x00,0x30,0x20,0x30";
     constexpr auto sizeHeaderBytes = 8;
-    std::array<uint8_t, xyModemConst::packetDataSize - sizeHeaderBytes> packet =
+    std::array<uint8_t, xyModemConst::payloadSize1K - sizeHeaderBytes> packet =
         {0x00};
     std::string crc = "0xa3,0x72";
     EXPECT_EQ (
-        tools::dispByteArray<xyModemConst::packetTotalSize> (headerPacket),
+        tools::dispByteArray(headerPacket),
         fmt::format ("{:s},{:s},{:#04x},{:s}",
                      id,
                      header,
@@ -84,10 +84,10 @@ TEST_F (TestXYModemHelper, TestMakeLastPacket)
 {
     const auto lastPacket = yModem.makeLastPacket ();
     std::string id = "0x02,0x00,0xff";
-    std::array<uint8_t, xyModemConst::packetDataSize> packet = {0x00};
+    std::array<uint8_t, xyModemConst::payloadSize1K> packet = {0x00};
     std::string crc = "0x00,0x00";
     EXPECT_EQ (
-        tools::dispByteArray<xyModemConst::packetTotalSize> (lastPacket),
+        tools::dispByteArray(lastPacket),
         fmt::format ("{:s},{:#04x},{:s}", id, fmt::join (packet, ","), crc));
 }
 } // namespace xymodem

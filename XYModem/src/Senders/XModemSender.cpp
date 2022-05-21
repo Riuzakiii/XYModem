@@ -5,19 +5,32 @@ namespace xymodem
 /**
  * XModem sender
  */
-XModemSender::XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger)
+template<int payloadSize>
+XModemSender<payloadSize>::XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger)
     : FileTransferProtocol (
           std::move(deviceHandler_), waitingStart, std::move(logger))
 {
+    static_assert(payloadSize == xyModemConst::payloadSize1K || payloadSize == xyModemConst::payloadSize128);
     guards.addGuards ({{retries, 0}, {packetsLeft, 0}});
 };
 
-Packet XModemSender::makeDataPacket (const std::string& data_,
+template<int payloadSize>
+std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> XModemSender<payloadSize>::makeDataPacket (const std::string& data_,
                                const uint8_t& t_packetNum,
                                const bool logHex)
 {
-    Packet packet = {0x00};
-    packetData data;
+    static uint8_t payloadType = 0;
+    if constexpr (payloadSize == xyModemConst::payloadSize1K)
+    {
+        payloadType = xyModemConst::STX;
+    }
+    else
+    {
+        payloadType = xyModemConst::SOH;
+    }
+
+    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet = { 0x00 };
+    std::array<uint8_t, payloadSize> data = { 0x00 };
     // packets except header and last packet are filled with 0xFF
     for (auto& byte : data)
     {
@@ -26,7 +39,7 @@ Packet XModemSender::makeDataPacket (const std::string& data_,
 
     // Making header (SOH/STX, packetnum(0-255), 255-packetnum)
     const std::array<uint8_t, xyModemConst::packetHeaderSize> header = {
-        xyModemConst::STX,
+        payloadType,
         t_packetNum,
         static_cast<unsigned char> (~t_packetNum)};
 
@@ -34,7 +47,7 @@ Packet XModemSender::makeDataPacket (const std::string& data_,
     std::copy (data_.begin (), data_.end (), data.begin ());
 
     // Computing CRC
-    const auto crc = tools::compute_crc16xmodem (data);
+    const auto crc = xymodem::tools::compute_crc16xmodem<payloadSize>(data);
     const auto crc_hi = static_cast<uint8_t> (crc >> 8);
     const auto crc_lo = static_cast<uint8_t> (crc);
 
@@ -50,15 +63,15 @@ Packet XModemSender::makeDataPacket (const std::string& data_,
     return packet;
 }
 
-
-void XModemSender::writePacket (Packet packet)
+template<int payloadSize>
+void XModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet)
 {
     deviceHandler->flushAllInputBuffers ();
     deviceHandler->write (packet.data (), packet.size ());
 }
 
-
-void XModemSender::executeSendPacket (const bool logHex)
+template<int payloadSize>
+void XModemSender<payloadSize>::executeSendPacket (const bool logHex)
 {
     if (guards.get (packetsLeft) == 1)
     {
@@ -67,7 +80,7 @@ void XModemSender::executeSendPacket (const bool logHex)
         const auto packet =
             makeDataPacket (file->getNextFileBlock (
                                               (lastPacketRemaining == 0)
-                                                  ? xyModemConst::packetDataSize
+                                                  ? payloadSize
                                                   : lastPacketRemaining),
                             packetNum,
                             logHex);
@@ -77,7 +90,7 @@ void XModemSender::executeSendPacket (const bool logHex)
     else
     {
         const auto packet = makeDataPacket (
-            file->getNextFileBlock (xyModemConst::packetDataSize),
+            file->getNextFileBlock (payloadSize),
             packetNum,
             logHex);
         writePacket (packet);
@@ -95,7 +108,8 @@ void XModemSender::executeSendPacket (const bool logHex)
             static_cast<float> (totalPackets) * 100) + "\\% packets");
 }
 
-void XModemSender::executeState (const unsigned int state, bool logHex)
+template<int payloadSize>
+void XModemSender<payloadSize>::executeState (const unsigned int state, bool logHex)
 {
     switch (state)
     {
@@ -142,7 +156,8 @@ void XModemSender::executeState (const unsigned int state, bool logHex)
     }
 }
 
-void XModemSender::transmit (const std::shared_ptr<File>& file_,
+template<int payloadSize>
+void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
                        std::function<void (float)> updateCallback_,
                        std::function<bool ()> yieldCallback_,
                        const bool logHex)
@@ -164,7 +179,7 @@ void XModemSender::transmit (const std::shared_ptr<File>& file_,
     //// Compute the number of packets to send
     const auto divNumPacket =
         std::lldiv (file->getFilesize(),
-                    static_cast<std::intmax_t> (xyModemConst::packetDataSize));
+                    static_cast<std::intmax_t> (payloadSize));
 
     lastFullPacket = divNumPacket.quot;     // Number of fullsize packets
     lastPacketRemaining = divNumPacket.rem; // Remaining bytes
@@ -225,4 +240,9 @@ void XModemSender::transmit (const std::shared_ptr<File>& file_,
     }
     file->close();
 }
+
+
+template class XModemSender<xyModemConst::payloadSize1K>;
+template class XModemSender<xyModemConst::payloadSize128>;
+
 }

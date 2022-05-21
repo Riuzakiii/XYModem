@@ -1,5 +1,6 @@
 #include <random>
 #include <algorithm>
+#include <array>
 #include "crc_cpp.h"
 #include "gtest/gtest.h"
 #include "fmt/core.h"
@@ -39,9 +40,9 @@ TEST (TestTools, TestDecreasePacketNum)
     EXPECT_EQ (test2, 42);
 }
 
-packetData generateRandomPacket()
+std::array<uint8_t, xyModemConst::payloadSize1K> generateRandomPacket()
 {
-    packetData data;
+    std::array<uint8_t, xyModemConst::payloadSize1K> data;
 
     std::random_device rd;
     std::mt19937 gen(rd());
