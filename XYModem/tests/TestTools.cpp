@@ -40,9 +40,9 @@ TEST (TestTools, TestDecreasePacketNum)
     EXPECT_EQ (test2, 42);
 }
 
-std::array<uint8_t, xyModemConst::payloadSize1K> generateRandomPacket()
+std::array<uint8_t, xymodem::payloadSize1K> generateRandomPacket()
 {
-    std::array<uint8_t, xyModemConst::payloadSize1K> data;
+    std::array<uint8_t, xymodem::payloadSize1K> data;
 
     std::random_device rd;
     std::mt19937 gen(rd());

@@ -25,7 +25,7 @@ namespace xymodem
  * @see XModem
  * @see FileTransferProtocol
  */
-template<int payloadSize = xyModemConst::payloadSize1K>
+template<int payloadSize = xymodem::payloadSize1K>
 class YModemSender : private FileTransferProtocol
 {
 public:
@@ -66,7 +66,7 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> makeHeaderPacket (const std::string& _fileName,
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeHeaderPacket (const std::string& _fileName,
                              const int64& _fileSize,
                              const int64& _lastModificationDate,
                              const bool logHex = false);
@@ -74,12 +74,12 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> makeLastPacket (const bool logHex = false);
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeLastPacket (const bool logHex = false);
 
     /** Write packet to the device
      * @param packet The packet to send to the device
      */
-    void writePacket (std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet);
+    void writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet);
 
     virtual void executeState (const unsigned int currentState,
                                bool logHex) override;
@@ -101,17 +101,17 @@ private:
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 6;
     // clang-format off
     [[maybe_unused]] inline static std::array<transition, 11> stateTransitions =
-        {{{waitingStart,sendingHeader,xyModemConst::C,[] (GuardConditions) { return true; }},
-          {sendingHeader,xModemTransmission,xyModemConst::ACK,[] (GuardConditions) { return true; }},
-          {sendingHeader,retryingHeader,xyModemConst::NAK,[] (GuardConditions) { return true; }},
-          {retryingHeader,retryingHeader,xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xyModemConst::maxRetries; }},
-          {retryingHeader,abort,xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xyModemConst::maxRetries; }},
-          {xModemTransmission,sendingHeader,xyModemConst::C,[] (GuardConditions) { return true; }},
-          {undefined,sendingHeader,xyModemConst::C,[] (GuardConditions) { return true; }},
-          {waitingStart,abort,xyModemConst::CAN,[] (GuardConditions) { return true; }},
-          {sendingHeader,abort, xyModemConst::CAN, [] (GuardConditions) { return true; }},
-          {xModemTransmission,abort,xyModemConst::CAN, [] (GuardConditions) { return true; }},
-          {undefined, abort, xyModemConst::CAN, [] (GuardConditions) {return true;}}
+        {{{waitingStart,sendingHeader,xymodem::C,[] (GuardConditions) { return true; }},
+          {sendingHeader,xModemTransmission,xymodem::ACK,[] (GuardConditions) { return true; }},
+          {sendingHeader,retryingHeader,xymodem::NAK,[] (GuardConditions) { return true; }},
+          {retryingHeader,retryingHeader,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xymodem::maxRetries; }},
+          {retryingHeader,abort,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xymodem::maxRetries; }},
+          {xModemTransmission,sendingHeader,xymodem::C,[] (GuardConditions) { return true; }},
+          {undefined,sendingHeader,xymodem::C,[] (GuardConditions) { return true; }},
+          {waitingStart,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
+          {sendingHeader,abort, xymodem::CAN, [] (GuardConditions) { return true; }},
+          {xModemTransmission,abort,xymodem::CAN, [] (GuardConditions) { return true; }},
+          {undefined, abort, xymodem::CAN, [] (GuardConditions) {return true;}}
           }};
     //clang-format on
 

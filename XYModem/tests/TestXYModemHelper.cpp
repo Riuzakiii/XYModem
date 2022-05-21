@@ -27,9 +27,9 @@ public:
 TEST_F (TestXYModemHelper, TestMakeDataPacket)
 {
     std::string expectedData;
-    for (int i = 0; i < xyModemConst::payloadSize1K; ++i)
+    for (std::size_t i = 0; i < xymodem::payloadSize1K; ++i)
     {
-        if (i == (xyModemConst::payloadSize1K - 1))
+        if (i == (xymodem::payloadSize1K - 1))
         {
             expectedData += "0xff";
         }
@@ -68,7 +68,7 @@ TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
     std::string id = "0x02,0x00,0xff";
     std::string header = "0x74,0x65,0x73,0x74,0x00,0x30,0x20,0x30";
     constexpr auto sizeHeaderBytes = 8;
-    std::array<uint8_t, xyModemConst::payloadSize1K - sizeHeaderBytes> packet =
+    std::array<uint8_t, xymodem::payloadSize1K - sizeHeaderBytes> packet =
         {0x00};
     std::string crc = "0xa3,0x72";
     EXPECT_EQ (
@@ -84,7 +84,7 @@ TEST_F (TestXYModemHelper, TestMakeLastPacket)
 {
     const auto lastPacket = yModem.makeLastPacket ();
     std::string id = "0x02,0x00,0xff";
-    std::array<uint8_t, xyModemConst::payloadSize1K> packet = {0x00};
+    std::array<uint8_t, xymodem::payloadSize1K> packet = {0x00};
     std::string crc = "0x00,0x00";
     EXPECT_EQ (
         xymodem::tools::dispByteArray(lastPacket),

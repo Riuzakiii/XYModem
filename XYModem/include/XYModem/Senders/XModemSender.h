@@ -19,7 +19,7 @@ namespace xymodem
  * @todo end of File
  * @todo setFileInfos
  */
-template<int payloadSize = xyModemConst::payloadSize1K>
+template<int payloadSize = xymodem::payloadSize1K>
 class XModemSender : private FileTransferProtocol
 {
 public:
@@ -58,14 +58,14 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> makeDataPacket (const std::string& data,
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeDataPacket (const std::string& data,
                            const uint8_t& packetNum,
                            const bool logHex = false);
 
     /** Write packet to the device
      * @param packet The packet to send to the device
      */
-    void writePacket (std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet);
+    void writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet);
 
     virtual void executeState (const unsigned int currentState,
                                bool logHex) override;
@@ -94,26 +94,26 @@ private:
     [[maybe_unused]] static constexpr unsigned int abort = 7;
     // clang-format off
     [[maybe_unused]] inline static std::array<transition, 20> stateTransitions =
-        {{{waitingStart, sendingPacket, xyModemConst::C, [] (GuardConditions) { return true; }},
-          {sendingPacket, sendingPacket,xyModemConst::ACK,[] (GuardConditions t_guards){ return t_guards.get (packetsLeft) > 0; }},
-          {sendingPacket, retryingPacket, xyModemConst::NAK, [] (GuardConditions) { return true; }},
-          {sendingPacket, endOfTransmission, xyModemConst::ACK, [] (GuardConditions t_guards) { return t_guards.get (packetsLeft) == 0; }},
-          {endOfTransmission, transmissionFinished, xyModemConst::ACK, [] (GuardConditions) { return true; }},
-          {endOfTransmission, retryingEOT, xyModemConst::NAK, [] (GuardConditions) { return true; }},
-          {retryingEOT, transmissionFinished, xyModemConst::ACK, [] (GuardConditions) { return true; }},
-          {retryingEOT, retryingEOT, xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xyModemConst::maxRetries; }},
-          {retryingEOT,abort,xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xyModemConst::maxRetries; }},
-          {retryingPacket, retryingPacket,xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xyModemConst::maxRetries; }},
-          {retryingPacket,sendingPacket,xyModemConst::ACK,[] (GuardConditions) { return true; }},
-          {retryingPacket,abort,xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xyModemConst::maxRetries; }},
-          {undefined,sendingPacket,xyModemConst::C,[] (GuardConditions t_guards){ return t_guards.get (packetsLeft) > 0; }},
-          {undefined,retryingPacket,xyModemConst::NAK,[] (GuardConditions) { return true; }},
-          {undefined,abort,xyModemConst::CAN,[] (GuardConditions) { return true; }},
-          {waitingStart,abort,xyModemConst::CAN,[] (GuardConditions) { return true; }},
-          {sendingPacket,abort,xyModemConst::CAN,[] (GuardConditions) { return true; }},
-          {endOfTransmission,abort,xyModemConst::CAN,[] (GuardConditions) { return true; }},
-          {retryingPacket,abort, xyModemConst::CAN,[] (GuardConditions) { return true; }},
-          {retryingEOT, abort, xyModemConst::CAN, [] (GuardConditions) {return true;}}
+        {{{waitingStart, sendingPacket, xymodem::C, [] (GuardConditions) { return true; }},
+          {sendingPacket, sendingPacket,xymodem::ACK,[] (GuardConditions t_guards){ return t_guards.get (packetsLeft) > 0; }},
+          {sendingPacket, retryingPacket, xymodem::NAK, [] (GuardConditions) { return true; }},
+          {sendingPacket, endOfTransmission, xymodem::ACK, [] (GuardConditions t_guards) { return t_guards.get (packetsLeft) == 0; }},
+          {endOfTransmission, transmissionFinished, xymodem::ACK, [] (GuardConditions) { return true; }},
+          {endOfTransmission, retryingEOT, xymodem::NAK, [] (GuardConditions) { return true; }},
+          {retryingEOT, transmissionFinished, xymodem::ACK, [] (GuardConditions) { return true; }},
+          {retryingEOT, retryingEOT, xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xymodem::maxRetries; }},
+          {retryingEOT,abort,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xymodem::maxRetries; }},
+          {retryingPacket, retryingPacket,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xymodem::maxRetries; }},
+          {retryingPacket,sendingPacket,xymodem::ACK,[] (GuardConditions) { return true; }},
+          {retryingPacket,abort,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xymodem::maxRetries; }},
+          {undefined,sendingPacket,xymodem::C,[] (GuardConditions t_guards){ return t_guards.get (packetsLeft) > 0; }},
+          {undefined,retryingPacket,xymodem::NAK,[] (GuardConditions) { return true; }},
+          {undefined,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
+          {waitingStart,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
+          {sendingPacket,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
+          {endOfTransmission,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
+          {retryingPacket,abort, xymodem::CAN,[] (GuardConditions) { return true; }},
+          {retryingEOT, abort, xymodem::CAN, [] (GuardConditions) {return true;}}
           }};
     //clang-format on
     FRIEND_TEST (TestXYModemHelper, TestMakeDataPacket);

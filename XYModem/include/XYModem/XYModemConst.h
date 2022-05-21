@@ -34,7 +34,7 @@ struct TransmissionAborted : public std::exception
 } // namespace XYModemExceptions
 
 using int64 = long long;                                                                                            
-namespace xyModemConst
+namespace xymodem
 {
 [[maybe_unused]] constexpr uint8_t SOH =
     0x01; // also found as "SOH" in the documentation.
@@ -61,4 +61,4 @@ namespace xyModemConst
 [[maybe_unused]] constexpr auto totalExtraSize = packetHeaderSize + packetCRCSize;
 [[maybe_unused]] constexpr auto timeout = 30s;
 [[maybe_unused]] constexpr auto maxRetries = 10;
-} // namespace xyModemConst
+} // namespace xymodem

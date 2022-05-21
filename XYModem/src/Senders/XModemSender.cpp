@@ -10,26 +10,26 @@ XModemSender<payloadSize>::XModemSender (std::shared_ptr<DeviceHandler> deviceHa
     : FileTransferProtocol (
           std::move(deviceHandler_), waitingStart, std::move(logger))
 {
-    static_assert(payloadSize == xyModemConst::payloadSize1K || payloadSize == xyModemConst::payloadSize128);
+    static_assert(payloadSize == xymodem::payloadSize1K || payloadSize == xymodem::payloadSize128);
     guards.addGuards ({{retries, 0}, {packetsLeft, 0}});
 };
 
 template<int payloadSize>
-std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> XModemSender<payloadSize>::makeDataPacket (const std::string& data_,
+std::array<uint8_t, payloadSize + xymodem::totalExtraSize> XModemSender<payloadSize>::makeDataPacket (const std::string& data_,
                                const uint8_t& t_packetNum,
                                const bool logHex)
 {
     static uint8_t payloadType = 0;
-    if constexpr (payloadSize == xyModemConst::payloadSize1K)
+    if constexpr (payloadSize == xymodem::payloadSize1K)
     {
-        payloadType = xyModemConst::STX;
+        payloadType = xymodem::STX;
     }
     else
     {
-        payloadType = xyModemConst::SOH;
+        payloadType = xymodem::SOH;
     }
 
-    std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet = { 0x00 };
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet = { 0x00 };
     std::array<uint8_t, payloadSize> data = { 0x00 };
     // packets except header and last packet are filled with 0xFF
     for (auto& byte : data)
@@ -38,7 +38,7 @@ std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> XModemSender<pay
     }
 
     // Making header (SOH/STX, packetnum(0-255), 255-packetnum)
-    const std::array<uint8_t, xyModemConst::packetHeaderSize> header = {
+    const std::array<uint8_t, xymodem::packetHeaderSize> header = {
         payloadType,
         t_packetNum,
         static_cast<unsigned char> (~t_packetNum)};
@@ -64,7 +64,7 @@ std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> XModemSender<pay
 }
 
 template<int payloadSize>
-void XModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> packet)
+void XModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet)
 {
     deviceHandler->flushAllInputBuffers ();
     deviceHandler->write (packet.data (), packet.size ());
@@ -126,7 +126,7 @@ void XModemSender<payloadSize>::executeState (const unsigned int state, bool log
     case endOfTransmission:
     {
         guards.set (retries, 0);
-        const uint8_t buffer[1] = {xyModemConst::EOT};
+        const uint8_t buffer[1] = {xymodem::EOT};
         deviceHandler->flushAllInputBuffers ();
         deviceHandler->write (buffer, 1);
         logger->debug ("Sent EOT");
@@ -135,7 +135,7 @@ void XModemSender<payloadSize>::executeState (const unsigned int state, bool log
     case retryingEOT:
     {
         guards.inc (retries);
-        const uint8_t buffer[1] = {xyModemConst::EOT};
+        const uint8_t buffer[1] = {xymodem::EOT};
         deviceHandler->flushAllInputBuffers ();
         deviceHandler->write (buffer, 1);
         logger->debug ("Re-sent EOT");
@@ -189,7 +189,7 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
     if (lastPacketRemaining != 0)
         guards.inc (packetsLeft); // In case the file is less
                                   // than
-                                  // xyModemConst::packetDataSize
+                                  // xymodem::packetDataSize
                                   // bytes
     totalPackets = guards.get (packetsLeft);
     ////
@@ -229,7 +229,7 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
             {
                 logger->warn ("Timeout ... Transmission aborted");
                 throw XYModemExceptions::Timeout (
-                    xyModemConst::timeout.count ());
+                    xymodem::timeout.count ());
                 break;
             }
         }
@@ -242,7 +242,7 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
 }
 
 
-template class XModemSender<xyModemConst::payloadSize1K>;
-template class XModemSender<xyModemConst::payloadSize128>;
+template class XModemSender<xymodem::payloadSize1K>;
+template class XModemSender<xymodem::payloadSize128>;
 
 }
