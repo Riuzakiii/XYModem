@@ -25,7 +25,7 @@ namespace xymodem
  * @see XModem
  * @see FileTransferProtocol
  */
-template<int payloadSize = xymodem::payloadSize1K>
+template<std::size_t payloadSize = xymodem::payloadSize1K>
 class YModemSender : private FileTransferProtocol
 {
 public:

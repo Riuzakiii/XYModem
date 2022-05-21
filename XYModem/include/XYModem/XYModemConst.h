@@ -54,11 +54,11 @@ namespace xymodem
     0x43; // also found as "C" in the documentation.
 [[maybe_unused]] constexpr auto fileNameSep = 0x00;
 [[maybe_unused]] constexpr auto headerFieldsSep = 0x20;
-[[maybe_unused]] constexpr auto payloadSize1K = 1024;
-[[maybe_unused]] constexpr auto payloadSize128 = 128;
+[[maybe_unused]] constexpr std::size_t payloadSize1K = 1024;
+[[maybe_unused]] constexpr std::size_t payloadSize128 = 128;
 [[maybe_unused]] constexpr auto packetHeaderSize = 3;
 [[maybe_unused]] constexpr auto packetCRCSize = 2;
-[[maybe_unused]] constexpr auto totalExtraSize = packetHeaderSize + packetCRCSize;
+[[maybe_unused]] constexpr std::size_t totalExtraSize = packetHeaderSize + packetCRCSize;
 [[maybe_unused]] constexpr auto timeout = 30s;
 [[maybe_unused]] constexpr auto maxRetries = 10;
 } // namespace xymodem

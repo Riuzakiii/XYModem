@@ -30,7 +30,7 @@ int main (int argc, [[maybe_unused]] char* argv[])
 
     auto serialHandler = std::make_shared<SerialHandler>(serialDevice);
     auto logger = std::make_shared<Spdlogger>();
-    XModemSender<128> xmodem (serialHandler, logger);
+    XModemSender<xymodem::payloadSize1K> xmodem (serialHandler, logger);
 
     std::string filePath;
     bool withHex = false;

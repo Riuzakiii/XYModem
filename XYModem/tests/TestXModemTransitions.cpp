@@ -12,7 +12,7 @@ public:
 
     serial::Serial serialDevice;
     std::shared_ptr<SerialHandler> deviceHandler;
-    XModemSender<> xModem;
+    XModemSender<xymodem::payloadSize1K> xModem;
 };
 
 TEST_F (XModemTest, TestBeginXModem)

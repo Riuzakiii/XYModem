@@ -6,7 +6,7 @@ namespace xymodem
 {
     namespace tools
     {
-        template<int size>
+        template<std::size_t size>
         inline std::string dispByteArray(std::array<uint8_t, size> data)
         {
             return fmt::format("{:#04x}", fmt::join(data, ","));
@@ -42,7 +42,7 @@ namespace xymodem
         * The CRC is the remainder in this division. A Look-up table speeds up the computation,
         * trading memory for speed (an array is computed at compile time, should be a bit more than 512 bytes).
         */
-        template<int payloadSize = xymodem::payloadSize1K>
+        template<std::size_t payloadSize = xymodem::payloadSize1K>
         [[nodiscard]] inline uint16_t compute_crc16xmodem(std::array<uint8_t, payloadSize> const& data)
         {
             constexpr uint16_t crc16ccitt = 0x1021;

@@ -5,7 +5,7 @@
 namespace xymodem
 {
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 YModemSender<payloadSize>::YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger)
     : FileTransferProtocol (
           deviceHandler_, waitingStart, logger),
@@ -15,7 +15,7 @@ YModemSender<payloadSize>::YModemSender (const std::shared_ptr<DeviceHandler>& d
     guards.addGuard (retries, 0);
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadSize>::makeHeaderPacket (const std::string& fileName_,
                                  const int64& fileSize_,
                                  const int64& lastModificationDate_,
@@ -56,7 +56,7 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadS
                dataIterator);
 
     // Computing CRC
-    const auto crc = xymodem::tools::compute_crc16xmodem<payloadSize>(data);
+    const auto crc = xymodem::tools::compute_crc16xmodem(data);
     const auto crc_hi = static_cast<uint8_t> (crc >> 8);
     const auto crc_lo = static_cast<uint8_t> (crc);
 
@@ -71,7 +71,7 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadS
     return packet;
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadSize>::makeLastPacket (const bool logHex)
 {
     std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet = { 0x00 };
@@ -99,14 +99,14 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadS
     return packet;
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void YModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet)
 {
     deviceHandler->flushAllInputBuffers ();
     deviceHandler->write (packet.data (), packet.size ());
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void YModemSender<payloadSize>::executeSendHeader (bool logHex)
 {
     if (files.empty ())
@@ -129,7 +129,7 @@ void YModemSender<payloadSize>::executeSendHeader (bool logHex)
     }
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void YModemSender<payloadSize>::executeState (const unsigned int t_currentState, bool logHex)
 {
     switch (t_currentState)
@@ -175,7 +175,7 @@ void YModemSender<payloadSize>::executeState (const unsigned int t_currentState,
     }
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void YModemSender<payloadSize>::transmit (
     const std::vector<std::shared_ptr<File>>& files_,
     std::function<void (float)> updateCallback_,

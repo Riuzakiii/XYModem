@@ -20,8 +20,8 @@ public:
 
     serial::Serial serialDevice;
     std::shared_ptr<SerialHandler> deviceHandler;
-    XModemSender<> xModem;
-    YModemSender<> yModem;
+    XModemSender<xymodem::payloadSize1K> xModem;
+    YModemSender<xymodem::payloadSize1K> yModem;
 };
 
 TEST_F (TestXYModemHelper, TestMakeDataPacket)

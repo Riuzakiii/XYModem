@@ -5,7 +5,7 @@ namespace xymodem
 /**
  * XModem sender
  */
-template<int payloadSize>
+template<std::size_t payloadSize>
 XModemSender<payloadSize>::XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger)
     : FileTransferProtocol (
           std::move(deviceHandler_), waitingStart, std::move(logger))
@@ -14,7 +14,7 @@ XModemSender<payloadSize>::XModemSender (std::shared_ptr<DeviceHandler> deviceHa
     guards.addGuards ({{retries, 0}, {packetsLeft, 0}});
 };
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 std::array<uint8_t, payloadSize + xymodem::totalExtraSize> XModemSender<payloadSize>::makeDataPacket (const std::string& data_,
                                const uint8_t& t_packetNum,
                                const bool logHex)
@@ -47,7 +47,7 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> XModemSender<payloadS
     std::copy (data_.begin (), data_.end (), data.begin ());
 
     // Computing CRC
-    const auto crc = xymodem::tools::compute_crc16xmodem<payloadSize>(data);
+    const auto crc = xymodem::tools::compute_crc16xmodem(data);
     const auto crc_hi = static_cast<uint8_t> (crc >> 8);
     const auto crc_lo = static_cast<uint8_t> (crc);
 
@@ -63,14 +63,14 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> XModemSender<payloadS
     return packet;
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void XModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet)
 {
     deviceHandler->flushAllInputBuffers ();
     deviceHandler->write (packet.data (), packet.size ());
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void XModemSender<payloadSize>::executeSendPacket (const bool logHex)
 {
     if (guards.get (packetsLeft) == 1)
@@ -108,7 +108,7 @@ void XModemSender<payloadSize>::executeSendPacket (const bool logHex)
             static_cast<float> (totalPackets) * 100) + "\\% packets");
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void XModemSender<payloadSize>::executeState (const unsigned int state, bool logHex)
 {
     switch (state)
@@ -156,7 +156,7 @@ void XModemSender<payloadSize>::executeState (const unsigned int state, bool log
     }
 }
 
-template<int payloadSize>
+template<std::size_t payloadSize>
 void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
                        std::function<void (float)> updateCallback_,
                        std::function<bool ()> yieldCallback_,

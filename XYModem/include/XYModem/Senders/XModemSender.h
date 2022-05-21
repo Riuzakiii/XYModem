@@ -19,7 +19,7 @@ namespace xymodem
  * @todo end of File
  * @todo setFileInfos
  */
-template<int payloadSize = xymodem::payloadSize1K>
+template<std::size_t payloadSize = xymodem::payloadSize1K>
 class XModemSender : private FileTransferProtocol
 {
 public:

@@ -65,6 +65,6 @@ TEST(TestTools, TestCRC16)
             crc.update(c);
         }
 
-        EXPECT_EQ(xymodem::tools::compute_crc16xmodem<xymodem::payloadSize1K>(data), crc.final());
+        EXPECT_EQ(xymodem::tools::compute_crc16xmodem(data), crc.final());
     }
 }
