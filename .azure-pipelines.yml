@@ -12,96 +12,135 @@ jobs:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-          gcc_version: 10
+          compiler_version: 10
+          uses_clang_compiler: OFF
         ubuntu_22_04_release_gcc_10:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
-          gcc_version: 10
+          compiler_version: 10
+          uses_clang_compiler: OFF
         ubuntu_22_04_debug_gcc_11:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-          gcc_version: 11
+          compiler_version: 11
+          uses_clang_compiler: OFF
         ubuntu_22_04_release_gcc_11:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
-          gcc_version: 11
+          compiler_version: 11
+          uses_clang_compiler: OFF
+        ubuntu_22_04_debug_clang:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Debug'
+          compiler_version: 14
+          uses_clang_compiler: ON
+        ubuntu_22_04_release_clang:
+          imageName: 'ubuntu-22.04'
+          generator: Unix Makefiles
+          build_configuration: 'Release'
+          compiler_version: 14
+          uses_clang_compiler: ON
         ubuntu_20_04_debug_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-          gcc_version: 10
+          compiler_version: 10
+          uses_clang_compiler: OFF
         ubuntu_20_04_release_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
-          gcc_version: 10
+          compiler_version: 10
+          uses_clang_compiler: OFF
         ubuntu_18_04_debug_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-          gcc_version: 10
+          compiler_version: 10
+          uses_clang_compiler: OFF
         ubuntu_18_04_release_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
-          gcc_version: 10
+          compiler_version: 10
+          uses_clang_compiler: OFF
         mac_10_15_debug_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 12.4
+          uses_clang_compiler: OFF
         mac_10_15_release_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.4
+          uses_clang_compiler: OFF
         mac_11_debug_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.2.1
+          uses_clang_compiler: OFF
         mac_11_release_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.2.1
+          uses_clang_compiler: OFF
         mac_12_debug_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.4
+          uses_clang_compiler: OFF
         mac_12_release_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.4
+          uses_clang_compiler: OFF
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Debug'
+          uses_clang_compiler: OFF
         windows_2019_release:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Release'
+          uses_clang_compiler: OFF
         windows_2022_debug:
           imageName: 'windows-2022'
           generator: Visual Studio 17 2022
           build_configuration: 'Debug'
+          uses_clang_compiler: OFF
         windows_2022_release:
           imageName: 'windows-2022'
           generator: Visual Studio 17 2022
           build_configuration: 'Release'
+          uses_clang_compiler: OFF
     pool:
         vmImage: $(imageName)
     steps:
     - script: |
-        ls /usr/bin/gcc*
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$(gcc_version) 1
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$(gcc_version) 1
+        if [ "$(uses_clang_compiler)" = "OFF" ] ; then
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$(compiler_version) 1
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$(compiler_version) 1
+        fi
+        gcc --version
       displayName: 'Setup the correct version of gcc'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        if [ "$(uses_clang_compiler)" = "ON" ] ; then
+          sudo apt-get install clang
+        fi
+        clang --version
+      displayName: 'Install the latest version of clang'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
         sudo xcode-select -s /Applications/Xcode_$(xcode_version).app
@@ -115,7 +154,7 @@ jobs:
         cd XYModem
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration)
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DUSES_CLANG_COMPILER=$(uses_clang_compiler)
       displayName: 'Generates the Solution of the Project'
     - script: |
         cd XYModem/build

@@ -40,7 +40,7 @@ elseif(WIN32)
 else()
   if(${USES_CLANG_COMPILER})
     set(CONAN_PROFILE linux_clang_profile)
-    get_current_clang_version(COMPILER_VERSION)
+    get_conan_compiler_version_for_clang(COMPILER_VERSION)
   else()
     set(CONAN_PROFILE linux_gcc_profile)
 

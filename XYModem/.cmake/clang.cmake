@@ -21,7 +21,6 @@ function(set_clang_as_main_compiler)
     set(CMAKE_CXX_COMPILER ${CLANG++_EXE} PARENT_SCOPE)
 endfunction()
 
-
 function(get_current_clang_version output_variable)
     find_program (
         CLANG_EXE
@@ -58,4 +57,22 @@ function(get_current_clang_version output_variable)
 
     string(STRIP "${CLANG_VERSION_RAW_OUTPUT}" CLANG_VERSION_RAW_OUTPUT)
     set (${output_variable} ${CLANG_VERSION_RAW_OUTPUT} PARENT_SCOPE)
+endfunction()
+
+function(get_conan_compiler_version_for_clang output_variable)
+    get_current_clang_version(CLANG_VERSION)
+    if(15.0.0 VERSION_LESS_EQUAL ${CLANG_VERSION})
+        set(CONAN_CLANG_VERSION 15)
+    elseif(14.0 VERSION_LESS_EQUAL ${XCODE_VERSION} AND ${XCODE_VERSION} VERSION_LESS 15.0)
+        set(CONAN_CLANG_VERSION 14)
+    elseif(13.0 VERSION_LESS_EQUAL ${XCODE_VERSION} AND ${XCODE_VERSION} VERSION_LESS 14.0)
+        set(CONAN_CLANG_VERSION 13)
+    elseif(12.0 VERSION_LESS_EQUAL ${XCODE_VERSION} AND ${XCODE_VERSION} VERSION_LESS 13.0)
+        set(CONAN_CLANG_VERSION 12)
+    elseif(${XCODE_VERSION} VERSION_LESS 12.0)
+        set(CONAN_CLANG_VERSION 11)
+    else()
+    message(FATAL_ERROR "Error: Version of Clang not supported! - CLANG_VERSION: ${CLANG_VERSION}")
+    endif()
+    set (${output_variable} ${CONAN_CLANG_VERSION} PARENT_SCOPE)
 endfunction()
