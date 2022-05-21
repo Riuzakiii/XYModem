@@ -58,7 +58,7 @@ std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> XModemSender<pay
     *(packet.end () - 1) = crc_lo;
 
     if (logHex)
-        logger->debug (tools::dispByteArray<packet.size ()> (packet));
+        logger->debug (xymodem::tools::dispByteArray<packet.size ()> (packet));
 
     return packet;
 }
@@ -118,7 +118,7 @@ void XModemSender<payloadSize>::executeState (const unsigned int state, bool log
         executeSendPacket (logHex);
         break;
     case retryingPacket:
-        tools::decreasePacketNum (packetNum);
+        xymodem::tools::decreasePacketNum (packetNum);
         guards.inc (packetsLeft);
         guards.inc (retries);
         executeSendPacket (logHex);

@@ -44,7 +44,7 @@ TEST_F (TestXYModemHelper, TestMakeDataPacket)
     const auto dataPacket = xModem.makeDataPacket (data, 5, false);
     std::string id = "0x02,0x05,0xfa";
     std::string crc = "0xc0,0x84";
-    EXPECT_EQ (tools::dispByteArray(dataPacket),
+    EXPECT_EQ (xymodem::tools::dispByteArray(dataPacket),
                fmt::format ("{:s},{:s},{:s}", id, expectedData, crc));
 }
 
@@ -72,7 +72,7 @@ TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
         {0x00};
     std::string crc = "0xa3,0x72";
     EXPECT_EQ (
-        tools::dispByteArray(headerPacket),
+        xymodem::tools::dispByteArray(headerPacket),
         fmt::format ("{:s},{:s},{:#04x},{:s}",
                      id,
                      header,
@@ -87,7 +87,7 @@ TEST_F (TestXYModemHelper, TestMakeLastPacket)
     std::array<uint8_t, xyModemConst::payloadSize1K> packet = {0x00};
     std::string crc = "0x00,0x00";
     EXPECT_EQ (
-        tools::dispByteArray(lastPacket),
+        xymodem::tools::dispByteArray(lastPacket),
         fmt::format ("{:s},{:#04x},{:s}", id, fmt::join (packet, ","), crc));
 }
 } // namespace xymodem

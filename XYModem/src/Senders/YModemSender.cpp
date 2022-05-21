@@ -67,7 +67,7 @@ std::array<uint8_t, payloadSize + xyModemConst::totalExtraSize> YModemSender<pay
     *(packet.end () - 1) = crc_lo;
 
     if (logHex)
-        logger->debug (tools::dispByteArray<packet.size ()> (packet));
+        logger->debug (xymodem::tools::dispByteArray<packet.size ()> (packet));
     return packet;
 }
 
