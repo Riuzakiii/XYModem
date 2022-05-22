@@ -4,7 +4,7 @@ function(get_current_gcc_version output_variable)
         GCC_EXE
         NAMES gcc gcc.exe
         HINTS "/usr/bin"
-        DOC "Location of the gcc exxecutable"
+        DOC "Location of the gcc executable"
         NO_CACHE
         REQUIRED
     )
