@@ -5,19 +5,9 @@ pool:
   vmImage: 'windows-2019'
 
 jobs:
-  - job: Pomodoro
+  - job: XYModem
     strategy:
       matrix:
-        # ubuntu_22_04_debug_gcc_9:
-        #   imageName: 'ubuntu-22.04'
-        #   generator: Unix Makefiles
-        #   build_configuration: 'Debug'
-        #   gcc_version: 9
-        # ubuntu_22_04_release_gcc_9:
-        #   imageName: 'ubuntu-22.04'
-        #   generator: Unix Makefiles
-        #   build_configuration: 'Release'
-        #   gcc_version: 9
         ubuntu_22_04_debug_gcc_10:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
@@ -38,16 +28,6 @@ jobs:
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 11
-        # ubuntu_20_04_debug_gcc_9:
-        #   imageName: 'ubuntu-20.04'
-        #   generator: Unix Makefiles
-        #   build_configuration: 'Debug'
-        #   gcc_version: 9
-        # ubuntu_20_04_release_gcc_9:
-        #   imageName: 'ubuntu-20.04'
-        #   generator: Unix Makefiles
-        #   build_configuration: 'Release'
-        #   gcc_version: 9
         ubuntu_20_04_debug_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
@@ -58,16 +38,6 @@ jobs:
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 10
-        # ubuntu_18_04_debug_gcc_9:
-        #   imageName: 'ubuntu-18.04'
-        #   generator: Unix Makefiles
-        #   build_configuration: 'Debug'
-        #   gcc_version: 9
-        # ubuntu_18_04_release_gcc_9:
-        #   imageName: 'ubuntu-18.04'
-        #   generator: Unix Makefiles
-        #   build_configuration: 'Release'
-        #   gcc_version: 9
         ubuntu_18_04_debug_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
@@ -78,14 +48,36 @@ jobs:
           generator: Unix Makefiles
           build_configuration: 'Release'
           gcc_version: 10
-        mac_debug:
+        mac_10_15_debug_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
-        mac_release:
+          xcode_version: 12.4
+        mac_10_15_release_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
+          xcode_version: 12.4
+        mac_11_debug_xcode_13_2_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.2.1
+        mac_11_release_xcode_13_2_1:
+          imageName: 'macOS-11'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.2.1
+        mac_12_debug_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.4
+        mac_12_release_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.4
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
@@ -111,6 +103,10 @@ jobs:
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$(gcc_version) 1
       displayName: 'Setup the correct version of gcc'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        sudo xcode-select -s /Applications/Xcode_$(xcode_version).app
+      displayName: 'Setup the correct version of Xcode'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
         pip3 install setuptools
         pip3 install -r requirements.txt
