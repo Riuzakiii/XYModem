@@ -1,50 +1,61 @@
-﻿#include "Senders/YModemSender.h"
-
+﻿
 // ====================================================================
 
 namespace xymodem
 {
-YModemSender::YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger)
+
+template<std::size_t payloadSize>
+YModemSender<payloadSize>::YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger)
     : FileTransferProtocol (
           deviceHandler_, waitingStart, logger),
       xModem (deviceHandler_, logger)
 {
+    static_assert(payloadSize == xymodem::payloadSize1K || payloadSize == xymodem::payloadSize128);
     guards.addGuard (retries, 0);
 }
 
-Packet YModemSender::makeHeaderPacket (const std::string& fileName_,
+template<std::size_t payloadSize>
+std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadSize>::makeHeaderPacket (const std::string& fileName_,
                                  const int64& fileSize_,
                                  const int64& lastModificationDate_,
                                  const bool logHex)
 {
     assert (fileSize_ >= 0);
     assert (lastModificationDate_ >= 0);
-    Packet packet = {0x00};
-    packetData data = {0x00};
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet = {0x00};
+    std::array<uint8_t, payloadSize> data = {0x00};
     auto dataIterator = data.begin (); // NOLINT(readability-qualified-auto)
 
     // Making header
-
-    const std::array<uint8_t, xyModemConst::packetHeaderSize> header = {
-        xyModemConst::STX, 0x00, 0xFF};
+    static uint8_t payloadType = 0;
+    if constexpr (payloadSize == xymodem::payloadSize1K)
+    {
+        payloadType = xymodem::STX;
+    }
+    else
+    {
+        payloadType = xymodem::SOH;
+    }
+    const std::array<uint8_t, xymodem::packetHeaderSize> header = {
+        payloadType, 0x00, 0xFF};
 
     // Adding the required information in data (filename, file length,
     // modification data since UNIX epoch in seconds)
 
     std::copy (fileName_.begin (), fileName_.end (), dataIterator);
     dataIterator += fileName_.size ();
-    *(dataIterator++) = xyModemConst::fileNameSep;
+    *(dataIterator++) = xymodem::fileNameSep;
     const auto fileSizeStr = std::to_string (fileSize_);
     std::copy (fileSizeStr.begin (), fileSizeStr.end (), dataIterator);
     dataIterator += fileSizeStr.size ();
-    *(dataIterator++) = xyModemConst::headerFieldsSep;
+    *(dataIterator++) = xymodem::headerFieldsSep;
     const auto lastModificationDateStr = std::to_string (lastModificationDate_);
     std::copy (lastModificationDateStr.begin (),
                lastModificationDateStr.end (),
                dataIterator);
 
     // Computing CRC
-    const auto crc = tools::compute_crc16xmodem (data);
+    const auto crc = xymodem::tools::compute_crc16xmodem(data);
     const auto crc_hi = static_cast<uint8_t> (crc >> 8);
     const auto crc_lo = static_cast<uint8_t> (crc);
 
@@ -55,18 +66,28 @@ Packet YModemSender::makeHeaderPacket (const std::string& fileName_,
     *(packet.end () - 1) = crc_lo;
 
     if (logHex)
-        logger->debug (tools::dispByteArray<packet.size ()> (packet));
+        logger->debug (xymodem::tools::dispByteArray<packet.size ()> (packet));
     return packet;
 }
 
-Packet YModemSender::makeLastPacket (const bool logHex)
+template<std::size_t payloadSize>
+std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadSize>::makeLastPacket (const bool logHex)
 {
-    Packet packet = {0x00};
-    packetData data = {0x00}; // Last packet filed with 0s
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet = { 0x00 };
+    std::array<uint8_t, payloadSize> data = { 0x00 }; // Last packet filed with 0s
 
     // Making the header(SOH/STX, 0x00, 0xFF)
-    const std::array<uint8_t, xyModemConst::packetHeaderSize> header = {
-        xyModemConst::STX, 0x00, 0xFF};
+    static uint8_t payloadType = 0;
+    if constexpr (payloadSize == xymodem::payloadSize1K)
+    {
+        payloadType = xymodem::STX;
+    }
+    else
+    {
+        payloadType = xymodem::SOH;
+    }
+    const std::array<uint8_t, xymodem::packetHeaderSize> header = {
+        payloadType, 0x00, 0xFF};
 
     // Copying the header, data and crc to the packet
     std::copy (header.begin (), header.end (), packet.begin ());
@@ -77,13 +98,15 @@ Packet YModemSender::makeLastPacket (const bool logHex)
     return packet;
 }
 
-void YModemSender::writePacket (Packet packet)
+template<std::size_t payloadSize>
+void YModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet)
 {
     deviceHandler->flushAllInputBuffers ();
     deviceHandler->write (packet.data (), packet.size ());
 }
 
-void YModemSender::executeSendHeader (bool logHex)
+template<std::size_t payloadSize>
+void YModemSender<payloadSize>::executeSendHeader (bool logHex)
 {
     if (files.empty ())
     {
@@ -104,7 +127,9 @@ void YModemSender::executeSendHeader (bool logHex)
         logger->info ("Wrote header packet");
     }
 }
-void YModemSender::executeState (const unsigned int t_currentState, bool logHex)
+
+template<std::size_t payloadSize>
+void YModemSender<payloadSize>::executeState (const unsigned int t_currentState, bool logHex)
 {
     switch (t_currentState)
     {
@@ -149,8 +174,8 @@ void YModemSender::executeState (const unsigned int t_currentState, bool logHex)
     }
 }
 
-
-void YModemSender::transmit (
+template<std::size_t payloadSize>
+void YModemSender<payloadSize>::transmit (
     const std::vector<std::shared_ptr<File>>& files_,
     std::function<void (float)> updateCallback_,
     std::function<bool ()> yieldCallback_,
@@ -183,7 +208,7 @@ void YModemSender::transmit (
                 currentState = getNextState (characterReceived,
                                              currentState,
                                              undefined,
-                                             stateTransitions);
+                                             YModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string(currentState));
                 executeState (currentState, logHex);
                 if (currentState != xModemTransmission)
@@ -192,7 +217,7 @@ void YModemSender::transmit (
                     {
                         logger->warn ("Timeout ... Transmission aborted");
                         throw XYModemExceptions::Timeout (
-                            xyModemConst::timeout.count ());
+                            xymodem::timeout.count ());
                     }
                 }
             }
@@ -203,5 +228,8 @@ void YModemSender::transmit (
         }
     }
 }
+
+template class YModemSender<xymodem::payloadSize1K>;
+template class YModemSender<xymodem::payloadSize128>;
 
 } //namespace xymodem

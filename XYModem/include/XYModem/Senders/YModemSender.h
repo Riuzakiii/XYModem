@@ -25,6 +25,7 @@ namespace xymodem
  * @see XModem
  * @see FileTransferProtocol
  */
+template<std::size_t payloadSize = xymodem::payloadSize1K>
 class YModemSender : private FileTransferProtocol
 {
 public:
@@ -65,7 +66,7 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    Packet makeHeaderPacket (const std::string& _fileName,
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeHeaderPacket (const std::string& _fileName,
                              const int64& _fileSize,
                              const int64& _lastModificationDate,
                              const bool logHex = false);
@@ -73,19 +74,19 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    Packet makeLastPacket (const bool logHex = false);
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeLastPacket (const bool logHex = false);
 
     /** Write packet to the device
      * @param packet The packet to send to the device
      */
-    void writePacket (Packet packet);
+    void writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet);
 
     virtual void executeState (const unsigned int currentState,
                                bool logHex) override;
     void executeSendHeader (bool logHex);
 
 
-    XModemSender xModem;
+    XModemSender<> xModem;
     std::vector<std::shared_ptr<File>> files;
     
     // YModem state machine constants
@@ -98,19 +99,24 @@ private:
     [[maybe_unused]] static constexpr unsigned int undefined = 4;
     [[maybe_unused]] static constexpr unsigned int abort = 5;
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 6;
+
+    static bool noConditions(GuardConditions) { return true; }
+    static bool checkCanRetry(GuardConditions t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
+    static bool checkCannotRetry(GuardConditions t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
+
     // clang-format off
-    [[maybe_unused]] inline static std::array<transition, 11> stateTransitions =
-        {{{waitingStart,sendingHeader,xyModemConst::C,[] (GuardConditions) { return true; }},
-          {sendingHeader,xModemTransmission,xyModemConst::ACK,[] (GuardConditions) { return true; }},
-          {sendingHeader,retryingHeader,xyModemConst::NAK,[] (GuardConditions) { return true; }},
-          {retryingHeader,retryingHeader,xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xyModemConst::maxRetries; }},
-          {retryingHeader,abort,xyModemConst::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xyModemConst::maxRetries; }},
-          {xModemTransmission,sendingHeader,xyModemConst::C,[] (GuardConditions) { return true; }},
-          {undefined,sendingHeader,xyModemConst::C,[] (GuardConditions) { return true; }},
-          {waitingStart,abort,xyModemConst::CAN,[] (GuardConditions) { return true; }},
-          {sendingHeader,abort, xyModemConst::CAN, [] (GuardConditions) { return true; }},
-          {xModemTransmission,abort,xyModemConst::CAN, [] (GuardConditions) { return true; }},
-          {undefined, abort, xyModemConst::CAN, [] (GuardConditions) {return true;}}
+    [[maybe_unused]] static inline std::array<transition, 11> stateTransitions
+        {{{waitingStart,sendingHeader,xymodem::C, noConditions},
+          {sendingHeader,xModemTransmission,xymodem::ACK, noConditions},
+          {sendingHeader,retryingHeader,xymodem::NAK, noConditions},
+          {retryingHeader,retryingHeader,xymodem::NAK, checkCanRetry},
+          {retryingHeader,abort,xymodem::NAK, checkCannotRetry},
+          {xModemTransmission,sendingHeader,xymodem::C, noConditions},
+          {undefined,sendingHeader,xymodem::C, noConditions},
+          {waitingStart,abort,xymodem::CAN, noConditions},
+          {sendingHeader,abort, xymodem::CAN, noConditions},
+          {xModemTransmission,abort,xymodem::CAN, noConditions},
+          {undefined, abort, xymodem::CAN, noConditions}
           }};
     //clang-format on
 
@@ -129,3 +135,5 @@ private:
     FRIEND_TEST (YModemTest, TestXModemTransmissionButCAN);
 };
 }
+
+#include "../../src/Senders/YModemSender.hpp"
