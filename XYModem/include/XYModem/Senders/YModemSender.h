@@ -129,5 +129,6 @@ private:
     FRIEND_TEST (YModemTest, TestRetryingHeaderButCAN);
     FRIEND_TEST (YModemTest, TestXModemTransmissionButCAN);
 };
-
 }
+
+#include "../../src/Senders/YModemSender.hpp"

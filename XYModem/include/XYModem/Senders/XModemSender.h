@@ -133,5 +133,6 @@ private:
     FRIEND_TEST (XModemTest, TestRetryingPacketButCAN);
     FRIEND_TEST (XModemTest, TestRetryingEOTButCAN);
 };
-
 }
+
+#include "../../src/Senders/XModemSender.hpp"

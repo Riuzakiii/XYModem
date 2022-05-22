@@ -1,5 +1,4 @@
-﻿#include "Senders/YModemSender.h"
-
+﻿
 // ====================================================================
 
 namespace xymodem
