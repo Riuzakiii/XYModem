@@ -99,19 +99,24 @@ private:
     [[maybe_unused]] static constexpr unsigned int undefined = 4;
     [[maybe_unused]] static constexpr unsigned int abort = 5;
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 6;
+
+    static bool noConditions(GuardConditions) { return true; }
+    static bool checkCanRetry(GuardConditions t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
+    static bool checkCannotRetry(GuardConditions t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
+
     // clang-format off
-    [[maybe_unused]] inline static std::array<transition, 11> stateTransitions =
-        {{{waitingStart,sendingHeader,xymodem::C,[] (GuardConditions) { return true; }},
-          {sendingHeader,xModemTransmission,xymodem::ACK,[] (GuardConditions) { return true; }},
-          {sendingHeader,retryingHeader,xymodem::NAK,[] (GuardConditions) { return true; }},
-          {retryingHeader,retryingHeader,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xymodem::maxRetries; }},
-          {retryingHeader,abort,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xymodem::maxRetries; }},
-          {xModemTransmission,sendingHeader,xymodem::C,[] (GuardConditions) { return true; }},
-          {undefined,sendingHeader,xymodem::C,[] (GuardConditions) { return true; }},
-          {waitingStart,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
-          {sendingHeader,abort, xymodem::CAN, [] (GuardConditions) { return true; }},
-          {xModemTransmission,abort,xymodem::CAN, [] (GuardConditions) { return true; }},
-          {undefined, abort, xymodem::CAN, [] (GuardConditions) {return true;}}
+    [[maybe_unused]] static inline std::array<transition, 11> stateTransitions
+        {{{waitingStart,sendingHeader,xymodem::C, noConditions},
+          {sendingHeader,xModemTransmission,xymodem::ACK, noConditions},
+          {sendingHeader,retryingHeader,xymodem::NAK, noConditions},
+          {retryingHeader,retryingHeader,xymodem::NAK, checkCanRetry},
+          {retryingHeader,abort,xymodem::NAK, checkCannotRetry},
+          {xModemTransmission,sendingHeader,xymodem::C, noConditions},
+          {undefined,sendingHeader,xymodem::C, noConditions},
+          {waitingStart,abort,xymodem::CAN, noConditions},
+          {sendingHeader,abort, xymodem::CAN, noConditions},
+          {xModemTransmission,abort,xymodem::CAN, noConditions},
+          {undefined, abort, xymodem::CAN, noConditions}
           }};
     //clang-format on
 

@@ -92,28 +92,35 @@ private:
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 5;
     [[maybe_unused]] static constexpr unsigned int undefined = 6;
     [[maybe_unused]] static constexpr unsigned int abort = 7;
+
+    static bool noConditions(GuardConditions) { return true; }
+    static bool checkNoPacketsLeft(GuardConditions t_guards) { return t_guards.get(packetsLeft) == 0; }
+    static bool checkPacketsLeft(GuardConditions t_guards) { return t_guards.get(packetsLeft) > 0; }
+    static bool checkCanRetry(GuardConditions t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
+    static bool checkCannotRetry(GuardConditions t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
+
     // clang-format off
-    [[maybe_unused]] inline static std::array<transition, 20> stateTransitions =
-        {{{waitingStart, sendingPacket, xymodem::C, [] (GuardConditions) { return true; }},
-          {sendingPacket, sendingPacket,xymodem::ACK,[] (GuardConditions t_guards){ return t_guards.get (packetsLeft) > 0; }},
-          {sendingPacket, retryingPacket, xymodem::NAK, [] (GuardConditions) { return true; }},
-          {sendingPacket, endOfTransmission, xymodem::ACK, [] (GuardConditions t_guards) { return t_guards.get (packetsLeft) == 0; }},
-          {endOfTransmission, transmissionFinished, xymodem::ACK, [] (GuardConditions) { return true; }},
-          {endOfTransmission, retryingEOT, xymodem::NAK, [] (GuardConditions) { return true; }},
-          {retryingEOT, transmissionFinished, xymodem::ACK, [] (GuardConditions) { return true; }},
-          {retryingEOT, retryingEOT, xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xymodem::maxRetries; }},
-          {retryingEOT,abort,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xymodem::maxRetries; }},
-          {retryingPacket, retryingPacket,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) <= xymodem::maxRetries; }},
-          {retryingPacket,sendingPacket,xymodem::ACK,[] (GuardConditions) { return true; }},
-          {retryingPacket,abort,xymodem::NAK,[] (GuardConditions t_guards){ return t_guards.get (retries) > xymodem::maxRetries; }},
-          {undefined,sendingPacket,xymodem::C,[] (GuardConditions t_guards){ return t_guards.get (packetsLeft) > 0; }},
-          {undefined,retryingPacket,xymodem::NAK,[] (GuardConditions) { return true; }},
-          {undefined,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
-          {waitingStart,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
-          {sendingPacket,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
-          {endOfTransmission,abort,xymodem::CAN,[] (GuardConditions) { return true; }},
-          {retryingPacket,abort, xymodem::CAN,[] (GuardConditions) { return true; }},
-          {retryingEOT, abort, xymodem::CAN, [] (GuardConditions) {return true;}}
+    [[maybe_unused]] static inline std::array<transition, 20> stateTransitions
+        {{{waitingStart, sendingPacket, xymodem::C, noConditions},
+          {sendingPacket, sendingPacket,xymodem::ACK, checkPacketsLeft},
+          {sendingPacket, retryingPacket, xymodem::NAK, noConditions},
+          {sendingPacket, endOfTransmission, xymodem::ACK, checkNoPacketsLeft},
+          {endOfTransmission, transmissionFinished, xymodem::ACK, noConditions},
+          {endOfTransmission, retryingEOT, xymodem::NAK, noConditions},
+          {retryingEOT, transmissionFinished, xymodem::ACK, noConditions},
+          {retryingEOT, retryingEOT, xymodem::NAK, checkCanRetry},
+          {retryingEOT,abort,xymodem::NAK, checkCannotRetry},
+          {retryingPacket, retryingPacket,xymodem::NAK, checkCanRetry},
+          {retryingPacket,sendingPacket,xymodem::ACK, noConditions},
+          {retryingPacket,abort,xymodem::NAK, checkCannotRetry},
+          {undefined,sendingPacket,xymodem::C, checkPacketsLeft},
+          {undefined,retryingPacket,xymodem::NAK, noConditions},
+          {undefined,abort,xymodem::CAN, noConditions},
+          {waitingStart,abort,xymodem::CAN, noConditions},
+          {sendingPacket,abort,xymodem::CAN, noConditions},
+          {endOfTransmission,abort,xymodem::CAN, noConditions},
+          {retryingPacket,abort, xymodem::CAN, noConditions},
+          {retryingEOT, abort, xymodem::CAN, noConditions}
           }};
     //clang-format on
     FRIEND_TEST (TestXYModemHelper, TestMakeDataPacket);

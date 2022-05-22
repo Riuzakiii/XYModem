@@ -217,7 +217,7 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
                 currentState = getNextState (characterReceived,
                                              currentState,
                                              undefined,
-                                             stateTransitions);
+                                             XModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string(currentState));
                 executeState (currentState, logHex);
 

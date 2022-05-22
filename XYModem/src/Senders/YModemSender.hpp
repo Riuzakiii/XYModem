@@ -208,7 +208,7 @@ void YModemSender<payloadSize>::transmit (
                 currentState = getNextState (characterReceived,
                                              currentState,
                                              undefined,
-                                             stateTransitions);
+                                             YModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string(currentState));
                 executeState (currentState, logHex);
                 if (currentState != xModemTransmission)
