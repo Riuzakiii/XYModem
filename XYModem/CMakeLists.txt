@@ -3,9 +3,15 @@ cmake_minimum_required(VERSION 3.4)
 set(CMAKE_CXX_STANDARD 17) # Default CPP standard.
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET
-    "10.12"
-    CACHE STRING "Minimum OS X deployment version")
+if(APPLE)
+  if("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "x86_64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version")
+  elseif("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "arm64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum OS X deployment version")
+  else()
+    message(FATAL_ERROR "Error: Unknown architecture ! - CMAKE_OSX_ARCHITECTURES: ${CMAKE_OSX_ARCHITECTURES}")
+  endif()
+endif()
 
 set(WITH_STATIC_ANALYSIS OFF CACHE BOOL "Runs clang-tidy on this project")
 set(USES_CLANG_COMPILER OFF CACHE BOOL "Indicates if we want to compile with clang (Linux only)")
