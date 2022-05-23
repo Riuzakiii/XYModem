@@ -110,6 +110,20 @@ jobs:
           xcode_version: 13.4
           uses_clang_compiler: OFF
           osx_architecture: 'x86_64'
+        mac_12_arm64_debug_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.4
+          uses_clang_compiler: OFF
+          osx_architecture: 'arm64'
+        mac_12_arm64_release_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.4
+          uses_clang_compiler: OFF
+          osx_architecture: 'arm64'
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
