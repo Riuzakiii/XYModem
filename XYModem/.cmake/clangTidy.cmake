@@ -8,7 +8,7 @@ find_program (
     REQUIRED
    )
 
-set(CLANG_TIDY_CHECKS_MISC misc-definitions-in-headers,misc-misleading-bidirectional,misc-misleading-identifier,misc-misplaced-const,misc-new-delete-overloads,misc-no-recursion,misc-non-copyable-objects,misc-non-private-member-variables-in-classes)
+set(CLANG_TIDY_CHECKS_MISC misc-definitions-in-headers,misc-misleading-bidirectional,misc-misleading-identifier,misc-misplaced-const,misc-new-delete-overloads,misc-no-recursion,misc-non-copyable-objects,misc-non-private-member-variables-in-classes,misc-redundant-expression)
 set(CLANG_TIDY_CHECKS_READABILITY readability-*,-readability-magic-numbers)
 set(CLANG_TIDY_CHECKS_CPPCORE_GUIDELINE cppcoreguidelines-*,-cppcoreguidelines-avoid-magic-numbers,-cppcoreguidelines-avoid-c-arrays)
 set(CLANG_TIDY_MODERNIZE_CHECKS modernize-*,-modernize-avoid-c-arrays,-modernize-use-trailing-return-type)
