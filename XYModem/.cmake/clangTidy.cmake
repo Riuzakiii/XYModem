@@ -8,7 +8,7 @@ find_program (
     REQUIRED
    )
 
-set(CLANG_TIDY_CHECKS_READABILITY readability-avoid-const-params-in-decls,readability-braces-around-statements,readability-const-return-type,readability-container-contains,readability-container-data-pointer,readability-container-size-empty,readability-convert-member-functions-to-static,readability-delete-null-pointer,readability-duplicate-include,readability-else-after-return,readability-function-cognitive-complexity,readability-function-size,readability-identifier-length,readability-identifier-naming)
+set(CLANG_TIDY_CHECKS_READABILITY readability-avoid-const-params-in-decls,readability-braces-around-statements,readability-const-return-type,readability-container-contains,readability-container-data-pointer,readability-container-size-empty,readability-convert-member-functions-to-static,readability-delete-null-pointer,readability-duplicate-include,readability-else-after-return,readability-function-cognitive-complexity,readability-function-size,readability-identifier-length,readability-identifier-naming,readability-implicit-bool-conversion)
 set(CLANG_TIDY_CHECKS_CPPCORE_GUIDELINE cppcoreguidelines-*,-cppcoreguidelines-avoid-magic-numbers,-cppcoreguidelines-avoid-c-arrays)
 set(CLANG_TIDY_MODERNIZE_CHECKS modernize-*,-modernize-avoid-c-arrays,-modernize-use-trailing-return-type)
 set(CLANG_TIDY_CHECKS bugprone-*,clang-analyzer-*,concurrency-*,${CLANG_TIDY_CHECKS_CPPCORE_GUIDELINE},${CLANG_TIDY_MODERNIZE_CHECKS},performance-*,portability-*,${CLANG_TIDY_CHECKS_READABILITY})
