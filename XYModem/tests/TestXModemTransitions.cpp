@@ -10,6 +10,13 @@ class XModemTest : public ::testing::Test
 public:
     XModemTest () : deviceHandler (std::make_shared<SerialHandler>(serialDevice)), xModem (deviceHandler) {}
 
+    [[nodiscard]] const auto& getXModem() const { return xModem; }
+    [[nodiscard]] auto& getXModem() { return xModem; }
+
+    [[nodiscard]] const auto& getDeviceHandler() const { return deviceHandler; }
+    [[nodiscard]] auto& getDeviceHandler() { return deviceHandler; }
+
+private:
     serial::Serial serialDevice;
     std::shared_ptr<SerialHandler> deviceHandler;
     XModemSender<xymodem::payloadSize1K> xModem;
@@ -17,7 +24,7 @@ public:
 
 TEST_F (XModemTest, TestBeginXModem)
 {
-    EXPECT_EQ (xModem.getNextState (xymodem::C,
+    EXPECT_EQ (getXModem ().getNextState (xymodem::C,
                                     XModemSender<>::waitingStart,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -26,8 +33,8 @@ TEST_F (XModemTest, TestBeginXModem)
 
 TEST_F (XModemTest, TestSendNextPacket)
 {
-    xModem.guards.set (XModemSender<>::packetsLeft, 2);
-    EXPECT_EQ (xModem.getNextState (xymodem::ACK,
+    getXModem ().guards.set (XModemSender<>::packetsLeft, 2);
+    EXPECT_EQ (getXModem ().getNextState (xymodem::ACK,
                                     XModemSender<>::sendingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -36,8 +43,8 @@ TEST_F (XModemTest, TestSendNextPacket)
 
 TEST_F (XModemTest, TestSendNextPacketButNoPacketsLeft)
 {
-    xModem.guards.set (XModemSender<>::packetsLeft, 0);
-    EXPECT_EQ (xModem.getNextState (xymodem::ACK,
+    getXModem ().guards.set (XModemSender<>::packetsLeft, 0);
+    EXPECT_EQ (getXModem ().getNextState (xymodem::ACK,
                                     XModemSender<>::sendingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -46,8 +53,8 @@ TEST_F (XModemTest, TestSendNextPacketButNoPacketsLeft)
 
 TEST_F (XModemTest, TestRetryingButReachedRetriesLimit)
 {
-    xModem.guards.set (XModemSender<>::retries, 11);
-    EXPECT_EQ (xModem.getNextState (xymodem::NAK,
+    getXModem ().guards.set (XModemSender<>::retries, 11);
+    EXPECT_EQ (getXModem ().getNextState (xymodem::NAK,
                                     XModemSender<>::retryingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -56,8 +63,8 @@ TEST_F (XModemTest, TestRetryingButReachedRetriesLimit)
 
 TEST_F (XModemTest, TestRetryingPacket)
 {
-    xModem.guards.set (XModemSender<>::retries, 0);
-    EXPECT_EQ (xModem.getNextState (xymodem::NAK,
+    getXModem ().guards.set (XModemSender<>::retries, 0);
+    EXPECT_EQ (getXModem ().getNextState (xymodem::NAK,
                                     XModemSender<>::sendingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -65,8 +72,8 @@ TEST_F (XModemTest, TestRetryingPacket)
 }
 TEST_F (XModemTest, TestReretryingPacket)
 {
-    xModem.guards.set (XModemSender<>::retries, 5);
-    EXPECT_EQ (xModem.getNextState (xymodem::NAK,
+    getXModem ().guards.set (XModemSender<>::retries, 5);
+    EXPECT_EQ (getXModem ().getNextState (xymodem::NAK,
                                     XModemSender<>::retryingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -75,8 +82,8 @@ TEST_F (XModemTest, TestReretryingPacket)
 
 TEST_F (XModemTest, TestEOTButNAKReceived)
 {
-    xModem.guards.set (XModemSender<>::retries, 0);
-    EXPECT_EQ (xModem.getNextState (xymodem::NAK,
+    getXModem ().guards.set (XModemSender<>::retries, 0);
+    EXPECT_EQ (getXModem ().getNextState (xymodem::NAK,
                                     XModemSender<>::endOfTransmission,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -85,8 +92,8 @@ TEST_F (XModemTest, TestEOTButNAKReceived)
 
 TEST_F (XModemTest, TestEOTButNAKReceivedAndNoRetriesLeft)
 {
-    xModem.guards.set (XModemSender<>::retries, 11);
-    EXPECT_EQ (xModem.getNextState (xymodem::NAK,
+    getXModem ().guards.set (XModemSender<>::retries, 11);
+    EXPECT_EQ (getXModem ().getNextState (xymodem::NAK,
                                     XModemSender<>::retryingEOT,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -95,7 +102,7 @@ TEST_F (XModemTest, TestEOTButNAKReceivedAndNoRetriesLeft)
 
 TEST_F (XModemTest, TestUnknownCharacterReceived)
 {
-    EXPECT_EQ (xModem.getNextState (23,
+    EXPECT_EQ (getXModem ().getNextState (23,
                                     XModemSender<>::sendingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -104,7 +111,7 @@ TEST_F (XModemTest, TestUnknownCharacterReceived)
 
 TEST_F (XModemTest, TestTransmissionFinished)
 {
-    EXPECT_EQ (xModem.getNextState (xymodem::ACK,
+    EXPECT_EQ (getXModem ().getNextState (xymodem::ACK,
                                     XModemSender<>::endOfTransmission,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -113,7 +120,7 @@ TEST_F (XModemTest, TestTransmissionFinished)
 
 TEST_F (XModemTest, TestTransmissionFinishedAfterEOTRetry)
 {
-    EXPECT_EQ (xModem.getNextState (xymodem::ACK,
+    EXPECT_EQ (getXModem ().getNextState (xymodem::ACK,
                                     XModemSender<>::retryingEOT,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -122,7 +129,7 @@ TEST_F (XModemTest, TestTransmissionFinishedAfterEOTRetry)
 
 TEST_F (XModemTest, TestSendingPacketButCAN)
 {
-    EXPECT_EQ (xModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getXModem ().getNextState (xymodem::CAN,
                                     XModemSender<>::sendingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -131,7 +138,7 @@ TEST_F (XModemTest, TestSendingPacketButCAN)
 
 TEST_F (XModemTest, TestSendEOTButCAN)
 {
-    EXPECT_EQ (xModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getXModem ().getNextState (xymodem::CAN,
                                     XModemSender<>::endOfTransmission,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -140,7 +147,7 @@ TEST_F (XModemTest, TestSendEOTButCAN)
 
 TEST_F (XModemTest, TestRetryingPacketButCAN)
 {
-    EXPECT_EQ (xModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getXModem ().getNextState (xymodem::CAN,
                                     XModemSender<>::retryingPacket,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
@@ -149,7 +156,7 @@ TEST_F (XModemTest, TestRetryingPacketButCAN)
 
 TEST_F (XModemTest, TestRetryingEOTButCAN)
 {
-    EXPECT_EQ (xModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getXModem ().getNextState (xymodem::CAN,
                                     XModemSender<>::retryingEOT,
                                     XModemSender<>::undefined,
                                     XModemSender<>::stateTransitions),
