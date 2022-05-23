@@ -74,36 +74,42 @@ jobs:
           build_configuration: 'Debug'
           xcode_version: 12.4
           uses_clang_compiler: OFF
+          osx_architecture: 'x86_64'
         mac_10_15_release_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 12.4
           uses_clang_compiler: OFF
+          osx_architecture: 'x86_64'
         mac_11_debug_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.2.1
           uses_clang_compiler: OFF
+          osx_architecture: 'x86_64'
         mac_11_release_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.2.1
           uses_clang_compiler: OFF
+          osx_architecture: 'x86_64'
         mac_12_debug_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Debug'
           xcode_version: 13.4
           uses_clang_compiler: OFF
+          osx_architecture: 'x86_64'
         mac_12_release_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
           build_configuration: 'Release'
           xcode_version: 13.4
           uses_clang_compiler: OFF
+          osx_architecture: 'x86_64'
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
@@ -154,7 +160,7 @@ jobs:
         cd XYModem
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DUSES_CLANG_COMPILER=$(uses_clang_compiler)
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DCMAKE_OSX_ARCHITECTURES=$(osx_architecture) -DUSES_CLANG_COMPILER=$(uses_clang_compiler)
       displayName: 'Generates the Solution of the Project'
     - script: |
         cd XYModem/build
