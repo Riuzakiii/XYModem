@@ -2,7 +2,7 @@
 #include <string>
 #include "gtest/gtest_prod.h"
 #include "serial/serial.h"
-#include "DeviceHandler.h"
+#include "Devices/DeviceHandler.h"
 
 namespace xymodem
 {

@@ -1,4 +1,7 @@
 #include "Devices/DeviceHandler.h"
+#include <sstream>
+#include <ios>
+#include <iomanip>
 
 namespace xymodem
 {
@@ -8,12 +11,17 @@ namespace xymodem
 
 std::string DeviceHandler::showBuffer ()
 {
-    std::string result;
-    for (const auto& byte : inputBuffer)
+    std::stringstream result;
+
+    for (auto it = inputBuffer.begin(); it != inputBuffer.end(); ++it)
     {
-        result += fmt::format ("{:>5}", byte);
+        result << "0x" << std::setfill('0') << std::setw(2) << std::hex << std::noshowbase << static_cast<int>(*it);
+        if (it != (inputBuffer.end() - 1))
+        {
+            result << ",";
+        }
     }
-    return result;
+    return result.str();
 }
 
 uint8_t DeviceHandler::readNextByte ()

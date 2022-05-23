@@ -174,7 +174,7 @@ jobs:
         cd XYModem
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DCMAKE_OSX_ARCHITECTURES=$(osx_architecture) -DUSES_CLANG_COMPILER=$(uses_clang_compiler)
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DBUILD_ALL=ON -DCMAKE_OSX_ARCHITECTURES=$(osx_architecture) -DUSES_CLANG_COMPILER=$(uses_clang_compiler)
       displayName: 'Generates the Solution of the Project'
     - script: |
         cd XYModem/build
@@ -220,7 +220,7 @@ jobs:
         cd XYModem
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DWITH_STATIC_ANALYSIS=ON
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DWITH_STATIC_ANALYSIS=ON -DBUILD_ALL=ON
       displayName: 'Generates the Solution of the Project with the static analysis tools set up'
     - script: |
         cd XYModem/build

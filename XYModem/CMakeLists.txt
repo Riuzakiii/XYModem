@@ -16,6 +16,23 @@ endif()
 set(WITH_STATIC_ANALYSIS OFF CACHE BOOL "Runs clang-tidy on this project")
 set(USES_CLANG_COMPILER OFF CACHE BOOL "Indicates if we want to compile with clang (Linux only)")
 
+# Modular build, set which part you need (Core is always built)
+set(BUILD_BACKEND OFF CACHE BOOL "Enable backend (requires Conan)")
+set(BUILD_TESTS OFF CACHE BOOL "Enable testing (requires Conan)")
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+  set(BUILD_EXAMPLES ON CACHE BOOL "Build examples")
+  set(BUILD_BACKEND ON)
+else()
+  set(BUILD_EXAMPLES OFF CACHE BOOL "Build examples")
+endif()
+set(BUILD_ALL OFF CACHE BOOL "Build Core, Backends, Examples and Tests")
+if(BUILD_ALL)
+    set(BUILD_BACKEND ON)
+    set(BUILD_EXAMPLES ON)
+    set(BUILD_TESTS ON)
+endif()
+
+
 if(UNIX AND NOT APPLE AND ${USES_CLANG_COMPILER})
   include(${CMAKE_CURRENT_LIST_DIR}/.cmake/clang.cmake)
   set_clang_as_main_compiler()
@@ -43,23 +60,26 @@ endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-  option(XYMODEM_BUILD_EXAMPLES "Build examples" ON)
-else()
-  option(XYMODEM_BUILD_EXAMPLES "Build examples" OFF)
+if(${BUILD_TESTS} OR ${BUILD_BACKEND} OR ${BUILD_EXAMPLES})
+    include(${CMAKE_CURRENT_LIST_DIR}/setupDependencies.cmake)
 endif()
 
 if(${WITH_STATIC_ANALYSIS})
   include (${CMAKE_CURRENT_LIST_DIR}/.cmake/clangTidy.cmake)
   include (${CMAKE_CURRENT_LIST_DIR}/.cmake/cppcheck.cmake)
 endif()
-
-enable_testing()
-
-include(${CMAKE_CURRENT_LIST_DIR}/setupDependencies.cmake)
-
-add_subdirectory(tests)
 add_subdirectory(src)
-if(XYMODEM_BUILD_EXAMPLES)
+
+if(${BUILD_TESTS})
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
+if(${BUILD_EXAMPLES})
   add_subdirectory(examples)
 endif()
+
+if(${WITH_STATIC_ANALYSIS})
+  include (${CMAKE_CURRENT_LIST_DIR}/.cmake/clangTidy.cmake)
+endif()
+

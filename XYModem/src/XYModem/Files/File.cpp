@@ -2,6 +2,7 @@
 
 namespace xymodem
 {
+
 std::string File::getFilename() const
 {
     return filename;
