@@ -2,7 +2,7 @@
 
 namespace xymodem
 {
-    void Logger::logMessage(std::string_view, LogLevel) const
+    void Logger::logMessage(std::string_view /*unused*/, LogLevel /*unused*/) const
     {
     }
 
