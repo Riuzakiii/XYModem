@@ -44,8 +44,8 @@ std::array<uint8_t, xymodem::payloadSize1K> generateRandomPacket()
 {
     std::array<uint8_t, xymodem::payloadSize1K> data{};
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    std::random_device randomDevice;
+    std::mt19937 gen(randomDevice());
     std::uniform_int_distribution<int> distrib(0, 255);
     std::generate(data.begin(), data.end(), [&distrib, &gen] {return static_cast<uint8_t>(distrib(gen)); });
 
@@ -60,9 +60,9 @@ TEST(TestTools, TestCRC16)
     {
         auto data = generateRandomPacket();
         crc_cpp::crc16_xmodem crc;
-        for (auto c : data)
+        for (auto dataByte : data)
         {
-            crc.update(c);
+            crc.update(dataByte);
         }
 
         EXPECT_EQ(xymodem::tools::compute_crc16xmodem(data), crc.final());

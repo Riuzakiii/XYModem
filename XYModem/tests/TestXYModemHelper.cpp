@@ -42,10 +42,10 @@ TEST_F (TestXYModemHelper, TestMakeDataPacket)
     std::string data;
 
     const auto dataPacket = xModem.makeDataPacket (data, 5, false);
-    std::string id = "0x02,0x05,0xfa";
+    std::string packetId = "0x02,0x05,0xfa";
     std::string crc = "0xc0,0x84";
     EXPECT_EQ (xymodem::tools::dispByteArray(dataPacket),
-               fmt::format ("{:s},{:s},{:s}", id, expectedData, crc));
+               fmt::format ("{:s},{:s},{:s}", packetId, expectedData, crc));
 }
 
 TEST_F (TestXYModemHelper, TestFlushLocalBuffer)
@@ -65,7 +65,7 @@ TEST_F (TestXYModemHelper, TestReadNextByte)
 TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
 {
     const auto headerPacket = yModem.makeHeaderPacket ("test", 0, 0);
-    std::string id = "0x02,0x00,0xff";
+    std::string packetId = "0x02,0x00,0xff";
     std::string header = "0x74,0x65,0x73,0x74,0x00,0x30,0x20,0x30";
     constexpr auto sizeHeaderBytes = 8;
     std::array<uint8_t, xymodem::payloadSize1K - sizeHeaderBytes> packet =
@@ -74,7 +74,7 @@ TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
     EXPECT_EQ (
         xymodem::tools::dispByteArray(headerPacket),
         fmt::format ("{:s},{:s},{:#04x},{:s}",
-                     id,
+                     packetId,
                      header,
                      fmt::join (packet, ","),
                      crc));
@@ -83,11 +83,11 @@ TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
 TEST_F (TestXYModemHelper, TestMakeLastPacket)
 {
     const auto lastPacket = yModem.makeLastPacket ();
-    std::string id = "0x02,0x00,0xff";
+    std::string packetId = "0x02,0x00,0xff";
     std::array<uint8_t, xymodem::payloadSize1K> packet = {0x00};
     std::string crc = "0x00,0x00";
     EXPECT_EQ (
         xymodem::tools::dispByteArray(lastPacket),
-        fmt::format ("{:s},{:#04x},{:s}", id, fmt::join (packet, ","), crc));
+        fmt::format ("{:s},{:#04x},{:s}", packetId, fmt::join (packet, ","), crc));
 }
 } // namespace xymodem
