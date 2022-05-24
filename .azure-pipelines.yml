@@ -124,6 +124,20 @@ jobs:
           xcode_version: 13.4
           uses_clang_compiler: OFF
           osx_architecture: 'arm64'
+        mac_12_universal_binary_debug_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Debug'
+          xcode_version: 13.4
+          uses_clang_compiler: OFF
+          osx_architecture: 'x86_64;arm64'
+        mac_12_universal_binary_release_xcode_13_4:
+          imageName: 'macOS-12'
+          generator: Xcode
+          build_configuration: 'Release'
+          xcode_version: 13.4
+          uses_clang_compiler: OFF
+          osx_architecture: 'x86_64;arm64'
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
@@ -174,7 +188,7 @@ jobs:
         cd XYModem
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DCMAKE_OSX_ARCHITECTURES=$(osx_architecture) -DUSES_CLANG_COMPILER=$(uses_clang_compiler)
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DCMAKE_OSX_ARCHITECTURES="$(osx_architecture)" -DUSES_CLANG_COMPILER=$(uses_clang_compiler)
       displayName: 'Generates the Solution of the Project'
     - script: |
         cd XYModem/build
