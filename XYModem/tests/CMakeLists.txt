@@ -16,4 +16,6 @@ target_compile_options(
                  -O3> $<$<CXX_COMPILER_ID:AppleClang>: -Werror -Wall -Wextra -pedantic -Wold-style-cast -Wshadow -Wctor-dtor-privacy>)
 
 include(GoogleTest)
-gtest_discover_tests(unitTest)
+if(NOT APPLE OR "${CMAKE_OSX_ARCHITECTURES}" STREQUAL "${CMAKE_SYSTEM_PROCESSOR}")
+  gtest_discover_tests(unitTest)
+endif()
