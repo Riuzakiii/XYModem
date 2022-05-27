@@ -14,6 +14,9 @@ void CLIParser::parse (int argc, [[maybe_unused]] char* argv[])
     // SetConsoleCP(CP_UTF8); Will display UTF8 correctly but modifies the user
     // system which is bad practice
     const auto uArgv = CommandLineToArgvW (GetCommandLineW (), &argc);
+#else
+    std::vector <char*> args;
+    std::copy_n(argv, argc, std::back_inserter(args));
 #endif
     for (int i = 1; i <= argc; ++i)
     {
@@ -29,7 +32,7 @@ void CLIParser::parse (int argc, [[maybe_unused]] char* argv[])
             utf8::utf16to8 (
                 warg.begin (), warg.end (), std::back_inserter (arg));
 #else
-            arg = argv[i];
+            arg = args[i];
 #endif
         }
         if (!lastArg.empty ())

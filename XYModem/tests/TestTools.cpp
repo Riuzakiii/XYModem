@@ -42,7 +42,7 @@ TEST (TestTools, TestDecreasePacketNum)
 
 std::array<uint8_t, xymodem::payloadSize1K> generateRandomPacket()
 {
-    std::array<uint8_t, xymodem::payloadSize1K> data;
+    std::array<uint8_t, xymodem::payloadSize1K> data{};
 
     std::random_device rd;
     std::mt19937 gen(rd());

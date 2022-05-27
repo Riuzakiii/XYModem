@@ -42,12 +42,10 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadS
     // Adding the required information in data (filename, file length,
     // modification data since UNIX epoch in seconds)
 
-    std::copy (fileName_.begin (), fileName_.end (), dataIterator);
-    dataIterator += fileName_.size ();
+    dataIterator = std::copy (fileName_.begin (), fileName_.end (), dataIterator);
     *(dataIterator++) = xymodem::fileNameSep;
     const auto fileSizeStr = std::to_string (fileSize_);
-    std::copy (fileSizeStr.begin (), fileSizeStr.end (), dataIterator);
-    dataIterator += fileSizeStr.size ();
+    dataIterator = std::copy (fileSizeStr.begin (), fileSizeStr.end (), dataIterator);
     *(dataIterator++) = xymodem::headerFieldsSep;
     const auto lastModificationDateStr = std::to_string (lastModificationDate_);
     std::copy (lastModificationDateStr.begin (),
