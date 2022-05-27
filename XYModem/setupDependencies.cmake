@@ -12,15 +12,34 @@ find_program (
 if(APPLE)
   include(${CMAKE_CURRENT_LIST_DIR}/.cmake/xcode.cmake)
   get_xcode_version_for_apple_clang(APPLE_CLANG_VERSION)
-  get_conan_architecture_for_osx_build_architecture(CONAN_ARCHITECTURE_NAME)
-  execute_process(
-    COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
-            --build=missing -s build_type=Release -s arch=${CONAN_ARCHITECTURE_NAME} -s arch_build=${CONAN_ARCHITECTURE_NAME} -s compiler.version=${APPLE_CLANG_VERSION}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-  execute_process(
-    COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
-            --build=missing -s build_type=Debug -s arch=${CONAN_ARCHITECTURE_NAME} -s arch_build=${CONAN_ARCHITECTURE_NAME} -s compiler.version=${APPLE_CLANG_VERSION}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  if("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "x86_64;arm64")
+    execute_process(
+      COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
+              --build=missing -s build_type=Release -s arch=x86_64 -s arch_build=x86_64 -s compiler.version=${APPLE_CLANG_VERSION}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+    execute_process(
+      COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
+              --build=missing -s build_type=Debug -s arch=x86_64 -s arch_build=x86_64 -s compiler.version=${APPLE_CLANG_VERSION}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+    execute_process(
+      COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
+              --build=missing -s build_type=Release -s arch=armv8 -s arch_build=x86_64 -s compiler.version=${APPLE_CLANG_VERSION}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+    execute_process(
+      COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
+              --build=missing -s build_type=Debug -s arch=armv8 -s arch_build=x86_64 -s compiler.version=${APPLE_CLANG_VERSION}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  else()
+    get_conan_architecture_for_osx_build_architecture(CONAN_ARCHITECTURE_NAME)
+    execute_process(
+      COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
+              --build=missing -s build_type=Release -s arch=${CONAN_ARCHITECTURE_NAME} -s arch_build=${CONAN_ARCHITECTURE_NAME} -s compiler.version=${APPLE_CLANG_VERSION}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+    execute_process(
+      COMMAND ${CONAN_EXE} install . --install-folder=build -pr=${CMAKE_CURRENT_LIST_DIR}/.conan/osx_profile
+              --build=missing -s build_type=Debug -s arch=${CONAN_ARCHITECTURE_NAME} -s arch_build=${CONAN_ARCHITECTURE_NAME} -s compiler.version=${APPLE_CLANG_VERSION}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+endif()
 elseif(WIN32)
   if("${CMAKE_GENERATOR}" STREQUAL "Visual Studio 16 2019")
     set(VISUAL_STUDIO_COMPILER_VERSION 16)
