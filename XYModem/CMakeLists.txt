@@ -78,8 +78,3 @@ endif()
 if(${BUILD_EXAMPLES})
   add_subdirectory(examples)
 endif()
-
-if(${WITH_STATIC_ANALYSIS})
-  include (${CMAKE_CURRENT_LIST_DIR}/.cmake/clangTidy.cmake)
-endif()
-
