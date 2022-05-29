@@ -27,9 +27,9 @@ std::string DesktopFile::getNextFileBlock(const std::intmax_t blockSizeBytes)
     std::string block;
     for (int i = 0; i != blockSizeBytes; ++i)
     {
-        char t = '\0';
-        dataFile.read (&t, 1);
-        block.push_back (t);
+        char data = '\0';
+        dataFile.read (&data, 1);
+        block.push_back (data);
     }
     return block;
 }
