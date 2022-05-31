@@ -207,8 +207,9 @@ jobs:
       displayName: 'Setup the correct version of gcc'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
-        sudo apt-get install clang-tidy
+        sudo apt-get install clang-tidy cppcheck
         clang-tidy --version
+        cppcheck --version
       displayName: 'Installs the latest version of clang-tidy'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
