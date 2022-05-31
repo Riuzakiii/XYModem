@@ -196,7 +196,6 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
     deviceHandler->flushAllInputBuffers ();
 
     logger->info ("Beginning transmission");
-    auto timerStart = std::chrono::steady_clock::now ();
     while (!isTransmissionFinished)
     {
         if (!yieldCallback ())
@@ -217,9 +216,6 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
                                              XModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string(currentState));
                 executeState (currentState, logHex);
-
-                timerStart =
-                    std::chrono::steady_clock::now (); // reset the timeout
             }
             else
             {
