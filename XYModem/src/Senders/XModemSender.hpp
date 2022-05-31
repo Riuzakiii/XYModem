@@ -31,10 +31,7 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> XModemSender<payloadS
     std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet = { 0x00 };
     std::array<uint8_t, payloadSize> data = { 0x00 };
     // packets except header and last packet are filled with 0xFF
-    for (auto& byte : data)
-    {
-        byte = 0xFF;
-    }
+    std::fill(std::begin(data), std::end(data), uint8_t{0xFF});
 
     // Making header (SOH/STX, packetnum(0-255), 255-packetnum)
     const std::array<uint8_t, xymodem::packetHeaderSize> header = {
