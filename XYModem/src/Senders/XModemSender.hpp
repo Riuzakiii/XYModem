@@ -229,7 +229,6 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
                 logger->warn ("Timeout ... Transmission aborted");
                 throw XYModemExceptions::Timeout (
                     xymodem::timeout.count ());
-                break;
             }
         }
         else
