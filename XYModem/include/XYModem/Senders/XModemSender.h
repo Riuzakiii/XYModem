@@ -29,7 +29,7 @@ public:
      * @param logLevel 0(trace), 1(debug), 2(info), 3(warn), 4(error), 5(level
      * critical), 6(off)
      */
-    XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger = std::make_shared<Logger>());
+    explicit XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger = std::make_shared<Logger>());
 
     /** Begin the XModem transmission.
      *  @param fileAbsolutePath The absolute path to the file.

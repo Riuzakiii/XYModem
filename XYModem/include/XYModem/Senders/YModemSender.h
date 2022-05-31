@@ -35,7 +35,7 @@ public:
      * critical), 6(off)
      * extension, and should be absolute.
      */
-    YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger = std::make_shared<Logger>());
+    explicit YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger = std::make_shared<Logger>());
 
     /** Begin the YModem transmission.
      *  @param files The files to transmit

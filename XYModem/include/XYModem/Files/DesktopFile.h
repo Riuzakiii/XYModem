@@ -9,7 +9,7 @@ namespace xymodem
 class DesktopFile : public File
 {
 public:
-    DesktopFile (const ghc::filesystem::path& filePath);
+    explicit DesktopFile (const ghc::filesystem::path& filePath);
     ~DesktopFile();
 
     std::string getNextFileBlock(const std::intmax_t blockSizeBytes) override;

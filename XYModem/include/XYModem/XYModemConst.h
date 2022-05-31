@@ -10,7 +10,7 @@ struct Timeout : public std::exception
 {
     long long timeoutSeconds = 0;
 
-    Timeout (long long timeoutSeconds) : timeoutSeconds (timeoutSeconds){};
+    explicit Timeout (long long timeoutSeconds) : timeoutSeconds (timeoutSeconds){};
 
     virtual const char* what () const throw () { return "Timeout"; }
 };
@@ -19,7 +19,7 @@ struct CouldNotOpenFile : public std::exception
     std::string absolutePath;
     std::string response;
 
-    CouldNotOpenFile (std::string absolutePath) : absolutePath (absolutePath){};
+    explicit CouldNotOpenFile (std::string absolutePath) : absolutePath (absolutePath){};
 
     virtual const char* what () const throw () { return "Could not open file"; }
 };

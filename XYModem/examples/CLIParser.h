@@ -13,7 +13,7 @@ class CLIParser
 {
 public:
     CLIParser () = default;
-    CLIParser (std::unordered_map<std::string_view, std::function<void (std::string_view)>> t_commands);
+    explicit CLIParser (std::unordered_map<std::string_view, std::function<void (std::string_view)>> t_commands);
 
     /** Parse all arguments given to the command line. When a name in the command line matches a key in the map, the corresponding 
      * function will be executed and given the value just after it (if there is one or the next value is not another command).
