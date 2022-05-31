@@ -19,7 +19,7 @@ struct CouldNotOpenFile : public std::exception
     std::string absolutePath;
     std::string response;
 
-    explicit CouldNotOpenFile (std::string absolutePath) : absolutePath (absolutePath){};
+    explicit CouldNotOpenFile (const std::string& absolutePath) : absolutePath (absolutePath){};
 
     virtual const char* what () const throw () { return "Could not open file"; }
 };

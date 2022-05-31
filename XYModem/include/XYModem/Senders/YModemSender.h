@@ -101,8 +101,8 @@ private:
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 6;
 
     static bool noConditions(GuardConditions) { return true; }
-    static bool checkCanRetry(GuardConditions t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
-    static bool checkCannotRetry(GuardConditions t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
+    static bool checkCanRetry(const GuardConditions& t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
+    static bool checkCannotRetry(const GuardConditions& t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
 
     // clang-format off
     [[maybe_unused]] static inline std::array<transition, 11> stateTransitions
