@@ -8,4 +8,4 @@ find_program (
     REQUIRED
    )
 
-set(CMAKE_CXX_CPPCHECK ${CPPCHECK_EXE} --std=c++${CMAKE_CXX_STANDARD} --library=/usr/lib/x86_64-linux-gnu/cppcheck/cfg/googletest.cfg --enable=warning,style --error-exitcode=1)
+set(CMAKE_CXX_CPPCHECK ${CPPCHECK_EXE} --std=c++${CMAKE_CXX_STANDARD} --library=/usr/lib/x86_64-linux-gnu/cppcheck/cfg/googletest.cfg --enable=warning,style,performance --error-exitcode=1)
