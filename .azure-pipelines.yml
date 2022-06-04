@@ -263,19 +263,8 @@ jobs:
         pip3 install -r requirements.txt
       displayName: 'Installs dependencies'
     - script: |
-        clang-format --verbose -i XYModem/src/*/*.cpp
-        clang-format --verbose -i XYModem/src/*/*/*.cpp XYModem/src/*/*/*.hpp
-      displayName: 'Format the source files of the repository'
-    - script: |
-        clang-format --verbose -i XYModem/include/*/*.h
-        clang-format --verbose -i XYModem/include/*/*/*.h
-      displayName: 'Format the include source files of the repository'
-    - script: |
-        clang-format -i XYModem/examples/*.cpp XYModem/examples/*.h
-      displayName: 'Format the examples source files of the repository'
-    - script: |
-        clang-format -i XYModem/tests/*.cpp
-      displayName: 'Format the tests source files of the repository'
+        sh format.sh
+      displayName: 'Format source and header files of the repository'
     - script: |
         git diff --exit-code
       displayName: 'Checks if the cpp files were already formatted'
