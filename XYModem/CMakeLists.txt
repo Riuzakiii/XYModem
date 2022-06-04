@@ -92,6 +92,7 @@ if(${WITH_STATIC_ANALYSIS})
   include(${CMAKE_CURRENT_LIST_DIR}/.cmake/clangTidy.cmake)
   include(${CMAKE_CURRENT_LIST_DIR}/.cmake/cppcheck.cmake)
   include(${CMAKE_CURRENT_LIST_DIR}/.cmake/includeWhatYouUse.cmake)
+  include(${CMAKE_CURRENT_LIST_DIR}/.cmake/cpplint.cmake)
 endif()
 add_subdirectory(src)
 
