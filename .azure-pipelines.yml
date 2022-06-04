@@ -167,10 +167,6 @@ jobs:
       displayName: 'Setup the correct version of Xcode'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
-        choco install opencppcoverage
-      displayName: Install Opencppcoverage
-      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Windows_NT'))
-    - script: |
         pip3 install setuptools
         pip3 install -r requirements.txt
       displayName: 'Installs dependencies'
@@ -189,33 +185,25 @@ jobs:
         ctest -C $(build_configuration) -T Test --output-on-failure
       displayName: 'Runs the tests in $(build_configuration) configuration'
     - script: |
-        cd XYModem/build
-        gcovr -r .. -f \.\./src --xml coverage.xml
+        if [ "$(imageName)" = "ubuntu-22.04" ] && [ "$(build_configuration)" = "Debug" ] && [ $(compiler_version) -eq 11 ] ; then
+          echo "Runs the code coverage"
+          cd XYModem/build
+          gcovr -r .. -f \.\./src --xml coverage.xml
+        else
+          echo "Ignores the test coverage on purpose"
+        fi
       displayName: Runs the code coverage of the solution for $(build_configuration) configuration on Unix
-      condition: and(succeededOrFailed(), not(eq(variables['Agent.OS'], 'Windows_NT')))
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
-        cd XYModem/build
-        "C:\Program Files\OpenCppCoverage\OpenCppCoverage" --export_type cobertura:coverage.xml --modules "*.exe" --cover_children --excluded_sources=tst\* --excluded_sources=VCCRT\* --excluded_sources=Program* --excluded_sources=onecore\* --excluded_sources=conan\* --excluded_sources=vctools\* --excluded_sources=ExternalAPIs\* -- ctest -C Debug --output-on-failure
-      displayName: Runs the code coverage of the solution for $(build_configuration) configuration on Windows
-      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Windows_NT'))
-    - script: |
-        cd XYModem/build
-        curl -Os https://uploader.codecov.io/latest/windows/codecov.exe
-        codecov.exe -f coverage.xml -cF $(configuration)_Visual_Studio
-      displayName: Sends Report to codecov on Windows
-      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Windows_NT'))
-    - script: |
-        cd XYModem/build
-        curl -Os https://uploader.codecov.io/latest/macos/codecov
-        chmod +x codecov
-        ./codecov -f coverage.xml -cF $(configuration)_$(generator)
-      displayName: Sends Report to codecov on MacOs
-      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
-    - script: |
-        cd XYModem/build
-        curl -Os https://uploader.codecov.io/latest/linux/codecov
-        chmod +x codecov
-        ./codecov -f coverage.xml -cF $(configuration)_$(generator)
+        if [ "$(imageName)" = "ubuntu-22.04" ] && [ "$(build_configuration)" = "Debug" ] && [ $(compiler_version) -eq 11 ] ; then
+          echo "Sends Report to codecov on Linux"
+          cd XYModem/build
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -f coverage.xml -cF $(configuration)_$(generator)
+        else
+          echo "Ignores the test coverage on purpose"
+        fi
       displayName: Sends Report to codecov on Linux
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
   - job: Static_Analysis
