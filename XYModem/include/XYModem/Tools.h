@@ -1,4 +1,5 @@
 #pragma once
+#include "XYModemConst.h"
 #include <array>
 #include <iomanip>
 #include <ios>
