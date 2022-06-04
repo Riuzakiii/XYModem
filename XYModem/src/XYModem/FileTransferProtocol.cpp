@@ -33,7 +33,7 @@ void GuardConditions::addGuards (
     }
 }
 
-void GuardConditions::clear ()
+void GuardConditions::clear()
 {
     for ([[maybe_unused]] auto& [guard, value] : guardConditions)
     {
@@ -53,15 +53,16 @@ void GuardConditions::dec (std::string_view guardName)
     --guardConditions.at (guardName);
 }
 
-
 /**
  *  FileTransferProtocol
  */
 
-FileTransferProtocol::FileTransferProtocol (std::shared_ptr<DeviceHandler> deviceHandler_,
-                                            const unsigned int& currentState_,
-                                            std::shared_ptr<Logger> logger)
-    : deviceHandler (std::move(deviceHandler_)), logger(std::move(logger)), currentState (currentState_)
+FileTransferProtocol::FileTransferProtocol (
+    std::shared_ptr<DeviceHandler> deviceHandler_,
+    const unsigned int& currentState_,
+    std::shared_ptr<Logger> logger)
+    : deviceHandler (std::move (deviceHandler_)), logger (std::move (logger)),
+      currentState (currentState_)
 {
 }
 

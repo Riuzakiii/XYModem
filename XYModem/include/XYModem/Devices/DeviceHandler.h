@@ -13,7 +13,7 @@ public:
     virtual ~DeviceHandler() = default;
     /** Displays the content of the buffer
      */
-    std::string showBuffer ();
+    std::string showBuffer();
 
     /** Write data to the device output buffer
      *  @param data the data bytes to write
@@ -24,33 +24,33 @@ public:
     /**
      * @brief Read all available characters and put them in inputBuffer
      */
-    virtual void readAll () = 0;
+    virtual void readAll() = 0;
 
     /** Read next byte from front of inputBuffer and removes it from the buffer
      */
-    [[nodiscard]] uint8_t readNextByte ();
+    [[nodiscard]] uint8_t readNextByte();
 
     /** Flush inputBuffer
      */
-    virtual void flushLocalBuffer ();
+    virtual void flushLocalBuffer();
     /** Flush the device buffer by reading all its buffer.
      */
-    virtual void flushDeviceInputBuffer () = 0;
+    virtual void flushDeviceInputBuffer() = 0;
     /** Uses flushLocalBuffer and flushDeviceBuffer to flush all buffers.
      * @see flushLocalBuffer
      * @see flushDeviceInputBuffer
      */
-    void flushAllInputBuffers ();
+    void flushAllInputBuffers();
 
-    [[nodiscard]] size_t getInputBufferSize ();
-    [[nodiscard]] bool isInputBufferEmpty () const;
-    [[nodiscard]] uint8_t getInputBufferFront () const;
+    [[nodiscard]] size_t getInputBufferSize();
+    [[nodiscard]] bool isInputBufferEmpty() const;
+    [[nodiscard]] uint8_t getInputBufferFront() const;
 
     /**
      * @brief Return the number of available bytes in the device's buffer
-     * @return size_t 
+     * @return size_t
      */
-    [[nodiscard]] virtual size_t available () const = 0;
+    [[nodiscard]] virtual size_t available() const = 0;
 
     /**
      * @brief Wait until a byte is received
@@ -59,7 +59,7 @@ public:
     virtual bool waitReadable() const = 0;
 
 protected:
-    DeviceHandler () = default;
+    DeviceHandler() = default;
     std::vector<uint8_t> inputBuffer;
 };
-}
+} // namespace xymodem

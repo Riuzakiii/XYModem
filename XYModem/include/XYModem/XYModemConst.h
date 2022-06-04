@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
 #include <array>
 #include <chrono>
+#include <string>
 using namespace std::literals::chrono_literals;
 
 namespace XYModemExceptions
@@ -10,30 +10,29 @@ struct Timeout : public std::exception
 {
     long long timeoutSeconds = 0;
 
-    explicit Timeout (long long timeoutSeconds) : timeoutSeconds (timeoutSeconds){};
+    explicit Timeout (long long timeoutSeconds)
+        : timeoutSeconds (timeoutSeconds){};
 
-    virtual const char* what () const throw () { return "Timeout"; }
+    virtual const char* what() const throw() { return "Timeout"; }
 };
 struct CouldNotOpenFile : public std::exception
 {
     std::string absolutePath;
     std::string response;
 
-    explicit CouldNotOpenFile (const std::string& absolutePath) : absolutePath (absolutePath){};
+    explicit CouldNotOpenFile (const std::string& absolutePath)
+        : absolutePath (absolutePath){};
 
-    virtual const char* what () const throw () { return "Could not open file"; }
+    virtual const char* what() const throw() { return "Could not open file"; }
 };
 
 struct TransmissionAborted : public std::exception
 {
-    virtual const char* what () const throw ()
-    {
-        return "Transmission aborted.";
-    }
+    virtual const char* what() const throw() { return "Transmission aborted."; }
 };
 } // namespace XYModemExceptions
 
-using int64 = long long;                                                                                            
+using int64 = long long;
 namespace xymodem
 {
 [[maybe_unused]] constexpr uint8_t SOH =
@@ -58,7 +57,8 @@ namespace xymodem
 [[maybe_unused]] constexpr std::size_t payloadSize128 = 128;
 [[maybe_unused]] constexpr auto packetHeaderSize = 3;
 [[maybe_unused]] constexpr auto packetCRCSize = 2;
-[[maybe_unused]] constexpr std::size_t totalExtraSize = packetHeaderSize + packetCRCSize;
+[[maybe_unused]] constexpr std::size_t totalExtraSize =
+    packetHeaderSize + packetCRCSize;
 [[maybe_unused]] constexpr auto timeout = 30s;
 [[maybe_unused]] constexpr auto maxRetries = 10;
 } // namespace xymodem

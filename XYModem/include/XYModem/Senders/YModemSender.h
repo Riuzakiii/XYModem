@@ -1,18 +1,18 @@
 ﻿#pragma once
-#include "gtest/gtest_prod.h"
-#include <array>
-#include <string>
-#include <algorithm>
-#include <cassert>
-#include <functional>
-#include <string_view>
-#include <exception>
-#include <utility>
-#include "XYModemConst.h"
-#include "Tools.h"
 #include "Devices/DeviceHandler.h"
 #include "FileTransferProtocol.h"
+#include "Tools.h"
 #include "XModemSender.h"
+#include "XYModemConst.h"
+#include "gtest/gtest_prod.h"
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <exception>
+#include <functional>
+#include <string>
+#include <string_view>
+#include <utility>
 
 namespace xymodem
 {
@@ -25,7 +25,7 @@ namespace xymodem
  * @see XModem
  * @see FileTransferProtocol
  */
-template<std::size_t payloadSize = xymodem::payloadSize1K>
+template <std::size_t payloadSize = xymodem::payloadSize1K>
 class YModemSender : private FileTransferProtocol
 {
 public:
@@ -35,7 +35,9 @@ public:
      * critical), 6(off)
      * extension, and should be absolute.
      */
-    explicit YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger = std::make_shared<Logger>());
+    explicit YModemSender (
+        const std::shared_ptr<DeviceHandler>& deviceHandler_,
+        const std::shared_ptr<Logger>& logger = std::make_shared<Logger>());
 
     /** Begin the YModem transmission.
      *  @param files The files to transmit
@@ -53,7 +55,7 @@ public:
     void transmit (
         const std::vector<std::shared_ptr<File>>& files,
         std::function<void (float)> updateCallback = [] (float) {},
-        std::function<bool ()> yieldCallback = [] () { return false; },
+        std::function<bool()> yieldCallback = []() { return false; },
         const bool logHex = false);
 
 protected:
@@ -66,29 +68,31 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeHeaderPacket (const std::string& _fileName,
-                             const int64& _fileSize,
-                             const int64& _lastModificationDate,
-                             const bool logHex = false);
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize>
+        makeHeaderPacket (const std::string& _fileName,
+                          const int64& _fileSize,
+                          const int64& _lastModificationDate,
+                          const bool logHex = false);
     /** Make the last packet
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeLastPacket (const bool logHex = false);
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize>
+        makeLastPacket (const bool logHex = false);
 
     /** Write packet to the device
      * @param packet The packet to send to the device
      */
-    void writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet);
+    void writePacket (
+        std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet);
 
     virtual void executeState (const unsigned int currentState,
                                bool logHex) override;
     void executeSendHeader (bool logHex);
 
-
     XModemSender<> xModem;
     std::vector<std::shared_ptr<File>> files;
-    
+
     // YModem state machine constants
     [[maybe_unused]] static constexpr std::string_view retries =
         "YModem number of retries";
@@ -100,9 +104,15 @@ private:
     [[maybe_unused]] static constexpr unsigned int abort = 5;
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 6;
 
-    static bool noConditions(GuardConditions) { return true; }
-    static bool checkCanRetry(const GuardConditions& t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
-    static bool checkCannotRetry(const GuardConditions& t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
+    static bool noConditions (GuardConditions) { return true; }
+    static bool checkCanRetry (const GuardConditions& t_guards)
+    {
+        return t_guards.get (retries) <= xymodem::maxRetries;
+    }
+    static bool checkCannotRetry (const GuardConditions& t_guards)
+    {
+        return t_guards.get (retries) > xymodem::maxRetries;
+    }
 
     // clang-format off
     [[maybe_unused]] static inline std::array<transition, 11> stateTransitions
