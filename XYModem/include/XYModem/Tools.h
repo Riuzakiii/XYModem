@@ -1,6 +1,8 @@
 #pragma once
 #include <array>
-#include "fmt/format.h"
+#include <sstream>
+#include <ios>
+#include <iomanip>
 
 namespace xymodem
 {
@@ -9,7 +11,17 @@ namespace xymodem
         template<std::size_t size>
         inline std::string dispByteArray(std::array<uint8_t, size> data)
         {
-            return fmt::format("{:#04x}", fmt::join(data, ","));
+            std::stringstream result;
+
+            for (auto it = data.begin() ; it != data.end() ; ++it)
+            {
+                result << "0x" << std::setfill('0') << std::setw(2) << std::hex << std::noshowbase << static_cast<int>(*it);
+                if (it != (data.end()-1))
+                {
+                    result << ",";
+                }
+            }
+            return result.str();
         }
 
         constexpr std::array<uint16_t, 256> crc16lookup(uint16_t polynomial = 0x1021)

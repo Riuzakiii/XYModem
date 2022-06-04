@@ -1,5 +1,7 @@
 #pragma once
+#ifdef TESTING_ENABLED
 #include "gtest/gtest_prod.h"
+#endif
 #include <string>
 #include <functional>
 #include <memory>
@@ -131,6 +133,8 @@ protected:
     static constexpr int guardsTestsPtr = 3;
     static constexpr int characterReceivedPtr = 2;
 private:
+#ifdef TESTING_ENABLED
     FRIEND_TEST (TestXYModemHelper, TestSetFileInfos);
+#endif
 };
 } // namespace

@@ -1,5 +1,7 @@
 ﻿#pragma once
-#include "gtest/gtest_prod.h"
+#ifdef TESTING_ENABLED
+    #include "gtest/gtest_prod.h"
+#endif
 #include <array>
 #include <string>
 #include <algorithm>
@@ -122,6 +124,9 @@ private:
           {retryingPacket,abort, xymodem::CAN, noConditions},
           {retryingEOT, abort, xymodem::CAN, noConditions}
           }};
+
+
+#ifdef TESTING_ENABLED
     //clang-format on
     FRIEND_TEST (TestXYModemHelper, TestMakeDataPacket);
     FRIEND_TEST (XModemTest, TestBeginXModem);
@@ -139,7 +144,8 @@ private:
     FRIEND_TEST (XModemTest, TestSendEOTButCAN);
     FRIEND_TEST (XModemTest, TestRetryingPacketButCAN);
     FRIEND_TEST (XModemTest, TestRetryingEOTButCAN);
+#endif
 };
 }
 
-#include "../../src/Senders/XModemSender.hpp"
+#include "../../src/XYModem/Senders/XModemSender.hpp"

@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "fmt/core.h"
-#include "fmt/ranges.h"
 
 namespace xymodem
 {
