@@ -11,7 +11,7 @@ namespace xymodem
 class SerialHandler : public DeviceHandler
 {
 public:
-    SerialHandler (serial::Serial& serialDevice_);
+    explicit SerialHandler (serial::Serial& serialDevice_);
 
     /** Write data to the device output buffer
      *  @param data the data bytes to write

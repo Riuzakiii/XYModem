@@ -29,7 +29,7 @@ public:
      * @param logLevel 0(trace), 1(debug), 2(info), 3(warn), 4(error), 5(level
      * critical), 6(off)
      */
-    XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger = std::make_shared<Logger>());
+    explicit XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger = std::make_shared<Logger>());
 
     /** Begin the XModem transmission.
      *  @param fileAbsolutePath The absolute path to the file.
@@ -94,10 +94,10 @@ private:
     [[maybe_unused]] static constexpr unsigned int abort = 7;
 
     static bool noConditions(GuardConditions) { return true; }
-    static bool checkNoPacketsLeft(GuardConditions t_guards) { return t_guards.get(packetsLeft) == 0; }
-    static bool checkPacketsLeft(GuardConditions t_guards) { return t_guards.get(packetsLeft) > 0; }
-    static bool checkCanRetry(GuardConditions t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
-    static bool checkCannotRetry(GuardConditions t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
+    static bool checkNoPacketsLeft(const GuardConditions& t_guards) { return t_guards.get(packetsLeft) == 0; }
+    static bool checkPacketsLeft(const GuardConditions& t_guards) { return t_guards.get(packetsLeft) > 0; }
+    static bool checkCanRetry(const GuardConditions& t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
+    static bool checkCannotRetry(const GuardConditions& t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
 
     // clang-format off
     [[maybe_unused]] static inline std::array<transition, 20> stateTransitions

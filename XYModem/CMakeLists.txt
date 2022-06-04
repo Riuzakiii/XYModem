@@ -51,6 +51,7 @@ endif()
 
 if(${WITH_STATIC_ANALYSIS})
   include (${CMAKE_CURRENT_LIST_DIR}/.cmake/clangTidy.cmake)
+  include (${CMAKE_CURRENT_LIST_DIR}/.cmake/cppcheck.cmake)
 endif()
 
 enable_testing()

@@ -31,10 +31,7 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> XModemSender<payloadS
     std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet = { 0x00 };
     std::array<uint8_t, payloadSize> data = { 0x00 };
     // packets except header and last packet are filled with 0xFF
-    for (auto& byte : data)
-    {
-        byte = 0xFF;
-    }
+    std::fill(std::begin(data), std::end(data), uint8_t{0xFF});
 
     // Making header (SOH/STX, packetnum(0-255), 255-packetnum)
     const std::array<uint8_t, xymodem::packetHeaderSize> header = {
@@ -199,7 +196,6 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
     deviceHandler->flushAllInputBuffers ();
 
     logger->info ("Beginning transmission");
-    auto timerStart = std::chrono::steady_clock::now ();
     while (!isTransmissionFinished)
     {
         if (!yieldCallback ())
@@ -220,16 +216,12 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
                                              XModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string(currentState));
                 executeState (currentState, logHex);
-
-                timerStart =
-                    std::chrono::steady_clock::now (); // reset the timeout
             }
             else
             {
                 logger->warn ("Timeout ... Transmission aborted");
                 throw XYModemExceptions::Timeout (
                     xymodem::timeout.count ());
-                break;
             }
         }
         else

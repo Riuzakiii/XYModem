@@ -18,13 +18,11 @@ namespace xymodem
             constexpr auto controlBitSize = 8;
 
             std::array<uint16_t, lookupSize> lookUpTable{ 0 };
-            uint8_t control = 0;
-            uint16_t sum = 0;
 
             for (int i = 0; i < lookupSize; ++i)
             {
-                control = static_cast<uint8_t>(i);
-                sum = 0;
+                auto control = static_cast<uint8_t>(i);
+                uint16_t sum = 0;
                 for (int j = 0; j < controlBitSize; ++j)
                 {
                     if ((control >> (7 - j) & 1U) == 1U)

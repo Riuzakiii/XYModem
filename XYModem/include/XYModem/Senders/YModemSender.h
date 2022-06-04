@@ -35,7 +35,7 @@ public:
      * critical), 6(off)
      * extension, and should be absolute.
      */
-    YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger = std::make_shared<Logger>());
+    explicit YModemSender (const std::shared_ptr<DeviceHandler>& deviceHandler_, const std::shared_ptr<Logger>& logger = std::make_shared<Logger>());
 
     /** Begin the YModem transmission.
      *  @param files The files to transmit
@@ -101,8 +101,8 @@ private:
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 6;
 
     static bool noConditions(GuardConditions) { return true; }
-    static bool checkCanRetry(GuardConditions t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
-    static bool checkCannotRetry(GuardConditions t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
+    static bool checkCanRetry(const GuardConditions& t_guards) { return t_guards.get(retries) <= xymodem::maxRetries; }
+    static bool checkCannotRetry(const GuardConditions& t_guards) { return t_guards.get(retries) > xymodem::maxRetries; }
 
     // clang-format off
     [[maybe_unused]] static inline std::array<transition, 11> stateTransitions

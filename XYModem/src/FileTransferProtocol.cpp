@@ -35,7 +35,7 @@ void GuardConditions::addGuards (
 
 void GuardConditions::clear ()
 {
-    for (auto& [guard, value] : guardConditions)
+    for ([[maybe_unused]] auto& [guard, value] : guardConditions)
     {
         value = 0;
     }
