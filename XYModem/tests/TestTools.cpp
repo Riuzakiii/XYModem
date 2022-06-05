@@ -1,6 +1,8 @@
 #include "Tools.h"
-#include "XYModem.h"
+// clang-format off
 #include "crc_cpp.h"
+#include "XYModem.h"
+// clang-format on
 #include "fmt/core.h"
 #include "fmt/ranges.h"
 #include "gtest/gtest.h"
