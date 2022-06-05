@@ -207,9 +207,10 @@ jobs:
       displayName: 'Setup the correct version of gcc'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
-        sudo apt-get install clang-tidy cppcheck
+        sudo apt-get install clang-tidy cppcheck iwyu
         clang-tidy --version
         cppcheck --version
+        iwyu --version
       displayName: 'Installs the latest version of clang-tidy'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
