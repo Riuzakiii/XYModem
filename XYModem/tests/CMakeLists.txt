@@ -13,7 +13,8 @@ target_compile_options(
                  $<$<AND:$<CXX_COMPILER_ID:AppleClang>,$<CONFIG:Debug>>:
                  -O0>
                  $<$<AND:$<CXX_COMPILER_ID:AppleClang>,$<CONFIG:Release>>:
-                 -O3> $<$<CXX_COMPILER_ID:AppleClang>: -Werror -Wall -Wextra -pedantic -Wold-style-cast -Wshadow -Wctor-dtor-privacy>)
+                 -O3> $<$<CXX_COMPILER_ID:AppleClang>: -Werror -Wall -Wextra -pedantic -Wold-style-cast -Wshadow -Wctor-dtor-privacy>
+                 $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: -fprofile-arcs -ftest-coverage>)
 
 include(GoogleTest)
 if(NOT APPLE OR "${CMAKE_OSX_ARCHITECTURES}" STREQUAL "${CMAKE_SYSTEM_PROCESSOR}")

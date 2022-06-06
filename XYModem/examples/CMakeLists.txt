@@ -21,6 +21,7 @@ target_compile_options(
           -O0>
           $<$<AND:$<CXX_COMPILER_ID:AppleClang>,$<CONFIG:Release>>:
           -O3>
+          $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:AppleClang>:
           -Werror
           -Wall
@@ -53,6 +54,7 @@ target_compile_options(
           -O0>
           $<$<AND:$<CXX_COMPILER_ID:AppleClang>,$<CONFIG:Release>>:
           -O3>
+          $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:AppleClang>:
           -Werror
           -Wall
