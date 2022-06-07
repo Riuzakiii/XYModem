@@ -10,6 +10,10 @@ class YModemTest : public testing::Test
 public:
     YModemTest () : deviceHandler (std::make_shared<SerialHandler>(serialDevice)), yModem (deviceHandler){};
 
+    [[nodiscard]] auto getYModem() const -> const auto& { return yModem; }
+    [[nodiscard]] auto getYModem() -> auto& { return yModem; }
+
+private:
     serial::Serial serialDevice;
     std::shared_ptr<SerialHandler> deviceHandler;
     YModemSender<xymodem::payloadSize1K> yModem;
@@ -17,7 +21,7 @@ public:
 
 TEST_F (YModemTest, TestBeginYModem)
 {
-    EXPECT_EQ (yModem.getNextState (xymodem::C,
+    EXPECT_EQ (getYModem ().getNextState (xymodem::C,
                                     YModemSender<>::waitingStart,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -26,7 +30,7 @@ TEST_F (YModemTest, TestBeginYModem)
 
 TEST_F (YModemTest, TestBeginXModemTransmission)
 {
-    EXPECT_EQ (yModem.getNextState (xymodem::ACK,
+    EXPECT_EQ (getYModem ().getNextState (xymodem::ACK,
                                     YModemSender<>::sendingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -35,7 +39,7 @@ TEST_F (YModemTest, TestBeginXModemTransmission)
 
 TEST_F (YModemTest, TestRetryingHeader)
 {
-    EXPECT_EQ (yModem.getNextState (xymodem::NAK,
+    EXPECT_EQ (getYModem ().getNextState (xymodem::NAK,
                                     YModemSender<>::sendingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -44,8 +48,8 @@ TEST_F (YModemTest, TestRetryingHeader)
 
 TEST_F (YModemTest, TestReretryingHeader)
 {
-    yModem.guards.set (YModemSender<>::retries, 2);
-    EXPECT_EQ (yModem.getNextState (xymodem::NAK,
+    getYModem ().guards.set (YModemSender<>::retries, 2);
+    EXPECT_EQ (getYModem ().getNextState (xymodem::NAK,
                                     YModemSender<>::retryingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -54,8 +58,8 @@ TEST_F (YModemTest, TestReretryingHeader)
 
 TEST_F (YModemTest, TestTooManyRetries)
 {
-    yModem.guards.set (YModemSender<>::retries, 11);
-    EXPECT_EQ (yModem.getNextState (xymodem::NAK,
+    getYModem ().guards.set (YModemSender<>::retries, 11);
+    EXPECT_EQ (getYModem ().getNextState (xymodem::NAK,
                                     YModemSender<>::retryingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -64,12 +68,12 @@ TEST_F (YModemTest, TestTooManyRetries)
 
 TEST_F (YModemTest, TestUnknownCharacterReceived)
 {
-    EXPECT_EQ (yModem.getNextState (23,
+    EXPECT_EQ (getYModem ().getNextState (23,
                                     YModemSender<>::sendingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
                YModemSender<>::undefined);
-    EXPECT_EQ (yModem.getNextState (23,
+    EXPECT_EQ (getYModem ().getNextState (23,
                                     YModemSender<>::retryingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -78,7 +82,7 @@ TEST_F (YModemTest, TestUnknownCharacterReceived)
 
 TEST_F (YModemTest, TestWaitingStartButCAN)
 {
-    EXPECT_EQ (yModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getYModem ().getNextState (xymodem::CAN,
                                     YModemSender<>::waitingStart,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -87,7 +91,7 @@ TEST_F (YModemTest, TestWaitingStartButCAN)
 
 TEST_F (YModemTest, TestSendingHeaderButCAN)
 {
-    EXPECT_EQ (yModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getYModem ().getNextState (xymodem::CAN,
                                     YModemSender<>::sendingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -96,7 +100,7 @@ TEST_F (YModemTest, TestSendingHeaderButCAN)
 
 TEST_F (YModemTest, TestRetryingHeaderButCAN)
 {
-    EXPECT_EQ (yModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getYModem ().getNextState (xymodem::CAN,
                                     YModemSender<>::sendingHeader,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
@@ -105,7 +109,7 @@ TEST_F (YModemTest, TestRetryingHeaderButCAN)
 
 TEST_F (YModemTest, TestXModemTransmissionButCAN)
 {
-    EXPECT_EQ (yModem.getNextState (xymodem::CAN,
+    EXPECT_EQ (getYModem ().getNextState (xymodem::CAN,
                                     YModemSender<>::xModemTransmission,
                                     YModemSender<>::undefined,
                                     YModemSender<>::stateTransitions),
