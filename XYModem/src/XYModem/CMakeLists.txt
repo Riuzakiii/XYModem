@@ -44,11 +44,12 @@ target_compile_options(
           -pedantic
           -Wold-style-cast
           -Wshadow
-          -Wctor-dtor-privacy>)
+          -Wctor-dtor-privacy>
+          $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: -fprofile-arcs -ftest-coverage>)
 
 if(${BUILD_TESTS})
     target_compile_definitions(XYModemCore PUBLIC TESTING_ENABLED=1)
-    target_link_libraries(XYModemCore PUBLIC CONAN_PKG::gtest)
+    target_link_libraries(XYModemCore PUBLIC CONAN_PKG::gtest $<$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: -fprofile-arcs -ftest-coverage>)
 endif()
 
 # IDEs should put the headers in a nice place

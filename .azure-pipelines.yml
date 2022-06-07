@@ -184,6 +184,28 @@ jobs:
         cd XYModem/build
         ctest -C $(build_configuration) -T Test --output-on-failure
       displayName: 'Runs the tests in $(build_configuration) configuration'
+    - script: |
+        if [ "$(imageName)" = "ubuntu-22.04" ] && [ "$(build_configuration)" = "Debug" ] && [ $(compiler_version) -eq 11 ] ; then
+          echo "Runs the code coverage"
+          cd XYModem/build
+          gcovr -r .. -f \.\./src --xml coverage.xml
+        else
+          echo "Ignores the test coverage on purpose"
+        fi
+      displayName: Runs the code coverage of the solution for $(build_configuration) configuration on Unix
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        if [ "$(imageName)" = "ubuntu-22.04" ] && [ "$(build_configuration)" = "Debug" ] && [ $(compiler_version) -eq 11 ] ; then
+          echo "Sends Report to codecov on Linux"
+          cd XYModem/build
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -f coverage.xml -cF $(configuration)_$(generator)
+        else
+          echo "Ignores the test coverage on purpose"
+        fi
+      displayName: Sends Report to codecov on Linux
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
   - job: Static_Analysis
     strategy:
       matrix:
@@ -213,6 +235,10 @@ jobs:
         iwyu --version
       displayName: 'Installs the latest version of clang-tidy'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
+        choco install opencppcoverage
+      displayName: Install dependencies (Windows)
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Windows_NT'))
     - script: |
         pip3 install setuptools
         pip3 install -r requirements.txt

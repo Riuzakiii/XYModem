@@ -1,0 +1,11 @@
+codecov:
+  branch: main
+  notify:
+    require_ci_to_pass: no
+
+ignore:
+  - "XYModem/tests/*"
+
+comment:
+  layout: "header, diff, changes, sunburst, suggestions, tree"
+  behavior: new
