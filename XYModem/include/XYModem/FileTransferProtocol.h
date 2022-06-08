@@ -53,9 +53,7 @@ public:
      * @brief Add new guards. If the key already exists, does nothing.
      * @param newGuards
      */
-    void addGuards (
-        const std::vector<std::pair<std::string_view, std::intmax_t>>&
-            newGuards);
+    void addGuards (const std::vector<std::pair<std::string_view, std::intmax_t>>& newGuards);
     /**
      * @brief Set all values to zero.
      */
@@ -88,10 +86,7 @@ public:
      * critical), 6(off)
      */
 
-    FileTransferProtocol (
-        std::shared_ptr<DeviceHandler> device,
-        const unsigned int& currentState,
-        std::shared_ptr<Logger> logger = std::make_shared<Logger>());
+    FileTransferProtocol (std::shared_ptr<DeviceHandler> device, const unsigned int& currentState, std::shared_ptr<Logger> logger = std::make_shared<Logger>());
     virtual ~FileTransferProtocol() = default;
 
 protected:
@@ -104,16 +99,11 @@ protected:
      */
     template <size_t N>
     [[nodiscard]] unsigned int
-        getNextState (uint8_t characterReceived,
-                      unsigned int t_currentState,
-                      unsigned int undefined,
-                      std::array<transition, N> transitions)
+    getNextState (uint8_t characterReceived, unsigned int t_currentState, unsigned int undefined, std::array<transition, N> transitions)
     {
         for (const auto& transition : transitions)
         {
-            if (std::get<currentStatePtr> (transition) == t_currentState &&
-                std::get<characterReceivedPtr> (transition) ==
-                    characterReceived &&
+            if (std::get<currentStatePtr> (transition) == t_currentState && std::get<characterReceivedPtr> (transition) == characterReceived &&
                 std::get<guardsTestsPtr> (transition) (guards))
             {
                 return std::get<nextStatePtr> (transition);

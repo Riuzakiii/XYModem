@@ -7,15 +7,9 @@ using namespace std::literals::chrono_literals;
 
 namespace xymodem
 {
-SerialHandler::SerialHandler (serial::Serial& serialDevice_)
-    : serialDevice (serialDevice_)
-{
-}
+SerialHandler::SerialHandler (serial::Serial& serialDevice_) : serialDevice (serialDevice_) {}
 
-size_t SerialHandler::write (const uint8_t* data, size_t size)
-{
-    return serialDevice.write (data, size);
-}
+size_t SerialHandler::write (const uint8_t* data, size_t size) { return serialDevice.write (data, size); }
 
 void SerialHandler::readAll()
 {

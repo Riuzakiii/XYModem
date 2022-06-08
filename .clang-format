@@ -1,16 +1,16 @@
 Language:        Cpp
 BasedOnStyle:  LLVM
 AccessModifierOffset: -4 #Modified
-AlignAfterOpenBracket: Align      
-AlignArrayOfStructures: None      
-AlignConsecutiveMacros: None      
+AlignAfterOpenBracket: Align #Modified    
+AlignArrayOfStructures: Left #Modified
+AlignConsecutiveMacros: Consecutive #Modified      
 AlignConsecutiveAssignments: false 
 AlignConsecutiveBitFields: None   
 AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: Right       
 AlignOperands:   Align
 AlignTrailingComments: true       
-AllowAllArgumentsOnNextLine: true
+AllowAllArgumentsOnNextLine: false # Modified
 AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortEnumsOnASingleLine: false #Modified
@@ -23,7 +23,7 @@ AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: None    
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false      
-AlwaysBreakTemplateDeclarations: MultiLine    
+AlwaysBreakTemplateDeclarations: Yes #Modified    
 AttributeMacros:
   - __capability
 BinPackArguments: false
@@ -51,19 +51,19 @@ BreakBeforeBinaryOperators: None
 BreakBeforeConceptDeclarations: true
 BreakBeforeBraces: Allman #Modified
 BreakBeforeInheritanceComma: false
-BreakInheritanceList: BeforeColon
+BreakInheritanceList: AfterComma #Modified
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
-BreakConstructorInitializers: BeforeColon     
+BreakConstructorInitializers: AfterColon     
 BreakAfterJavaFieldAnnotations: false
 BreakStringLiterals: true
-ColumnLimit:     80
+ColumnLimit:     160
 CommentPragmas:  '^ IWYU pragma:'
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
-Cpp11BracedListStyle: false
+Cpp11BracedListStyle: true
 DeriveLineEnding: true
 DerivePointerAlignment: false
 DisableFormat:   false
@@ -101,7 +101,7 @@ IndentPPDirectives: None
 IndentExternBlock: AfterExternBlock
 IndentRequires:  false
 IndentWidth:     4
-IndentWrappedFunctionNames: true #Modified
+IndentWrappedFunctionNames: false #Modified
 InsertTrailingCommas: None
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true

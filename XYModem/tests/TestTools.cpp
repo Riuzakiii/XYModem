@@ -12,9 +12,7 @@
 
 TEST (TestTools, TestDispByteArray)
 {
-    EXPECT_EQ (xymodem::tools::dispByteArray<8> (
-                   { 255, 255, 255, 255, 255, 255, 255, 255 }),
-               "0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff");
+    EXPECT_EQ (xymodem::tools::dispByteArray<8> ({255, 255, 255, 255, 255, 255, 255, 255}), "0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff");
 }
 
 TEST (TestTools, TestIncreasePacketNum)
@@ -48,10 +46,7 @@ std::array<uint8_t, xymodem::payloadSize1K> generateRandomPacket()
     std::random_device randomDevice;
     std::mt19937 gen (randomDevice());
     std::uniform_int_distribution<int> distrib (0, 255);
-    std::generate (data.begin(),
-                   data.end(),
-                   [&distrib, &gen]
-                   { return static_cast<uint8_t> (distrib (gen)); });
+    std::generate (data.begin(), data.end(), [&distrib, &gen] { return static_cast<uint8_t> (distrib (gen)); });
 
     return data;
 }

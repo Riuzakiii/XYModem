@@ -31,9 +31,7 @@ public:
      * @param logLevel 0(trace), 1(debug), 2(info), 3(warn), 4(error), 5(level
      * critical), 6(off)
      */
-    explicit XModemSender (
-        std::shared_ptr<DeviceHandler> deviceHandler_,
-        std::shared_ptr<Logger> logger = std::make_shared<Logger>());
+    explicit XModemSender (std::shared_ptr<DeviceHandler> deviceHandler_, std::shared_ptr<Logger> logger = std::make_shared<Logger>());
 
     /** Begin the XModem transmission.
      *  @param fileAbsolutePath The absolute path to the file.
@@ -62,19 +60,14 @@ private:
      * @param logHex if True, the content of the packets sent will be logged in
      * hexadecimal.
      */
-    std::array<uint8_t, payloadSize + xymodem::totalExtraSize>
-        makeDataPacket (const std::string& data,
-                        const uint8_t& packetNum,
-                        const bool logHex = false);
+    std::array<uint8_t, payloadSize + xymodem::totalExtraSize> makeDataPacket (const std::string& data, const uint8_t& packetNum, const bool logHex = false);
 
     /** Write packet to the device
      * @param packet The packet to send to the device
      */
-    void writePacket (
-        std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet);
+    void writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet);
 
-    virtual void executeState (const unsigned int currentState,
-                               bool logHex) override;
+    virtual void executeState (const unsigned int currentState, bool logHex) override;
     void executeSendPacket (bool logHex);
 
     uint8_t packetNum = 1;
@@ -86,10 +79,8 @@ private:
 
     // XModem state machine constants
 
-    [[maybe_unused]] static constexpr std::string_view retries =
-        "XModem number of retries";
-    [[maybe_unused]] static constexpr std::string_view packetsLeft =
-        "Number of packets left";
+    [[maybe_unused]] static constexpr std::string_view retries = "XModem number of retries";
+    [[maybe_unused]] static constexpr std::string_view packetsLeft = "Number of packets left";
     [[maybe_unused]] static constexpr unsigned int waitingStart = 0;
     [[maybe_unused]] static constexpr unsigned int sendingPacket = 1;
     [[maybe_unused]] static constexpr unsigned int retryingPacket = 2;
@@ -100,22 +91,10 @@ private:
     [[maybe_unused]] static constexpr unsigned int abort = 7;
 
     static bool noConditions (GuardConditions) { return true; }
-    static bool checkNoPacketsLeft (const GuardConditions& t_guards)
-    {
-        return t_guards.get (packetsLeft) == 0;
-    }
-    static bool checkPacketsLeft (const GuardConditions& t_guards)
-    {
-        return t_guards.get (packetsLeft) > 0;
-    }
-    static bool checkCanRetry (const GuardConditions& t_guards)
-    {
-        return t_guards.get (retries) <= xymodem::maxRetries;
-    }
-    static bool checkCannotRetry (const GuardConditions& t_guards)
-    {
-        return t_guards.get (retries) > xymodem::maxRetries;
-    }
+    static bool checkNoPacketsLeft (const GuardConditions& t_guards) { return t_guards.get (packetsLeft) == 0; }
+    static bool checkPacketsLeft (const GuardConditions& t_guards) { return t_guards.get (packetsLeft) > 0; }
+    static bool checkCanRetry (const GuardConditions& t_guards) { return t_guards.get (retries) <= xymodem::maxRetries; }
+    static bool checkCannotRetry (const GuardConditions& t_guards) { return t_guards.get (retries) > xymodem::maxRetries; }
 
     // clang-format off
     [[maybe_unused]] static inline std::array<transition, 20> stateTransitions
@@ -140,10 +119,10 @@ private:
           {retryingPacket,abort, xymodem::CAN, noConditions},
           {retryingEOT, abort, xymodem::CAN, noConditions}
           }};
+    //clang-format on
 
 
 #ifdef TESTING_ENABLED
-    //clang-format on
     FRIEND_TEST (TestXYModemHelper, TestMakeDataPacket);
     FRIEND_TEST (XModemTest, TestBeginXModem);
     FRIEND_TEST (XModemTest, TestSendNextPacket);

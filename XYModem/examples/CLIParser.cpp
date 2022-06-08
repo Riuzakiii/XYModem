@@ -1,12 +1,8 @@
 #include "CLIParser.h"
 
-using CommandType = std::unordered_map<std::string_view,
-                                       std::function<void (std::string_view)>>;
+using CommandType = std::unordered_map<std::string_view, std::function<void (std::string_view)>>;
 
-CLIParser::CLIParser (CommandType t_commands)
-    : m_commands (std::move (t_commands))
-{
-}
+CLIParser::CLIParser (CommandType t_commands) : m_commands (std::move (t_commands)) {}
 
 void CLIParser::parse (int argc, [[maybe_unused]] char* argv[])
 {
@@ -47,12 +43,6 @@ void CLIParser::parse (int argc, [[maybe_unused]] char* argv[])
     }
 }
 
-void CLIParser::setCommands (CommandType&& t_commands)
-{
-    m_commands = t_commands;
-}
+void CLIParser::setCommands (CommandType&& t_commands) { m_commands = t_commands; }
 
-void CLIParser::setCommands (const CommandType& t_commands)
-{
-    m_commands = t_commands;
-}
+void CLIParser::setCommands (const CommandType& t_commands) { m_commands = t_commands; }

@@ -15,9 +15,7 @@ class CLIParser
 {
 public:
     CLIParser() = default;
-    explicit CLIParser (
-        std::unordered_map<std::string_view,
-                           std::function<void (std::string_view)>> t_commands);
+    explicit CLIParser (std::unordered_map<std::string_view, std::function<void (std::string_view)>> t_commands);
 
     /** Parse all arguments given to the command line. When a name in the
      * command line matches a key in the map, the corresponding function will be
@@ -31,19 +29,12 @@ public:
     /** Each function will be executed if the corresponding key is found in the
      * command line arguments, and given the corresponding parameter
      */
-    void setCommands (
-        std::unordered_map<std::string_view,
-                           std::function<void (std::string_view)>>&&
-            t_commands);
+    void setCommands (std::unordered_map<std::string_view, std::function<void (std::string_view)>>&& t_commands);
     /** Each function will be executed if the corresponding key is found in the
      * command line arguments, and given the corresponding parameter
      */
-    void setCommands (
-        const std::unordered_map<std::string_view,
-                                 std::function<void (std::string_view)>>&
-            t_commands);
+    void setCommands (const std::unordered_map<std::string_view, std::function<void (std::string_view)>>& t_commands);
 
 private:
-    std::unordered_map<std::string_view, std::function<void (std::string_view)>>
-        m_commands;
+    std::unordered_map<std::string_view, std::function<void (std::string_view)>> m_commands;
 };

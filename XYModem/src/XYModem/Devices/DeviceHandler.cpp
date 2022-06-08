@@ -15,8 +15,7 @@ std::string DeviceHandler::showBuffer()
 
     for (auto it = inputBuffer.begin(); it != inputBuffer.end(); ++it)
     {
-        result << "0x" << std::setfill ('0') << std::setw (2) << std::hex
-               << std::noshowbase << static_cast<int> (*it);
+        result << "0x" << std::setfill ('0') << std::setw (2) << std::hex << std::noshowbase << static_cast<int> (*it);
         if (it != (inputBuffer.end() - 1))
         {
             result << ",";
@@ -43,8 +42,5 @@ size_t DeviceHandler::getInputBufferSize() { return inputBuffer.size(); }
 
 bool DeviceHandler::isInputBufferEmpty() const { return inputBuffer.empty(); }
 
-uint8_t DeviceHandler::getInputBufferFront() const
-{
-    return inputBuffer.front();
-}
+uint8_t DeviceHandler::getInputBufferFront() const { return inputBuffer.front(); }
 } // namespace xymodem

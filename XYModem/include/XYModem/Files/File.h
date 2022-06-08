@@ -16,8 +16,7 @@ public:
      * @param blockSizeBytes Block size in bytes
      * @return The bytes read from the file in a std::string
      */
-    [[nodiscard]] virtual std::string
-        getNextFileBlock (const std::intmax_t blockSizeBytes) = 0;
+    [[nodiscard]] virtual std::string getNextFileBlock (const std::intmax_t blockSizeBytes) = 0;
 
     [[nodiscard]] virtual std::string getFilename() const;
     [[nodiscard]] virtual std::intmax_t getFilesize() const;

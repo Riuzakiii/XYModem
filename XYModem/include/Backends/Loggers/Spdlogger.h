@@ -13,10 +13,8 @@ using logType = spdlog::filename_t;
 class Spdlogger : public Logger
 {
 public:
-    Spdlogger (LogLevel logLevel = LogLevel::info,
-               const logType& pathToLogFile = {});
-    void logMessage (std::string_view message,
-                     LogLevel level = LogLevel::info) const override;
+    Spdlogger (LogLevel logLevel = LogLevel::info, const logType& pathToLogFile = {});
+    void logMessage (std::string_view message, LogLevel level = LogLevel::info) const override;
 
 private:
     std::shared_ptr<spdlog::logger> logger = spdlog::default_logger();

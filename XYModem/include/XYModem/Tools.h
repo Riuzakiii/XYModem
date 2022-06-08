@@ -16,8 +16,7 @@ namespace tools
 
         for (auto it = data.begin(); it != data.end(); ++it)
         {
-            result << "0x" << std::setfill ('0') << std::setw (2) << std::hex
-                   << std::noshowbase << static_cast<int> (*it);
+            result << "0x" << std::setfill ('0') << std::setw (2) << std::hex << std::noshowbase << static_cast<int> (*it);
             if (it != (data.end() - 1))
             {
                 result << ",";
@@ -26,13 +25,12 @@ namespace tools
         return result.str();
     }
 
-    constexpr std::array<uint16_t, 256>
-        crc16lookup (uint16_t polynomial = 0x1021)
+    constexpr std::array<uint16_t, 256> crc16lookup (uint16_t polynomial = 0x1021)
     {
         constexpr auto lookupSize = 256;
         constexpr auto controlBitSize = 8;
 
-        std::array<uint16_t, lookupSize> lookUpTable{ 0 };
+        std::array<uint16_t, lookupSize> lookUpTable{0};
 
         for (int i = 0; i < lookupSize; ++i)
         {
@@ -57,8 +55,7 @@ namespace tools
      * time, should be a bit more than 512 bytes).
      */
     template <std::size_t payloadSize = xymodem::payloadSize1K>
-    [[nodiscard]] inline uint16_t
-        compute_crc16xmodem (std::array<uint8_t, payloadSize> const& data)
+    [[nodiscard]] inline uint16_t compute_crc16xmodem (std::array<uint8_t, payloadSize> const& data)
     {
         constexpr uint16_t crc16ccitt = 0x1021;
         constexpr auto table = crc16lookup (crc16ccitt);
@@ -66,9 +63,8 @@ namespace tools
         uint16_t remainder = 0;
         for (std::size_t i = 0; i < (data.size() + 2); ++i)
         {
-            uint8_t controlByte =
-                (remainder >> 8) & 0xff; // the top byte determines the next 8
-                                         // steps in the division
+            uint8_t controlByte = (remainder >> 8) & 0xff; // the top byte determines the next 8
+                                                           // steps in the division
             uint16_t sum = table[controlByte];
             remainder <<= 8; // prepare to add the next byte
 

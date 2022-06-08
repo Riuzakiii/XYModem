@@ -22,11 +22,7 @@ int main (int argc, [[maybe_unused]] char* argv[])
     const uint32_t readTimeoutMultiplier = 0;
     const uint32_t writeTimeoutConstant = 20;
     const uint32_t writeTimeoutMultiplier = 0;
-    serialDevice.setTimeout (interByteTimeout,
-                             readTimeoutConstant,
-                             readTimeoutMultiplier,
-                             writeTimeoutConstant,
-                             writeTimeoutMultiplier);
+    serialDevice.setTimeout (interByteTimeout, readTimeoutConstant, readTimeoutMultiplier, writeTimeoutConstant, writeTimeoutMultiplier);
 
     auto serialHandler = std::make_shared<SerialHandler> (serialDevice);
     auto logger = std::make_shared<Spdlogger>();
@@ -35,53 +31,52 @@ int main (int argc, [[maybe_unused]] char* argv[])
     std::string filePath;
     bool withHex = false;
 
-    cliParser.setCommands (
-        { { "-h",
-            [&logger] (std::string_view)
-            {
-                logger->info (
-                    "This program allows you to send one file "
-                    "using the XModem file transfer protocol.\n Options "
-                    ":\n    -h : get help \n    -f \"filepath1\"  -port "
-                    "\"serial port of the device\""
-                    "\"filepath2\" ... : send one or more files \n");
-            } },
-          { "-f",
-            [&filePath, &logger] (std::string_view value)
-            {
-                logger->info (value);
-                filePath = value.data();
-            } },
-          { "--hex", [&withHex] (std::string_view) { withHex = true; } },
-          { "-port",
-            [&serialDevice, &logger] (std::string_view val)
-            {
-                const auto availablePorts = serial::list_ports();
-                const auto serialPort =
-                    std::find_if (availablePorts.begin(),
-                                  availablePorts.end(),
-                                  [&val, &logger] (auto& device)
-                                  {
-                                      if (val.empty())
-                                      {
-                                          logger->info ("Available devices");
-                                          logger->info (device.description);
-                                          logger->info (device.port);
-                                          logger->info (device.hardware_id);
-                                      }
-                                      return device.port == val;
-                                  });
-                if (serialPort != availablePorts.end())
-                {
-                    logger->info (serialPort->port);
-                    serialDevice.setPort (serialPort->port);
-                    serialDevice.open();
-                }
-                else
-                {
-                    logger->error ("Unable to find the requested device");
-                }
-            } } });
+    cliParser.setCommands ({
+        {"-h",
+         [&logger] (std::string_view)
+         {
+             logger->info ("This program allows you to send one file "
+                           "using the XModem file transfer protocol.\n Options "
+                           ":\n    -h : get help \n    -f \"filepath1\"  -port "
+                           "\"serial port of the device\""
+                           "\"filepath2\" ... : send one or more files \n");
+         }                                                   },
+        {       "-f",
+         [&filePath,                                &logger] (std::string_view value)
+         {
+             logger->info (value);
+             filePath = value.data();
+         }},
+        {                                      "--hex", [&withHex] (std::string_view) { withHex = true; }},
+        { "-port",
+         [&serialDevice,                                         &logger] (std::string_view val)
+         {
+             const auto availablePorts = serial::list_ports();
+             const auto serialPort = std::find_if (availablePorts.begin(),
+                                                   availablePorts.end(),
+                                                   [&val, &logger] (auto& device)
+                                                   {
+                                                       if (val.empty())
+                                                       {
+                                                           logger->info ("Available devices");
+                                                           logger->info (device.description);
+                                                           logger->info (device.port);
+                                                           logger->info (device.hardware_id);
+                                                       }
+                                                       return device.port == val;
+                                                   });
+             if (serialPort != availablePorts.end())
+             {
+                 logger->info (serialPort->port);
+                 serialDevice.setPort (serialPort->port);
+                 serialDevice.open();
+             }
+             else
+             {
+                 logger->error ("Unable to find the requested device");
+             }
+         }}
+    });
 
     try
     {
