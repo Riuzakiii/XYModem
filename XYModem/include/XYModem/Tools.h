@@ -100,5 +100,18 @@ namespace tools
         }
         --numPacket;
     }
+
+    template <typename Integer>
+    std::string decimalToOctal (Integer decimalInt)
+    {
+        std::string result;
+        while (decimalInt != 0 || result.empty())
+        {
+            auto remainder = decimalInt % 8;
+            decimalInt /= 8;
+            result.insert (result.begin(), '0' + static_cast<char> (remainder));
+        }
+        return result;
+    }
 } // namespace tools
 } // namespace xymodem

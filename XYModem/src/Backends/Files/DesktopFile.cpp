@@ -7,7 +7,7 @@ DesktopFile::DesktopFile (const ghc::filesystem::path& filePath) : filePath (fil
 {
     filename = filePath.filename().string();
     filesize = static_cast<std::intmax_t> (ghc::filesystem::file_size (filePath));
-    lastModificationDate = ghc::filesystem::last_write_time (filePath).time_since_epoch().count();
+    lastModificationDate = std::chrono::duration_cast<std::chrono::seconds> (ghc::filesystem::last_write_time (filePath).time_since_epoch()).count();
 }
 
 DesktopFile::~DesktopFile()
