@@ -167,6 +167,7 @@ jobs:
       displayName: 'Setup the correct version of Xcode'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
+        pip3 install --upgrade pip
         pip3 install setuptools
         pip3 install -r requirements.txt
       displayName: 'Installs dependencies'
@@ -253,3 +254,17 @@ jobs:
         cd XYModem/build
         cmake --build . --config $(build_configuration)
       displayName: 'Compiles the solution in $(build_configuration) configuration while running the static analysis tools'
+  - job: Code_formatting
+    pool:
+        vmImage: ubuntu-22.04
+    steps:
+    - script: |
+        pip3 install setuptools
+        pip3 install -r requirements.txt
+      displayName: 'Installs dependencies'
+    - script: |
+        sh format.sh
+      displayName: 'Format source and header files of the repository'
+    - script: |
+        git diff --exit-code
+      displayName: 'Checks if the cpp files were already formatted'

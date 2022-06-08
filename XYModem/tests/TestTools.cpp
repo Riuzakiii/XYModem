@@ -1,19 +1,18 @@
-#include <random>
-#include <algorithm>
-#include <array>
+#include "Tools.h"
+// clang-format off
 #include "crc_cpp.h"
-#include "gtest/gtest.h"
+#include "XYModem.h"
+// clang-format on
 #include "fmt/core.h"
 #include "fmt/ranges.h"
-#include "XYModem.h"
-#include "Tools.h"
-
+#include "gtest/gtest.h"
+#include <algorithm>
+#include <array>
+#include <random>
 
 TEST (TestTools, TestDispByteArray)
 {
-    EXPECT_EQ (
-        xymodem::tools::dispByteArray<8> ({255, 255, 255, 255, 255, 255, 255, 255}),
-        "0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff");
+    EXPECT_EQ (xymodem::tools::dispByteArray<8> ({255, 255, 255, 255, 255, 255, 255, 255}), "0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff");
 }
 
 TEST (TestTools, TestIncreasePacketNum)
@@ -45,14 +44,14 @@ std::array<uint8_t, xymodem::payloadSize1K> generateRandomPacket()
     std::array<uint8_t, xymodem::payloadSize1K> data{};
 
     std::random_device randomDevice;
-    std::mt19937 gen(randomDevice());
-    std::uniform_int_distribution<int> distrib(0, 255);
-    std::generate(data.begin(), data.end(), [&distrib, &gen] {return static_cast<uint8_t>(distrib(gen)); });
+    std::mt19937 gen (randomDevice());
+    std::uniform_int_distribution<int> distrib (0, 255);
+    std::generate (data.begin(), data.end(), [&distrib, &gen] { return static_cast<uint8_t> (distrib (gen)); });
 
     return data;
 }
 
-TEST(TestTools, TestCRC16)
+TEST (TestTools, TestCRC16)
 {
     constexpr auto tries = 10;
 
@@ -62,9 +61,9 @@ TEST(TestTools, TestCRC16)
         crc_cpp::crc16_xmodem crc;
         for (auto dataByte : data)
         {
-            crc.update(dataByte);
+            crc.update (dataByte);
         }
 
-        EXPECT_EQ(xymodem::tools::compute_crc16xmodem(data), crc.final());
+        EXPECT_EQ (xymodem::tools::compute_crc16xmodem (data), crc.final());
     }
 }

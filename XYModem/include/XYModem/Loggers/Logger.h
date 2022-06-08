@@ -8,7 +8,6 @@ namespace xymodem
 class Logger
 {
 public:
-
     enum class LogLevel
     {
         trace,
@@ -22,10 +21,10 @@ public:
 
     Logger() = default;
     virtual ~Logger() = default;
-    virtual void logMessage(std::string_view message, LogLevel level = LogLevel::info) const;
-    virtual void debug(std::string_view message) const;
-    virtual void warn(std::string_view message) const;
-    virtual void info(std::string_view message) const;
-    virtual void error(std::string_view message) const;
+    virtual void logMessage (std::string_view message, LogLevel level = LogLevel::info) const;
+    virtual void debug (std::string_view message) const;
+    virtual void warn (std::string_view message) const;
+    virtual void info (std::string_view message) const;
+    virtual void error (std::string_view message) const;
 };
-}
+} // namespace xymodem

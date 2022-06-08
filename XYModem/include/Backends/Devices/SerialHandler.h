@@ -1,8 +1,8 @@
 #pragma once
-#include <string>
-#include "gtest/gtest_prod.h"
-#include "serial/serial.h"
 #include "Devices/DeviceHandler.h"
+#include "serial/serial.h"
+#include "gtest/gtest_prod.h"
+#include <string>
 
 namespace xymodem
 {
@@ -22,7 +22,7 @@ public:
      * If an ACK is in the buffer, the characters before it will be ignored.
      * Indeed, ACK is always the first thing we want if the device sent it.
      */
-    void readAll () override;
+    void readAll() override;
 
     /** NOTE ON BUFFERS : buffers must be handled really carefully with serial.
      * Reading bytes one by one from the device buffer did not seem to gave
@@ -37,19 +37,20 @@ public:
     /** Flush the device buffer by reading all its buffer. The function from the
      * serial lib was not working on Windows.
      */
-    void flushDeviceInputBuffer () override;
+    void flushDeviceInputBuffer() override;
 
     /**
      * @brief Return the number of available bytes in the device's buffer
-     * @return size_t 
+     * @return size_t
      */
-    [[nodiscard]] size_t available () const override;
+    [[nodiscard]] size_t available() const override;
 
     bool waitReadable() const override;
+
 protected:
 private:
     serial::Serial& serialDevice;
     FRIEND_TEST (TestXYModemHelper, TestFlushLocalBuffer);
     FRIEND_TEST (TestXYModemHelper, TestReadNextByte);
 };
-}
+} // namespace xymodem
