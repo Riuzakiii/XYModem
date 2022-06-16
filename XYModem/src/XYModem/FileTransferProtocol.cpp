@@ -1,3 +1,5 @@
+// Copyright 2022 Riuzakiii
+
 #include "FileTransferProtocol.h"
 #include <cassert>
 

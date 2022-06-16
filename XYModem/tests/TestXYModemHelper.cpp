@@ -1,3 +1,5 @@
+// Copyright 2022 Riuzakiii
+
 #include "Devices/SerialHandler.h"
 #include "Tools.h"
 #include "XYModem.h"

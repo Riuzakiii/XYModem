@@ -1,3 +1,5 @@
+// Copyright 2022 Riuzakiii
+
 #include "Tools.h"
 // clang-format off
 #include "crc_cpp.h"

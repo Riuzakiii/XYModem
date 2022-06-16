@@ -1,3 +1,5 @@
+// Copyright 2022 Riuzakiii
+
 /*
  * Usage : ./ymodem.exe -f "filepath" -port COM1
  * -h : get help

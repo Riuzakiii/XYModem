@@ -1,4 +1,6 @@
-﻿#include "Loggers/Spdlogger.h"
+﻿// Copyright 2022 Riuzakiii
+
+#include "Loggers/Spdlogger.h"
 #include <cassert>
 
 namespace xymodem
