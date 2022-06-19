@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'ubuntu-22.04'
 
 jobs:
   - job: XYModem
@@ -14,12 +14,14 @@ jobs:
           build_configuration: 'Debug'
           compiler_version: 10
           uses_clang_compiler: OFF
+          export_artefacts: false
         ubuntu_22_04_release_gcc_10:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           compiler_version: 10
           uses_clang_compiler: OFF
+          export_artefacts: false
         ubuntu_22_04_debug_gcc_11:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
@@ -32,42 +34,49 @@ jobs:
           build_configuration: 'Release'
           compiler_version: 11
           uses_clang_compiler: OFF
+          export_artefacts: true
         ubuntu_22_04_debug_clang:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
           compiler_version: 14
           uses_clang_compiler: ON
+          export_artefacts: false
         ubuntu_22_04_release_clang:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           compiler_version: 14
           uses_clang_compiler: ON
+          export_artefacts: false
         ubuntu_20_04_debug_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
           compiler_version: 10
           uses_clang_compiler: OFF
+          export_artefacts: false
         ubuntu_20_04_release_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           compiler_version: 10
           uses_clang_compiler: OFF
+          export_artefacts: false
         ubuntu_18_04_debug_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
           compiler_version: 10
           uses_clang_compiler: OFF
+          export_artefacts: false
         ubuntu_18_04_release_gcc_10:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           compiler_version: 10
           uses_clang_compiler: OFF
+          export_artefacts: false
         mac_10_15_debug_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
@@ -75,6 +84,7 @@ jobs:
           xcode_version: 12.4
           uses_clang_compiler: OFF
           osx_architecture: 'x86_64'
+          export_artefacts: false
         mac_10_15_release_xcode_12_4:
           imageName: 'macOS-10.15'
           generator: Xcode
@@ -82,6 +92,7 @@ jobs:
           xcode_version: 12.4
           uses_clang_compiler: OFF
           osx_architecture: 'x86_64'
+          export_artefacts: true
         mac_11_debug_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
@@ -89,6 +100,7 @@ jobs:
           xcode_version: 13.2.1
           uses_clang_compiler: OFF
           osx_architecture: 'x86_64'
+          export_artefacts: false
         mac_11_release_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
@@ -96,6 +108,7 @@ jobs:
           xcode_version: 13.2.1
           uses_clang_compiler: OFF
           osx_architecture: 'x86_64'
+          export_artefacts: true
         mac_12_debug_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
@@ -103,6 +116,7 @@ jobs:
           xcode_version: 13.4
           uses_clang_compiler: OFF
           osx_architecture: 'x86_64'
+          export_artefacts: false
         mac_12_release_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
@@ -110,6 +124,7 @@ jobs:
           xcode_version: 13.4
           uses_clang_compiler: OFF
           osx_architecture: 'x86_64'
+          export_artefacts: true
         mac_12_arm64_debug_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
@@ -117,6 +132,7 @@ jobs:
           xcode_version: 13.4
           uses_clang_compiler: OFF
           osx_architecture: 'arm64'
+          export_artefacts: false
         mac_12_arm64_release_xcode_13_4:
           imageName: 'macOS-12'
           generator: Xcode
@@ -124,26 +140,31 @@ jobs:
           xcode_version: 13.4
           uses_clang_compiler: OFF
           osx_architecture: 'arm64'
+          export_artefacts: true
         windows_2019_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Debug'
           uses_clang_compiler: OFF
+          export_artefacts: false
         windows_2019_release:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Release'
           uses_clang_compiler: OFF
+          export_artefacts: false
         windows_2022_debug:
           imageName: 'windows-2022'
           generator: Visual Studio 17 2022
           build_configuration: 'Debug'
           uses_clang_compiler: OFF
+          export_artefacts: false
         windows_2022_release:
           imageName: 'windows-2022'
           generator: Visual Studio 17 2022
           build_configuration: 'Release'
           uses_clang_compiler: OFF
+          export_artefacts: true
     pool:
         vmImage: $(imageName)
     steps:
@@ -207,6 +228,31 @@ jobs:
         fi
       displayName: Sends Report to codecov on Linux
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - task: CopyFiles@2
+      displayName: 'Copying artefacts to staging area'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: |
+          **/build/examples/Release/*
+          **/build/src/Backends/Release/*
+          **/build/src/XYModem/Release/*
+          **/build/XYModem/Release/*
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/executables'
+        flattenFolders: true
+      condition : and(succeeded(), eq(variables['build_configuration'], 'Release'), variables['export_artefacts'])
+    - task: ArchiveFiles@2
+      displayName: "Compress artefacts to unique file"
+      inputs:
+        rootFolderOrFile: $(Build.ArtifactStagingDirectory)/executables
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/archive/$(Agent.JobName)_$(Build.SourceBranchName).zip
+      condition : and(succeeded(), eq(variables['build_configuration'], 'Release'), variables['export_artefacts'])
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish artifacts'
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)/archive
+      condition : and(succeeded(), eq(variables['build_configuration'] , 'Release'), variables['export_artefacts'])
   - job: Static_Analysis
     strategy:
       matrix:
@@ -268,3 +314,22 @@ jobs:
     - script: |
         git diff --exit-code
       displayName: 'Checks if the cpp files were already formatted'
+  - job: Github_Release
+    dependsOn:
+        - XYModem
+        - Code_formatting
+        - Static_Analysis
+    steps:
+    - task: GitHubRelease@0
+      displayName: 'Create GitHub Release'
+      condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+      inputs:
+         gitHubConnection: github.com_Riuzakiii
+         repositoryName: Riuzakiii/XYModem
+         action: create
+         tagSource: auto
+         tag: $(Build.BuildNumber)      
+         assets: |
+              $(Build.ArtifactStagingDirectory)
+         isDraft: true
+         addChangeLog: true
