@@ -44,8 +44,11 @@ YModemSender<payloadSize>::makeHeaderPacket (const std::string& fileName_, const
     std::copy (fileSizeStr.begin(), fileSizeStr.end(), dataIterator);
     dataIterator += fileSizeStr.size();
     *(dataIterator++) = xymodem::headerFieldsSep;
-    const auto lastModificationDateStr = std::to_string (lastModificationDate_);
+    const auto lastModificationDateStr = tools::decimalToOctal (lastModificationDate_);
     std::copy (lastModificationDateStr.begin(), lastModificationDateStr.end(), dataIterator);
+
+    // The YModem protocole specifies that the header should not have a CRC. TeraTerm requires a CRC at the end of the header,
+    // so unfortunately CRC is needed
 
     // Computing CRC
     const auto crc = xymodem::tools::compute_crc16xmodem (data);

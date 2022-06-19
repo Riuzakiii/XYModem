@@ -8,6 +8,8 @@
 #include "gtest/gtest.h"
 #include <algorithm>
 #include <array>
+#include <cstdlib>
+#include <limits>
 #include <random>
 
 TEST (TestTools, TestDispByteArray)
@@ -66,4 +68,16 @@ TEST (TestTools, TestCRC16)
 
         EXPECT_EQ (xymodem::tools::compute_crc16xmodem (data), crc.final());
     }
+}
+
+TEST (TestTools, TestDecimalToOctal)
+{
+    std::random_device randomDevice;
+    std::mt19937 gen (randomDevice());
+    std::uniform_int_distribution<unsigned int> distrib (0, (std::numeric_limits<unsigned int>::max)());
+    auto randomDecimalInt = distrib (gen);
+    auto octal = xymodem::tools::decimalToOctal (randomDecimalInt);
+    char* begin = octal.data();       // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    char* end = begin + octal.size(); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    EXPECT_EQ (randomDecimalInt, std::strtoul (begin, &end, 8));
 }
