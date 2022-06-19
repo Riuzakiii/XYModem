@@ -79,7 +79,7 @@ TEST (TestTools, TestDecimalToOctal)
     std::uniform_int_distribution<unsigned int> distrib (0, (std::numeric_limits<unsigned int>::max)());
     auto randomDecimalInt = distrib (gen);
     auto octal = xymodem::tools::decimalToOctal (randomDecimalInt);
-    char* begin = octal.data();       // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-    char* end = begin + octal.size(); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    char* begin = octal.data();
+    char* end = std::next (begin, static_cast<long> (octal.size()));
     EXPECT_EQ (randomDecimalInt, std::strtoul (begin, &end, 8));
 }
