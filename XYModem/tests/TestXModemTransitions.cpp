@@ -19,7 +19,7 @@ public:
     [[nodiscard]] auto& getDeviceHandler() { return deviceHandler; }
 
 private:
-    serial::Serial serialDevice;
+    std::shared_ptr<serial::Serial> serialDevice;
     std::shared_ptr<SerialHandler> deviceHandler;
     XModemSender<xymodem::payloadSize1K> xModem;
 };

@@ -16,7 +16,7 @@ public:
     [[nodiscard]] auto getYModem() -> auto& { return yModem; }
 
 private:
-    serial::Serial serialDevice;
+    std::shared_ptr<serial::Serial> serialDevice;
     std::shared_ptr<SerialHandler> deviceHandler;
     YModemSender<xymodem::payloadSize1K> yModem;
 };

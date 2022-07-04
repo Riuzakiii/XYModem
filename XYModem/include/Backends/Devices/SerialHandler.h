@@ -1,17 +1,31 @@
 #pragma once
 #include "Devices/DeviceHandler.h"
-#include "serial/serial.h"
+#ifdef TESTING_ENABLED
 #include "gtest/gtest_prod.h"
+#endif
+#include <memory>
 #include <string>
+
+namespace serial
+{
+class Serial;
+};
 
 namespace xymodem
 {
 /** DeviceHandler
  */
+
 class SerialHandler : public DeviceHandler
 {
 public:
-    explicit SerialHandler (serial::Serial& serialDevice_);
+    explicit SerialHandler (std::shared_ptr<serial::Serial>& serialDevice_);
+    SerialHandler (uint32_t baudrate,
+                   uint32_t interByteTimeout,
+                   uint32_t readTimeoutConstant,
+                   uint32_t readTimeoutMultiplier,
+                   uint32_t writeTimeoutConstant,
+                   uint32_t writeTimeoutMultiplier);
 
     /** Write data to the device output buffer
      *  @param data the data bytes to write
@@ -49,8 +63,11 @@ public:
 
 protected:
 private:
-    serial::Serial& serialDevice;
+    std::shared_ptr<serial::Serial> serialDevice;
+
+#ifdef TESTING_ENABLED
     FRIEND_TEST (TestXYModemHelper, TestFlushLocalBuffer);
     FRIEND_TEST (TestXYModemHelper, TestReadNextByte);
+#endif
 };
 } // namespace xymodem
