@@ -7,6 +7,8 @@
 using namespace std::literals::chrono_literals;
 #endif
 #include "serial/serial.h"
+#include <cstdint> // for uint8_t, uint32_t
+#include <vector>  // for vector
 
 namespace xymodem
 {

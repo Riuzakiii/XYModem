@@ -3,14 +3,17 @@
 #include "gtest/gtest_prod.h"
 #endif
 #include "Devices/DeviceHandler.h"
-#include "Files/File.h"
 #include "Loggers/Logger.h"
-#include <functional>
-#include <memory>
-#include <string>
-#include <string_view>
-#include <tuple>
-#include <unordered_map>
+#include <array>         // for array
+#include <cstdint>       // for intmax_t, uint8_t
+#include <functional>    // for function
+#include <memory>        // for make_shared, shared_ptr
+#include <stddef.h>      // for size_t
+#include <string_view>   // for string_view, hash
+#include <tuple>         // for tuple
+#include <unordered_map> // for unordered_map
+#include <utility>       // for pair
+#include <vector>        // for vector
 
 namespace xymodem
 {

@@ -1,15 +1,15 @@
 #pragma once
-#include "Devices/DeviceHandler.h"
 #ifdef TESTING_ENABLED
 #include "gtest/gtest_prod.h"
 #endif
-#include <memory>
-#include <string>
-
+#include "Devices/DeviceHandler.h" // for DeviceHandler
+#include <memory>                  // for shared_ptr
+#include <stddef.h>                // for size_t
+#include <stdint.h>                // for uint32_t, uint8_t
 namespace serial
 {
 class Serial;
-};
+} // namespace serial
 
 namespace xymodem
 {
