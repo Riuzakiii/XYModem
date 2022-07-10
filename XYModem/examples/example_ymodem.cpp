@@ -11,20 +11,23 @@
 #include "CLIParser.h"
 #include "Devices/SerialHandler.h"
 #include "XYModem.h"
+#include "serial/serial.h"
+#include <memory>
 
 using namespace xymodem;
 
 int main (int argc, [[maybe_unused]] char* argv[])
 {
-    auto serialDevice = serial::Serial();
     CLIParser cliParser;
-    serialDevice.setBaudrate (115200);
+    const uint32_t baudrate = 115200;
     const uint32_t interByteTimeout = 100000;
     const uint32_t readTimeoutConstant = 20;
     const uint32_t readTimeoutMultiplier = 0;
     const uint32_t writeTimeoutConstant = 20;
     const uint32_t writeTimeoutMultiplier = 0;
-    serialDevice.setTimeout (interByteTimeout, readTimeoutConstant, readTimeoutMultiplier, writeTimeoutConstant, writeTimeoutMultiplier);
+    auto serialDevice = std::make_shared<serial::Serial>();
+    serialDevice->setBaudrate (baudrate);
+    serialDevice->setTimeout (interByteTimeout, readTimeoutConstant, readTimeoutMultiplier, writeTimeoutConstant, writeTimeoutMultiplier);
 
     auto serialHandler = std::make_shared<SerialHandler> (serialDevice);
     auto logger = std::make_shared<Spdlogger>();
@@ -68,8 +71,8 @@ int main (int argc, [[maybe_unused]] char* argv[])
 
              if (serialPort != availablePorts.end())
              {
-                 serialDevice.setPort (serialPort->port);
-                 serialDevice.open();
+                 serialDevice->setPort (serialPort->port);
+                 serialDevice->open();
              }
              else
              {

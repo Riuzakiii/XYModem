@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <stdint.h> // for intmax_t
 #include <string>
 
 namespace xymodem

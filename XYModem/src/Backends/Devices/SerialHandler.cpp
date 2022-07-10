@@ -6,12 +6,27 @@
 #include <thread>
 using namespace std::literals::chrono_literals;
 #endif
+#include "serial/serial.h"
+#include <cstdint> // for uint8_t, uint32_t
+#include <vector>  // for vector
 
 namespace xymodem
 {
-SerialHandler::SerialHandler (serial::Serial& serialDevice_) : serialDevice (serialDevice_) {}
+SerialHandler::SerialHandler (std::shared_ptr<serial::Serial>& serialDevice_) : serialDevice (serialDevice_) {}
 
-size_t SerialHandler::write (const uint8_t* data, size_t size) { return serialDevice.write (data, size); }
+SerialHandler::SerialHandler (uint32_t baudrate,
+                              uint32_t interByteTimeout,
+                              uint32_t readTimeoutConstant,
+                              uint32_t readTimeoutMultiplier,
+                              uint32_t writeTimeoutConstant,
+                              uint32_t writeTimeoutMultiplier) :
+    serialDevice (std::make_shared<serial::Serial>())
+{
+    serialDevice->setBaudrate (baudrate);
+    serialDevice->setTimeout (interByteTimeout, readTimeoutConstant, readTimeoutMultiplier, writeTimeoutConstant, writeTimeoutMultiplier);
+}
+
+size_t SerialHandler::write (const uint8_t* data, size_t size) { return serialDevice->write (data, size); }
 
 void SerialHandler::readAll()
 {
@@ -19,21 +34,21 @@ void SerialHandler::readAll()
      * we don't care about characters before ACK if there is one
      */
     std::vector<uint8_t> tempBuffer;
-    serialDevice.read (tempBuffer, serialDevice.available());
+    serialDevice->read (tempBuffer, serialDevice->available());
     inputBuffer = tempBuffer;
 }
 void SerialHandler::flushDeviceInputBuffer()
 {
     std::vector<uint8_t> tempBuffer;
-    serialDevice.read (tempBuffer, serialDevice.available());
+    serialDevice->read (tempBuffer, serialDevice->available());
 }
 
-size_t SerialHandler::available() const { return serialDevice.available(); }
+size_t SerialHandler::available() const { return serialDevice->available(); }
 
 bool SerialHandler::waitReadable() const
 {
 #ifndef _WIN32
-    return serialDevice.waitReadable();
+    return serialDevice->waitReadable();
 #else
     constexpr auto timeout = 30s;
     constexpr auto sleepForMax = 10ms;
@@ -41,7 +56,7 @@ bool SerialHandler::waitReadable() const
     auto startTime = std::chrono::steady_clock::now();
     while ((std::chrono::steady_clock::now() - startTime) < timeout)
     {
-        if (serialDevice.available() > 0)
+        if (serialDevice->available() > 0)
         {
             return true;
         }

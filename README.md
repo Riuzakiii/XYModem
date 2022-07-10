@@ -33,7 +33,6 @@ Additionnal requirements are needed for build the backends, the examples and tes
 * `python` : Conan requires python >= 3.5
 
 ## Add XYModem to your project
-
 Add these lines to your `CMakeLists.txt`
 
 1. `add_subdirectory(XYModemFolder/XYModem)`
@@ -42,12 +41,47 @@ Add these lines to your `CMakeLists.txt`
 By default, only the core functionnalities are built. To add the backends, examples or testing, add this to the CMake build command : 
 
 `-DXYMODEM_BUILD_EXAMPLES`, `-DXYMODEM_BUILD_BACKENDS`, `-DXYMODEM_BUILD_TESTS` or `-DXYMODEM_BUILD_ALL`.
+
 ## Include the right headers
 
 1. XYModem uses abstract classes for loggers, files and communication devices. You can use the implementations already provided for desktop OS (`SerialHandler.h`, `DesktopFile.h`, `Spdlogger.h`), or implement your own for other platforms (embedded for instance). The existing backends can be found in _include/Backends_.
 2. Include one of the senders in _include/XYModem/Senders_, and give it the required instances of DeviceHandler, File and Logger. Logging is optionnal (default initialization), but File and DeviceHandler are needed to communicate.
 
 On a desktop platform, you can include `XYModem/XYModem.h`, which includes the main headers and the default implementations of DeviceHandler, File, and Logger.
+
+## Get started
+
+```
+#include "Devices/SerialHandler.h"
+#include "Senders/YModemSender.h"
+#include "Files/DesktopFile.h"
+
+using namespace xymodem;
+int main()
+{
+	// Some constants used for the serial device
+	const uint32_t baudrate = 115200;
+	const uint32_t interByteTimeout = 100000;
+	const uint32_t readTimeoutConstant = 20;
+	const uint32_t readTimeoutMultiplier = 0;
+	const uint32_t writeTimeoutConstant = 20;
+	const uint32_t writeTimeoutMultiplier = 0;
+
+	// Create the DeviceHandler and the YModemSender
+	auto serialHandler = std::make_shared<SerialHandler>(baudrate, interByteTimeout, readTimeoutConstant, readTimeoutMultiplier, writeTimeoutConstant, writeTimeoutMultiplier);
+	YModemSender<xymodem::payloadSize1K> ymodem(serialHandler);
+
+	// Add some files
+	std::vector<std::shared_ptr<File>> files;
+	files.emplace_back(std::make_shared<DesktopFile>("PathToFile"));
+
+	// Transmit the files
+
+	ymodem.transmit(files, [](float) { /* do something on upload progress */}, []() { /* return true to end communication */ return false; });
+
+}
+
+```
 
 # Testing
 
