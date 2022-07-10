@@ -1,5 +1,12 @@
 trigger:
-- main
+    batch: true
+    branches:
+        include: 
+        - main
+    tags:
+        include:
+        - v*
+
 
 pool:
   vmImage: 'ubuntu-22.04'
@@ -320,16 +327,17 @@ jobs:
         - Code_formatting
         - Static_Analysis
     steps:
+    - download: current
+      patterns: '**/*.zip'
     - task: GitHubRelease@0
       displayName: 'Create GitHub Release'
       condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
       inputs:
          gitHubConnection: github.com_Riuzakiii
          repositoryName: Riuzakiii/XYModem
-         action: create
+         action: edit
          tagSource: auto
-         tag: $(Build.BuildNumber)      
-         assets: |
-              $(Build.ArtifactStagingDirectory)
+         tag: $(Build.SourceBranchName)      
+         assets: '$(Pipeline.Workspace)/**/*.zip'
          isDraft: true
          addChangeLog: true
