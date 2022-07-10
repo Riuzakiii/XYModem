@@ -20,7 +20,7 @@ YModemSender<payloadSize>::makeHeaderPacket (const std::string& fileName_, const
     assert (lastModificationDate_ >= 0);
     std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet = {0x00};
     std::array<uint8_t, payloadSize> data = {0x00};
-    auto dataIterator = data.begin(); // NOLINT(readability-qualified-auto)
+    auto dataIterator = data.begin();
 
     // Making header
     static uint8_t payloadType = 0;

@@ -1,3 +1,5 @@
+// Copyright 2022 Riuzakiii
+
 #include "Devices/SerialHandler.h"
 #ifdef _WIN32
 #include <chrono>

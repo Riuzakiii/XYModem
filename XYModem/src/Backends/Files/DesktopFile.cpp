@@ -1,4 +1,6 @@
-﻿#include "Files/DesktopFile.h"
+﻿// Copyright 2022 Riuzakiii
+
+#include "Files/DesktopFile.h"
 #include <cassert>
 
 namespace xymodem

@@ -1,3 +1,5 @@
+// Copyright 2022 Riuzakiii
+
 #include "CLIParser.h"
 
 using CommandType = std::unordered_map<std::string_view, std::function<void (std::string_view)>>;

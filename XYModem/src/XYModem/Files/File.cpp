@@ -1,4 +1,6 @@
-﻿#include "Files/File.h"
+﻿// Copyright 2022 Riuzakiii
+
+#include "Files/File.h"
 
 namespace xymodem
 {

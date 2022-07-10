@@ -1,4 +1,6 @@
-﻿#include "Loggers/Logger.h"
+﻿// Copyright 2022 Riuzakiii
+
+#include "Loggers/Logger.h"
 
 namespace xymodem
 {

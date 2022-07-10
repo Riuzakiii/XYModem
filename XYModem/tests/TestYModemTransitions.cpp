@@ -1,3 +1,5 @@
+// Copyright 2022 Riuzakiii
+
 #include "Devices/SerialHandler.h"
 #include "XYModem.h"
 #include "serial/serial.h"
@@ -8,7 +10,7 @@ namespace xymodem
 class YModemTest : public testing::Test
 {
 public:
-    YModemTest() : deviceHandler (std::make_shared<SerialHandler> (serialDevice)), yModem (deviceHandler){};
+    YModemTest() : deviceHandler (std::make_shared<SerialHandler> (serialDevice)), yModem (deviceHandler) {}
 
     [[nodiscard]] auto getYModem() const -> const auto& { return yModem; }
     [[nodiscard]] auto getYModem() -> auto& { return yModem; }
