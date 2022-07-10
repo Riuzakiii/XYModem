@@ -1,5 +1,12 @@
 trigger:
-- main
+    batch: true
+    branches:
+        include: 
+        - master
+    tags:
+        include:
+        - v*
+
 
 pool:
   vmImage: 'ubuntu-22.04'
