@@ -326,7 +326,7 @@ jobs:
       inputs:
          gitHubConnection: github.com_Riuzakiii
          repositoryName: Riuzakiii/XYModem
-         action: create
+         action: edit
          tagSource: auto
          tag: $(Build.BuildNumber)      
          assets: |
