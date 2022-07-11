@@ -335,8 +335,8 @@ jobs:
          repositoryName: Riuzakiii/XYModem
          action: edit
          tagSource: auto
-         tag: $(Build.BuildNumber)      
+         tag: $(Build.SourceBranchName)      
          assets: |
-              $(Build.ArtifactStagingDirectory)
+              $(Build.ArtifactStagingDirectory)/archive/*
          isDraft: true
          addChangeLog: true
