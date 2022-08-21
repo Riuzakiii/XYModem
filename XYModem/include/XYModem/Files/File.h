@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <stdint.h> // for intmax_t
 #include <string>
+#include <vector>
 
 namespace xymodem
 {
@@ -18,6 +19,32 @@ public:
      * @return The bytes read from the file in a std::string
      */
     [[nodiscard]] virtual std::string getNextFileBlock (const std::intmax_t blockSizeBytes) = 0;
+
+    /** Write bytes to file
+     * @param data vector of 8bits data
+     */
+    virtual void append (const std::vector<uint8_t>& data, bool overwrite = false) = 0;
+
+    /**
+     * @brief flush write any pending bytes to file
+     */
+    virtual void flush();
+
+    /**
+     * @brief create Create the file if it does not already exists.
+     */
+    virtual bool create() = 0;
+
+    /**
+     * @brief destroy close the file and deletes it
+     */
+    virtual bool destroy();
+
+    /**
+     * @brief exists check if the file exists
+     * @return true if the file exists, false if not
+     */
+    virtual bool exists() const = 0;
 
     [[nodiscard]] virtual std::string getFilename() const;
     [[nodiscard]] virtual std::intmax_t getFilesize() const;

@@ -9,17 +9,24 @@ class DesktopFile : public File
 {
 public:
     explicit DesktopFile (const ghc::filesystem::path& filePath);
-    ~DesktopFile();
 
     std::string getNextFileBlock (const std::intmax_t blockSizeBytes) override;
+    void append (const std::vector<uint8_t>& data, bool overwrite) override;
+    bool create() override;
+    bool destroy() override;
+    bool exists() const override;
     void erase() override;
     [[nodiscard]] bool isOpened() const override;
     void open() override;
-    void close() override;
+    void flush();
+
+    [[nodiscard]] std::string getFilename() const override;
+    [[nodiscard]] std::intmax_t getFilesize() const override;
+    [[nodiscard]] std::intmax_t getLastModificationDate() const override;
 
 private:
-    ghc::filesystem::ifstream dataFile;
+    std::unique_ptr<ghc::filesystem::fstream> fileStream = nullptr;
     ghc::filesystem::path filePath;
-    ghc::filesystem::ifstream fileInputStream;
+    ghc::filesystem::fstream::pos_type readPtr = 0;
 };
 } // namespace xymodem

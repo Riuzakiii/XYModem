@@ -13,7 +13,11 @@ std::intmax_t File::getLastModificationDate() const { return lastModificationDat
 
 void File::erase() {}
 
+void File::flush() {}
+
 void File::open() {}
 
 void File::close() {}
+
+bool File::destroy() { return false; }
 } // namespace xymodem
