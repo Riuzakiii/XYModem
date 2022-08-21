@@ -95,12 +95,12 @@ private:
     [[maybe_unused]] static constexpr unsigned int abort = 5;
     [[maybe_unused]] static constexpr unsigned int transmissionFinished = 6;
 
-    static bool noConditions (GuardConditions) { return true; }
+    static bool noConditions (const GuardConditions&) { return true; }
     static bool checkCanRetry (const GuardConditions& t_guards) { return t_guards.get (retries) <= xymodem::maxRetries; }
     static bool checkCannotRetry (const GuardConditions& t_guards) { return t_guards.get (retries) > xymodem::maxRetries; }
 
     // clang-format off
-    [[maybe_unused]] static inline std::array<transition, 11> stateTransitions
+    [[maybe_unused]] static inline std::array<transition<uint8_t>, 11> stateTransitions
         {{{waitingStart,sendingHeader,xymodem::C, noConditions},
           {sendingHeader,xModemTransmission,xymodem::ACK, noConditions},
           {sendingHeader,retryingHeader,xymodem::NAK, noConditions},

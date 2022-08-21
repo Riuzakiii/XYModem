@@ -55,9 +55,10 @@ TEST_F (YModemTest, TestTooManyRetries)
 
 TEST_F (YModemTest, TestUnknownCharacterReceived)
 {
-    EXPECT_EQ (getYModem().getNextState (23, YModemSender<>::sendingHeader, YModemSender<>::undefined, YModemSender<>::stateTransitions),
+    constexpr uint8_t unknown = 23;
+    EXPECT_EQ (getYModem().getNextState (unknown, YModemSender<>::sendingHeader, YModemSender<>::undefined, YModemSender<>::stateTransitions),
                YModemSender<>::undefined);
-    EXPECT_EQ (getYModem().getNextState (23, YModemSender<>::retryingHeader, YModemSender<>::undefined, YModemSender<>::stateTransitions),
+    EXPECT_EQ (getYModem().getNextState (unknown, YModemSender<>::retryingHeader, YModemSender<>::undefined, YModemSender<>::stateTransitions),
                YModemSender<>::undefined);
 }
 

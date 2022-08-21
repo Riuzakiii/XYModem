@@ -19,9 +19,10 @@ namespace xymodem
 {
 class GuardConditions;
 using guard_test = std::function<bool (GuardConditions)>;
+template <typename eventType>
 using transition = const std::tuple<unsigned int,
                                     unsigned int,
-                                    uint8_t,
+                                    eventType,
                                     guard_test>; //(current state, next
                                                  // state, event ,guard)
 
@@ -100,19 +101,19 @@ protected:
      * @return The new state, which can then be used to execute the init
      * functions of the state.
      */
-    template <size_t N>
+    template <typename eventType, size_t N>
     [[nodiscard]] unsigned int
-    getNextState (uint8_t characterReceived, unsigned int t_currentState, unsigned int undefined, std::array<transition, N> transitions)
+    getNextState (eventType event, unsigned int t_currentState, unsigned int stateIfUndefined, const std::array<transition<eventType>, N>& transitions)
     {
         for (const auto& transition : transitions)
         {
-            if (std::get<currentStatePtr> (transition) == t_currentState && std::get<characterReceivedPtr> (transition) == characterReceived &&
+            if (std::get<currentStatePtr> (transition) == t_currentState && std::get<eventPtr> (transition) == event &&
                 std::get<guardsTestsPtr> (transition) (guards))
             {
                 return std::get<nextStatePtr> (transition);
             }
         }
-        return undefined;
+        return stateIfUndefined;
     }
 
     /** Execute some actions when entering a new state.
@@ -134,11 +135,16 @@ protected:
     static constexpr int currentStatePtr = 0;
     static constexpr int nextStatePtr = 1;
     static constexpr int guardsTestsPtr = 3;
-    static constexpr int characterReceivedPtr = 2;
+    static constexpr int eventPtr = 2;
 
 private:
 #ifdef TESTING_ENABLED
     FRIEND_TEST (TestXYModemHelper, TestSetFileInfos);
+    FRIEND_TEST (TestFileTransferProtocole, TestLinearTransitionsWithoutGuards);
+    FRIEND_TEST (TestFileTransferProtocole, TestUnkownEvent);
+    FRIEND_TEST (TestFileTransferProtocole, TestLinearTransitionWithDouble);
+    FRIEND_TEST (TestFileTransferProtocole, TestLinearTransitionWithGuardsSuccess);
+    FRIEND_TEST (TestFileTransferProtocole, TestLinearTransitionWithGuardsFails);
 #endif
 };
 } // namespace xymodem

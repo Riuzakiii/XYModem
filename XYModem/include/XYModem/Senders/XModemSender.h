@@ -90,14 +90,14 @@ private:
     [[maybe_unused]] static constexpr unsigned int undefined = 6;
     [[maybe_unused]] static constexpr unsigned int abort = 7;
 
-    static bool noConditions (GuardConditions) { return true; }
+    static bool noConditions (const GuardConditions&) { return true; }
     static bool checkNoPacketsLeft (const GuardConditions& t_guards) { return t_guards.get (packetsLeft) == 0; }
     static bool checkPacketsLeft (const GuardConditions& t_guards) { return t_guards.get (packetsLeft) > 0; }
     static bool checkCanRetry (const GuardConditions& t_guards) { return t_guards.get (retries) <= xymodem::maxRetries; }
     static bool checkCannotRetry (const GuardConditions& t_guards) { return t_guards.get (retries) > xymodem::maxRetries; }
 
     // clang-format off
-    [[maybe_unused]] static inline std::array<transition, 20> stateTransitions
+    [[maybe_unused]] static inline std::array<transition<uint8_t>, 20> stateTransitions
         {{{waitingStart, sendingPacket, xymodem::C, noConditions},
           {sendingPacket, sendingPacket,xymodem::ACK, checkPacketsLeft},
           {sendingPacket, retryingPacket, xymodem::NAK, noConditions},

@@ -80,7 +80,8 @@ TEST_F (XModemTest, TestEOTButNAKReceivedAndNoRetriesLeft)
 
 TEST_F (XModemTest, TestUnknownCharacterReceived)
 {
-    EXPECT_EQ (getXModem().getNextState (23, XModemSender<>::sendingPacket, XModemSender<>::undefined, XModemSender<>::stateTransitions),
+    constexpr uint8_t unknown = 23;
+    EXPECT_EQ (getXModem().getNextState (unknown, XModemSender<>::sendingPacket, XModemSender<>::undefined, XModemSender<>::stateTransitions),
                XModemSender<>::undefined);
 }
 
