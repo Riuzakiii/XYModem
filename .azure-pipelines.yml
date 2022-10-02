@@ -84,22 +84,22 @@ jobs:
           compiler_version: 10
           uses_clang_compiler: OFF
           export_artefacts: false
-        mac_10_15_debug_xcode_12_4:
-          imageName: 'macOS-10.15'
-          generator: Xcode
-          build_configuration: 'Debug'
-          xcode_version: 12.4
-          uses_clang_compiler: OFF
-          osx_architecture: 'x86_64'
-          export_artefacts: false
-        mac_10_15_release_xcode_12_4:
-          imageName: 'macOS-10.15'
-          generator: Xcode
-          build_configuration: 'Release'
-          xcode_version: 12.4
-          uses_clang_compiler: OFF
-          osx_architecture: 'x86_64'
-          export_artefacts: true
+        # mac_10_15_debug_xcode_12_4:
+        #   imageName: 'macOS-10.15'
+        #   generator: Xcode
+        #   build_configuration: 'Debug'
+        #   xcode_version: 12.4
+        #   uses_clang_compiler: OFF
+        #   osx_architecture: 'x86_64'
+        #   export_artefacts: false
+        # mac_10_15_release_xcode_12_4:
+        #   imageName: 'macOS-10.15'
+        #   generator: Xcode
+        #   build_configuration: 'Release'
+        #   xcode_version: 12.4
+        #   uses_clang_compiler: OFF
+        #   osx_architecture: 'x86_64'
+        #   export_artefacts: true
         mac_11_debug_xcode_13_2_1:
           imageName: 'macOS-11'
           generator: Xcode
