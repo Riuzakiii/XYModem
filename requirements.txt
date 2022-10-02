@@ -1,4 +1,4 @@
-conan==1.51.3
+conan==1.52.0
 cmake==3.24.1.1
 gcovr==5.0
 wheel==0.37.1
