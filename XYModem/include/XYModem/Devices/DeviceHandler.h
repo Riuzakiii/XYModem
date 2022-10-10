@@ -32,6 +32,10 @@ public:
      */
     [[nodiscard]] uint8_t readNextByte();
 
+    /** Real n bytes from buffer
+     */
+    [[nodiscard]] std::vector<uint8_t> read(int n);
+
     /** Flush inputBuffer
      */
     virtual void flushLocalBuffer();

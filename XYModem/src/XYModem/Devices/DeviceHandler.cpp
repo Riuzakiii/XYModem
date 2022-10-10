@@ -34,6 +34,11 @@ uint8_t DeviceHandler::readNextByte()
     return byte;
 }
 
+std::vector<uint8_t> DeviceHandler::read(int n)
+{
+    return {};
+}
+
 void DeviceHandler::flushLocalBuffer() { inputBuffer.clear(); }
 
 void DeviceHandler::flushAllInputBuffers()

@@ -3,13 +3,14 @@ set(HEADER_LIST
     "XYModemConst.h"
     "Senders/YModemSender.h"
     "Senders/XModemSender.h"
+    "Receivers/XModemReceiver.h"
     "Devices/DeviceHandler.h"
     "FileTransferProtocol.h"
     "Files/File.h"
     "Loggers/Logger.h")
 set(TEMPLATE_DEFINITIONS "Senders/XModemSender.hpp" "Senders/YModemSender.hpp")
 set(SRC_LIST "Devices/DeviceHandler.cpp" "Files/File.cpp" "Loggers/Logger.cpp"
-             "FileTransferProtocol.cpp")
+             "FileTransferProtocol.cpp" "Receivers/XModemReceiver.cpp")
 list(TRANSFORM HEADER_LIST
      PREPEND "${CMAKE_CURRENT_LIST_DIR}/../../include/XYModem/")
 list(TRANSFORM TEMPLATE_DEFINITIONS PREPEND "${CMAKE_CURRENT_LIST_DIR}/")
