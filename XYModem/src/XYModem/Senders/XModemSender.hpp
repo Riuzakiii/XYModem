@@ -60,7 +60,7 @@ XModemSender<payloadSize>::makeDataPacket (const std::string& data_, const uint8
 template <std::size_t payloadSize>
 void XModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet)
 {
-    deviceHandler->flushAllInputBuffers();
+    deviceHandler->flushInputBuffer();
     deviceHandler->write (packet.data(), packet.size());
 }
 
@@ -108,7 +108,7 @@ void XModemSender<payloadSize>::executeState (const unsigned int state, bool log
     {
         guards.set (retries, 0);
         const uint8_t buffer[1] = {xymodem::EOT};
-        deviceHandler->flushAllInputBuffers();
+        deviceHandler->flushInputBuffer();
         deviceHandler->write (buffer, 1);
         logger->debug ("Sent EOT");
         break;
@@ -117,7 +117,7 @@ void XModemSender<payloadSize>::executeState (const unsigned int state, bool log
     {
         guards.inc (retries);
         const uint8_t buffer[1] = {xymodem::EOT};
-        deviceHandler->flushAllInputBuffers();
+        deviceHandler->flushInputBuffer();
         deviceHandler->write (buffer, 1);
         logger->debug ("Re-sent EOT");
         break;
@@ -176,7 +176,7 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
     // Initial flush of buffer to remove data from previous uses, and put back
     // the file iterator at the beginning for insurance
     file->erase();
-    deviceHandler->flushAllInputBuffers();
+    deviceHandler->flushInputBuffer();
 
     logger->info ("Beginning transmission");
     while (!isTransmissionFinished)
@@ -185,14 +185,10 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
         {
             if (deviceHandler->waitReadable())
             {
-                deviceHandler->readAll();
                 logger->debug ("Device input buffer size" + std::to_string (deviceHandler->available()));
-                logger->debug ("Local buffer size " + std::to_string (deviceHandler->getInputBufferSize()));
                 logger->debug ("Printing input buffer");
-                deviceHandler->showBuffer();
-                logger->debug ("Buffer front " + std::to_string (deviceHandler->getInputBufferFront()));
 
-                const auto characterReceived = deviceHandler->readNextByte();
+                const auto characterReceived = deviceHandler->read(1).back();
                 currentState = getNextState (characterReceived, currentState, undefined, XModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string (currentState));
                 executeState (currentState, logHex);

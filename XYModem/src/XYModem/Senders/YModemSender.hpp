@@ -96,7 +96,7 @@ std::array<uint8_t, payloadSize + xymodem::totalExtraSize> YModemSender<payloadS
 template <std::size_t payloadSize>
 void YModemSender<payloadSize>::writePacket (std::array<uint8_t, payloadSize + xymodem::totalExtraSize> packet)
 {
-    deviceHandler->flushAllInputBuffers();
+    deviceHandler->flushInputBuffer();
     deviceHandler->write (packet.data(), packet.size());
 }
 
@@ -113,7 +113,7 @@ void YModemSender<payloadSize>::executeSendHeader (bool logHex)
     {
         auto file = files.back();
         const auto initialPacket = makeHeaderPacket (file->getFilename(), file->getFilesize(), file->getLastModificationDate(), logHex);
-        deviceHandler->flushAllInputBuffers();
+        deviceHandler->flushInputBuffer();
         writePacket (initialPacket);
         logger->info ("Wrote header packet");
     }
@@ -175,7 +175,7 @@ void YModemSender<payloadSize>::transmit (const std::vector<std::shared_ptr<File
     files = files_;
     updateCallback = std::move (updateCallback_);
     yieldCallback = std::move (yieldCallback_);
-    deviceHandler->flushAllInputBuffers();
+    deviceHandler->flushInputBuffer();
     //
 
     logger->info ("Beginning transmission");
@@ -185,13 +185,8 @@ void YModemSender<payloadSize>::transmit (const std::vector<std::shared_ptr<File
         {
             if (deviceHandler->available() > 0)
             {
-                deviceHandler->readAll();
                 logger->debug ("Device input buffer size " + std::to_string (deviceHandler->available()));
-                logger->debug ("Local buffer size " + std::to_string (deviceHandler->getInputBufferSize()));
-                logger->debug ("Printing input buffer");
-                deviceHandler->showBuffer();
-                logger->debug ("Buffer front : " + std::to_string (deviceHandler->getInputBufferFront()));
-                const auto characterReceived = deviceHandler->readNextByte();
+                const auto characterReceived = deviceHandler->read(1).back();
                 currentState = getNextState (characterReceived, currentState, undefined, YModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string (currentState));
                 executeState (currentState, logHex);

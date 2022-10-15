@@ -13,9 +13,6 @@ struct DeviceHandler
 {
 public:
     virtual ~DeviceHandler() = default;
-    /** Displays the content of the buffer
-     */
-    std::string showBuffer();
 
     /** Write data to the device output buffer
      *  @param data the data bytes to write
@@ -23,34 +20,13 @@ public:
      */
     virtual size_t write (const uint8_t* data, size_t size) = 0;
 
-    /**
-     * @brief Read all available characters and put them in inputBuffer
-     */
-    virtual void readAll() = 0;
-
-    /** Read next byte from front of inputBuffer and removes it from the buffer
-     */
-    [[nodiscard]] uint8_t readNextByte();
-
     /** Real n bytes from buffer
      */
-    [[nodiscard]] std::vector<uint8_t> read(int n);
+    [[nodiscard]] virtual std::vector<uint8_t> read(int n) = 0;
 
-    /** Flush inputBuffer
+    /** Flush the device buffer
      */
-    virtual void flushLocalBuffer();
-    /** Flush the device buffer by reading all its buffer.
-     */
-    virtual void flushDeviceInputBuffer() = 0;
-    /** Uses flushLocalBuffer and flushDeviceBuffer to flush all buffers.
-     * @see flushLocalBuffer
-     * @see flushDeviceInputBuffer
-     */
-    void flushAllInputBuffers();
-
-    [[nodiscard]] size_t getInputBufferSize();
-    [[nodiscard]] bool isInputBufferEmpty() const;
-    [[nodiscard]] uint8_t getInputBufferFront() const;
+    virtual void flushInputBuffer() = 0;
 
     /**
      * @brief Return the number of available bytes in the device's buffer
@@ -66,6 +42,5 @@ public:
 
 protected:
     DeviceHandler() = default;
-    std::vector<uint8_t> inputBuffer;
 };
 } // namespace xymodem

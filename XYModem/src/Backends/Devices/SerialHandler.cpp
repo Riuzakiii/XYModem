@@ -28,16 +28,14 @@ SerialHandler::SerialHandler (uint32_t baudrate,
 
 size_t SerialHandler::write (const uint8_t* data, size_t size) { return serialDevice->write (data, size); }
 
-void SerialHandler::readAll()
+std::vector<uint8_t> SerialHandler::read(int n)
 {
-    /** Solves a small problem : C character can be received during writing, but
-     * we don't care about characters before ACK if there is one
-     */
     std::vector<uint8_t> tempBuffer;
     serialDevice->read (tempBuffer, serialDevice->available());
-    inputBuffer = tempBuffer;
+    return tempBuffer;
 }
-void SerialHandler::flushDeviceInputBuffer()
+
+void SerialHandler::flushInputBuffer()
 {
     std::vector<uint8_t> tempBuffer;
     serialDevice->read (tempBuffer, serialDevice->available());

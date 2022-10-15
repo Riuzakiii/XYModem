@@ -54,20 +54,6 @@ TEST_F (TestXYModemHelper, TestMakeDataPacket)
     EXPECT_EQ (xymodem::tools::dispByteArray (dataPacket), fmt::format ("{:s},{:s},{:s}", packetId, expectedData, crc));
 }
 
-TEST_F (TestXYModemHelper, TestFlushLocalBuffer)
-{
-    getDeviceHandler()->inputBuffer.emplace_back (static_cast<uint8_t> (0xff));
-    getDeviceHandler()->inputBuffer.emplace_back (static_cast<uint8_t> (0xff));
-    getDeviceHandler()->flushLocalBuffer();
-    EXPECT_EQ (getDeviceHandler()->inputBuffer.empty(), true);
-}
-
-TEST_F (TestXYModemHelper, TestReadNextByte)
-{
-    getDeviceHandler()->inputBuffer.emplace_back (static_cast<uint8_t> (0xa5));
-    EXPECT_EQ (getDeviceHandler()->readNextByte(), 0xa5);
-}
-
 TEST_F (TestXYModemHelper, TestMakeHeaderPacket)
 {
     const auto headerPacket = getYModem().makeHeaderPacket ("test", 0, 0);

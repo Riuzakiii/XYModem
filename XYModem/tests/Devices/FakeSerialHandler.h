@@ -16,11 +16,9 @@ public:
 
     size_t write (const uint8_t* data, size_t size) override;
 
-    void readAll() override;
+    [[nodiscard]] std::vector<uint8_t> read(int n) override;
 
-    [[nodiscard]] std::vector<uint8_t> read(int n);
-
-    void flushDeviceInputBuffer() override;
+    void flushInputBuffer() override;
 
     [[nodiscard]] size_t available() const override;
 
@@ -52,21 +50,15 @@ size_t FakeSerialHandler<bufferSize>::write (const uint8_t* data, size_t size)
 }
 
 template<int bufferSize>
-void FakeSerialHandler<bufferSize>::readAll()
-{
-    auto read = inputBuffer.read();
-}
-
-template<int bufferSize>
 std::vector<uint8_t> FakeSerialHandler<bufferSize>::read(int n)
 {
     return inputBuffer.read(n);
 }
 
 template<int bufferSize>
-void FakeSerialHandler<bufferSize>::flushDeviceInputBuffer()
+void FakeSerialHandler<bufferSize>::flushInputBuffer()
 {
-
+    inputBuffer.read(inputBuffer.available());
 }
 
 template<int bufferSize>
