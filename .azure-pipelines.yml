@@ -194,6 +194,10 @@ jobs:
         sudo xcode-select -s /Applications/Xcode_$(xcode_version).app
       displayName: 'Setup the correct version of Xcode'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
+    - task: UsePythonVersion@0
+      displayName: 'Use Python 3.8'
+      inputs:
+        versionSpec: '3.8'
     - script: |
         pip3 install --upgrade pip
         pip3 install setuptools
