@@ -173,9 +173,7 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
     totalPackets = guards.get (packetsLeft);
     ////
 
-    // Initial flush of buffer to remove data from previous uses, and put back
-    // the file iterator at the beginning for insurance
-    file->erase();
+    // Initial flush of buffer to remove data from previous uses
     deviceHandler->flushInputBuffer();
 
     logger->info ("Beginning transmission");
