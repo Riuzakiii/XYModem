@@ -22,7 +22,7 @@ public:
 
     /** Real n bytes from buffer
      */
-    [[nodiscard]] virtual std::vector<uint8_t> read(int n) = 0;
+    [[nodiscard]] virtual std::vector<uint8_t> read (int n) = 0;
 
     /** Flush the device buffer
      */

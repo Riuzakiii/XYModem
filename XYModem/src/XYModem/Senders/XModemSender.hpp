@@ -186,7 +186,7 @@ void XModemSender<payloadSize>::transmit (const std::shared_ptr<File>& file_,
                 logger->debug ("Device input buffer size" + std::to_string (deviceHandler->available()));
                 logger->debug ("Printing input buffer");
 
-                const auto characterReceived = deviceHandler->read(1).back();
+                const auto characterReceived = deviceHandler->read (1).back();
                 currentState = getNextState (characterReceived, currentState, undefined, XModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string (currentState));
                 executeState (currentState, logHex);

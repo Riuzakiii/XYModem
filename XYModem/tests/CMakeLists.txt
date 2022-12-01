@@ -1,4 +1,4 @@
-file(GLOB TEST_FILES *.cpp *.h)
+file(GLOB TEST_FILES "TestDesktopFile.cpp" "TestFakeSerialHandler.cpp" "TestFileTransferProtocole.cpp" "TestRingBuffer.cpp" "TestTools.cpp" "TestXModemReceiver.cpp" "TestXModemTransitions.cpp" "TestXYModemHelper.cpp" "TestYModemTransitions.cpp")
 
 add_executable(unitTest MACOSX_BUNDLE ${TEST_FILES})
 

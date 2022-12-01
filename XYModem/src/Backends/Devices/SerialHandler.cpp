@@ -28,7 +28,7 @@ SerialHandler::SerialHandler (uint32_t baudrate,
 
 size_t SerialHandler::write (const uint8_t* data, size_t size) { return serialDevice->write (data, size); }
 
-std::vector<uint8_t> SerialHandler::read(int n)
+std::vector<uint8_t> SerialHandler::read (int n)
 {
     std::vector<uint8_t> tempBuffer;
     serialDevice->read (tempBuffer, serialDevice->available());

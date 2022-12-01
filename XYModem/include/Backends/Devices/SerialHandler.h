@@ -36,7 +36,7 @@ public:
      * If an ACK is in the buffer, the characters before it will be ignored.
      * Indeed, ACK is always the first thing we want if the device sent it.
      */
-    std::vector<uint8_t> read(int n) override;
+    std::vector<uint8_t> read (int n) override;
 
     /** NOTE ON BUFFERS : buffers must be handled really carefully with serial.
      * Reading bytes one by one from the device buffer did not seem to gave

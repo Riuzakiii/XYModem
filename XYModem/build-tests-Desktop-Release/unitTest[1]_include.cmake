@@ -1,0 +1,5 @@
+if(EXISTS "/home/thiebaud/Documents/Dev/XYModem/XYModem/build-tests-Desktop-Release/unitTest[1]_tests.cmake")
+  include("/home/thiebaud/Documents/Dev/XYModem/XYModem/build-tests-Desktop-Release/unitTest[1]_tests.cmake")
+else()
+  add_test(unitTest_NOT_BUILT unitTest_NOT_BUILT)
+endif()

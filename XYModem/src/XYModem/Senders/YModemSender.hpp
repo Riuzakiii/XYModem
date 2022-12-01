@@ -186,7 +186,7 @@ void YModemSender<payloadSize>::transmit (const std::vector<std::shared_ptr<File
             if (deviceHandler->available() > 0)
             {
                 logger->debug ("Device input buffer size " + std::to_string (deviceHandler->available()));
-                const auto characterReceived = deviceHandler->read(1).back();
+                const auto characterReceived = deviceHandler->read (1).back();
                 currentState = getNextState (characterReceived, currentState, undefined, YModemSender::stateTransitions);
                 logger->debug ("Current state " + std::to_string (currentState));
                 executeState (currentState, logHex);

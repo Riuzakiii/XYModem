@@ -3,6 +3,7 @@
 #include "../Files/File.h"
 #include "../XYModemConst.h"
 #include <array>
+#include <chrono>
 
 namespace xymodem
 {
@@ -13,9 +14,15 @@ class XModemReceiver : private FileTransferProtocol
 
 public:
     XModemReceiver (std::shared_ptr<DeviceHandler> device, std::shared_ptr<Logger> logger = std::make_shared<Logger>());
-    void receive (std::shared_ptr<File> destination);
+    void receive (const std::shared_ptr<File>& destination);
 
 private:
+    std::shared_ptr<DeviceHandler> device;
+    std::shared_ptr<Logger> logger;
+    std::shared_ptr<File> file;
+
+    std::chrono::system_clock::time_point time;
+
     void executeState (const unsigned int currentState, bool logHex) override;
 
     [[maybe_unused]] static constexpr eventType noEvent = -1;
@@ -35,6 +42,7 @@ private:
     [[maybe_unused]] static constexpr unsigned int sendAcknowledged = 5;
     [[maybe_unused]] static constexpr unsigned int acknowledgeEndOfTransmission = 6;
     [[maybe_unused]] static constexpr unsigned int timeout = 7;
+    [[maybe_unused]] static constexpr unsigned int undefined = 8;
 
     static bool noConditions (GuardConditions) { return true; }
     static bool checkCanRetryStart (const GuardConditions& t_guards) { return t_guards.get (retriesStart) <= maxRetriesStart; }
@@ -43,11 +51,12 @@ private:
     static bool checkCannotRetry (const GuardConditions& t_guards) { return t_guards.get (retries) > xymodem::maxRetries; }
 
     // clang-format off
-    static inline std::array<transition<eventType>, 14> transitions = {{
+    static inline std::array<transition<eventType>, 15> stateTransitions = {{
         {sendStartWithCRCSignal, sendStartWithCRCSignal, timeout3s, checkCanRetryStart},
         {sendStartWithCRCSignal, timeout, timeout3s, checkCannotRetryStart},
         {sendStartWithCRCSignal, waitForPacket, receveidSomething, noConditions },
         {waitForPacket, processPacket, receivedPayload, noConditions},
+        {waitForPacket, waitForPacket, receveidSomething, noConditions},
         {processPacket, sendAcknowledged, packetSuccessfullyWritten, noConditions},
         {sendAcknowledged, waitForPacket, noEvent, noConditions},
         {waitForPacket, timeout, timeout1s, noConditions},
