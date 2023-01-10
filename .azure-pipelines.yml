@@ -70,20 +70,6 @@ jobs:
           compiler_version: 10
           uses_clang_compiler: OFF
           export_artefacts: false
-        ubuntu_18_04_debug_gcc_10:
-          imageName: 'ubuntu-18.04'
-          generator: Unix Makefiles
-          build_configuration: 'Debug'
-          compiler_version: 10
-          uses_clang_compiler: OFF
-          export_artefacts: false
-        ubuntu_18_04_release_gcc_10:
-          imageName: 'ubuntu-18.04'
-          generator: Unix Makefiles
-          build_configuration: 'Release'
-          compiler_version: 10
-          uses_clang_compiler: OFF
-          export_artefacts: false
         # mac_10_15_debug_xcode_12_4:
         #   imageName: 'macOS-10.15'
         #   generator: Xcode
