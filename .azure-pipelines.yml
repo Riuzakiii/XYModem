@@ -19,14 +19,14 @@ jobs:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-          compiler_version: 10
+          compiler_version: 10.3
           uses_clang_compiler: OFF
           export_artefacts: false
         ubuntu_22_04_release_gcc_10:
           imageName: 'ubuntu-22.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
-          compiler_version: 10
+          compiler_version: 10.3
           uses_clang_compiler: OFF
           export_artefacts: false
         ubuntu_22_04_debug_gcc_11:
@@ -60,14 +60,14 @@ jobs:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-          compiler_version: 10
+          compiler_version: 10.3
           uses_clang_compiler: OFF
           export_artefacts: false
         ubuntu_20_04_release_gcc_10:
           imageName: 'ubuntu-20.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
-          compiler_version: 10
+          compiler_version: 10.3
           uses_clang_compiler: OFF
           export_artefacts: false
         # mac_10_15_debug_xcode_12_4:
