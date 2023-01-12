@@ -1,5 +1,5 @@
 conan==1.56.0
-cmake==3.24.1.1
+cmake==3.25.0
 gcovr==5.2
 wheel==0.38.4
 clang-format==14.0.6
