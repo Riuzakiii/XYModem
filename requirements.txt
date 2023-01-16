@@ -2,6 +2,6 @@ conan==1.56.0
 cmake==3.25.0
 gcovr==5.2
 wheel==0.38.4
-clang-format==14.0.6
+clang-format==15.0.7
 cmake-format==0.6.13
 cpplint==1.6.1
